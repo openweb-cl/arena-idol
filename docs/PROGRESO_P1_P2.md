@@ -135,6 +135,7 @@ Capturas renderizadas reales (posiciones preparadas) en Compatibility/software:
 5. Conservar los JSON locales: reflejan mapa y geometría utilizados. El equilibrio
    y qué arena resulta más divertida siguen pendientes del propietario.
 
-Estado de revisión: P1 en PR #5; P2 se publica en un PR separado con #5 como base
-funcional. No se ha fusionado ningún PR en main. Refresh visual y personajes
+Estado de revisión: [P1 en PR #5](https://github.com/openweb-cl/arena-idol/pull/5);
+[P2 en PR #6](https://github.com/openweb-cl/arena-idol/pull/6), que incluye #5 como
+base funcional. No se ha fusionado ningún PR en main. Refresh visual y personajes
 siguientes siguen sin iniciar según el alcance aprobado (puntos 1 y 2).

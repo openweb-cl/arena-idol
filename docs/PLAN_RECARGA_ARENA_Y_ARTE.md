@@ -11,7 +11,7 @@ pruebas automatizadas y playtest humano. No se declara equilibrio aprobado.
 - [x] PR de P1 publicado: #5 (sin fusionar).
 - [x] Dos mapas A/B implementados con geometría y navegación compartidas.
 - [x] Pruebas de P2 y revisión de capturas completadas (40 de mapas; 192 comprobaciones totales).
-- [ ] PR de P2 publicado.
+- [x] PR de P2 publicado: #6 (sin fusionar; incluye P1).
 - [ ] Serie de playtest del propietario con ambos héroes y ambos mapas.
 - [ ] V1/V2 refresh visual y personajes siguientes (no iniciados en esta entrega).
 
