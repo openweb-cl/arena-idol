@@ -54,15 +54,20 @@ def main():
         ammo = run("munición y recarga", "--fixed-fps", "60", "--script", "res://tests/test_ammo.gd")
         if "MUNICIÓN:" not in ammo or "0 fallos" not in ammo:
             sys.exit("La suite de recarga no confirmó finalización")
+        maps = run("variantes de cobertura", "--fixed-fps", "60", "--script", "res://tests/test_maps.gd")
+        if "MAPAS:" not in maps or "0 fallos" not in maps:
+            sys.exit("La suite de mapas no confirmó finalización")
         run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")
+        run("arena B", "res://scenes/arena/prisma_b.tscn", "--quit-after", "30")
         if args.pack:
             pack = str(Path(work) / "arena.pck")
             run("exportación PCK", "--export-pack", "Linux", pack)
             run("PCK menú", "--main-pack", pack, "--quit-after", "10")
             run("PCK campo de tiro", "--main-pack", pack, "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
             run("PCK arena", "--main-pack", pack, "res://scenes/arena/arena.tscn", "--quit-after", "30")
+            run("PCK arena B", "--main-pack", pack, "res://scenes/arena/prisma_b.tscn", "--quit-after", "30")
     print("Verificación completada. No acredita GPU/Android ni calidad comercial.")
 
 

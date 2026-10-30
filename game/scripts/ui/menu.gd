@@ -73,7 +73,18 @@ func show_home() -> void:
 		GraphicsSettings.apply(preview.get_viewport(), preview_light)
 	)
 	var rules := ArenaStyle.button("REGLAS: " + ("RECARGA" if GameSession.reload_enabled else "REFERENCIA SIN RECARGA"))
-	left.add_child(rules)
+	var options := HBoxContainer.new()
+	left.add_child(options)
+	options.add_child(rules)
+	rules.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var arena_choice := ArenaStyle.button("ARENA " + ("A" if GameSession.selected_arena.id == "prisma-a" else "B"))
+	arena_choice.add_theme_font_size_override("font_size", 18)
+	arena_choice.custom_minimum_size = Vector2(180, 42)
+	options.add_child(arena_choice)
+	arena_choice.pressed.connect(func() -> void:
+		GameSession.selected_arena = GameSession.ARENAS[1] if GameSession.selected_arena.id == "prisma-a" else GameSession.ARENAS[0]
+		arena_choice.text = "ARENA " + ("A" if GameSession.selected_arena.id == "prisma-a" else "B")
+	)
 	rules.pressed.connect(func() -> void:
 		GameSession.reload_enabled = not GameSession.reload_enabled
 		rules.text = "REGLAS: " + ("RECARGA" if GameSession.reload_enabled else "REFERENCIA SIN RECARGA")

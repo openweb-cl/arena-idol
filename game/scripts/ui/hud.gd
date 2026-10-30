@@ -4,6 +4,7 @@ signal pause_requested
 signal replay_requested
 signal menu_requested
 var scoreboard: Label
+var arena_name := "A"
 var status: Label
 var message: Label
 var overlay: PanelContainer
@@ -124,7 +125,7 @@ func update_state(rules: MatchRules, player: ArenaPlayer) -> void:
 	if limited and player.ammo.charges < count:
 		ammo_title.text += " · %s %.1f s" % ["RECARGANDO" if player.ammo.charges == 0 else "+1 EN", player.ammo.remaining]
 	var seconds := ceili(rules.remaining)
-	scoreboard.text = "TÚ  %d   —   %d  BOT      %d:%02d" % [rules.scores[0], rules.scores[1], seconds / 60, seconds % 60]
+	scoreboard.text = "%s · TÚ %d  —  %d BOT    %d:%02d" % [arena_name, rules.scores[0], rules.scores[1], seconds / 60, seconds % 60]
 	var ability_text := "LISTA" if player.cooldown <= 0 else "%.1f s" % player.cooldown
 	status.text = "%s #%d   /   %d PV\n%s: %s   /   SÚPER: %d%%" % [player.definition.display_name, player.definition.number, player.health, player.definition.ability.display_name, ability_text, player.super_charge]
 	if player.knocked_out:

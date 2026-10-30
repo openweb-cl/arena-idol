@@ -4,6 +4,7 @@ extends RefCounted
 var dodge_time := 0.0
 var dodge_direction := Vector2.ZERO
 var dodges := 0
+var layout: ArenaDefinition
 
 func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatProjectile], delta: float) -> void:
 	actor.command.clear_actions()
@@ -25,6 +26,10 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 		actor.command.super_shot = actor.super_charge >= 100 and flat.length() < actor.definition.super_radius + 1 if actor.definition.attack_type == "Melee" else actor.super_charge >= 100 and flat.length() < actor.definition.attack_range
 		if actor.command.super_shot:
 			actor.command.shoot = false
+	# La línea de tiro puede estar libre y el cuerpo aún rozar una esquina.
+	# En aproximación usar el radio de navegación, no el rayo del proyectil.
+	if move.dot(flat) > 0 and not layout.clear_segment(Vector2(actor.position.x, actor.position.z), Vector2(rival.position.x, rival.position.z)):
+		move = route(actor.position, rival.position)
 	if dodge_time > 0:
 		dodge_time -= delta
 		move = dodge_direction
@@ -46,12 +51,12 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 	actor.command.ability = (actor.definition.attack_type == "Melee" and flat.length() < 5 and flat.length() > 2) or (dodge_time > 0 and actor.definition.attack_type == "Ranged")
 
 func line_clear(a: ArenaPlayer, b: ArenaPlayer) -> bool:
-	var query := PhysicsRayQueryParameters3D.create(a.position + Vector3.UP * 0.8, b.position + Vector3.UP * 0.8, 1)
-	return a.get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+	return TargetSelector.clear_path(a, b)
 
 var navigation: AStarGrid2D
 
-func _init() -> void:
+func _init(settings: ArenaDefinition = null) -> void:
+	layout = settings if settings != null else preload("res://data/maps/prisma_a.tres")
 	navigation = AStarGrid2D.new()
 	navigation.region = Rect2i(-12, -6, 25, 13)
 	navigation.cell_size = Vector2.ONE
@@ -59,7 +64,7 @@ func _init() -> void:
 	navigation.update()
 	for x in range(-12, 13):
 		for z in range(-6, 7):
-			for rect in ArenaPitch.OBSTACLES:
+			for rect in layout.obstacles:
 				if rect.grow(0.65).has_point(Vector2(x, z)):
 					navigation.set_point_solid(Vector2i(x, z))
 
