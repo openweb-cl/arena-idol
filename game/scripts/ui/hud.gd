@@ -12,6 +12,7 @@ var overlay_detail: Label
 var resume: Button
 var metrics: Label
 var diagnostics: Label
+var assist_status: Label
 var show_metrics := false
 
 func _ready() -> void:
@@ -53,6 +54,10 @@ func _ready() -> void:
 	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
 	metrics.position = Vector2(40, 120)
 	root.add_child(metrics)
+	assist_status = ArenaStyle.label("", 16, ArenaStyle.GOLD)
+	assist_status.position = Vector2(40, 595)
+	assist_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(assist_status)
 	diagnostics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
 	diagnostics.position = Vector2(40, 90)
 	diagnostics.mouse_filter = Control.MOUSE_FILTER_IGNORE
