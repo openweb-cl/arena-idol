@@ -78,8 +78,17 @@ func run() -> void:
 		check(muzzle.global_position.z < -0.3, "frente hacia -Z (Muzzle z=%.2f)" % muzzle.global_position.z)
 	model.queue_free()
 	# Integración real a través del adaptador de Codex, sin modificarlo.
-	var definition: CharacterDefinition = load("res://data/characters/%s.tres" % hero)
-	check(definition.model_scene != null, hero + ".tres usa model_scene")
+	var definition: CharacterDefinition
+	var tres := "res://data/characters/%s.tres" % hero
+	if ResourceLoader.exists(tres):
+		definition = load(tres)
+		check(definition.model_scene != null, hero + ".tres usa model_scene")
+	else:
+		# Héroe sin gameplay todavía: definición temporal en memoria, solo arte.
+		print("  (sin %s: se prueba el adaptador con una definición temporal)" % tres)
+		definition = CharacterDefinition.new()
+		definition.id = hero
+		definition.model_scene = scene
 	var visual := CharacterVisual.new()
 	visual.definition = definition
 	root.add_child(visual)

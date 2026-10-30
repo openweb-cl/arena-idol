@@ -1,4 +1,4 @@
-# Héroes 3D — Turbo #11 (V1.1) y King/Rey #23 (V0)
+# Héroes 3D — Turbo #11 (V1.1), King/Rey #23 (V0), Príncipe (V0) y Pitbull (V0)
 
 Estado: **MUESTRAS PROVISIONALES pendientes de revisión del propietario.** No son
 arte final ni calidad comercial. Validan el pipeline Blender → GLB → Godot y la
@@ -10,6 +10,10 @@ dirección pedida por el propietario el 2026-10-30.
 - **Turbo V1.1** (este hito): equipación azul con detalles rojos, pelo blanco y
   tatuajes visibles, a pedido del propietario.
 - **Rey/King V0** (este hito): primera forma en blanco y negro con sello propio.
+- **Príncipe V0 y Pitbull V0** (este hito): **solo arte**, a pedido del propietario.
+  No tienen `.tres`, gameplay, ficha de combate aprobada ni dorsal, y no aparecen en
+  la selección: eso es C1/C2 (Codex y propietario). Sus GLB quedan listos para enlazar
+  mediante `model_scene` cuando exista la ficha.
 
 ## Archivos tomados (Claude Code)
 
@@ -21,7 +25,8 @@ dirección pedida por el propietario el 2026-10-30.
 | `art/lib/capture_heroes.gd` | Capturas reales de menú, selección, arenas y clips |
 | `art/turbo/build_turbo.py`, `art/turbo/turbo.blend` | Fuente de Turbo |
 | `art/rey/build_rey.py`, `art/rey/rey.blend` | Fuente de Rey |
-| `game/assets/models/{turbo,rey}/*.glb` (+ `.import`) | GLB y bucles de clips |
+| `art/principe/*`, `art/pitbull/*` | Fuentes del Príncipe y del Pitbull |
+| `game/assets/models/{turbo,rey,principe,pitbull}/*.glb` (+ `.import`) | GLB y bucles de clips |
 | `game/data/characters/{turbo,rey}.tres` | **Solo** `model_scene` (campo de arte) |
 | `game/assets/README.md`, `docs/ESTILO_3D.md`, este documento | Manifest y estado |
 
@@ -41,6 +46,11 @@ la UI y es de Codex).
    Advertencia: la combinación azul-rojo, el 11, el pelo claro y los tatuajes acerca
    el personaje a esa referencia. Antes de cualquier uso comercial hace falta revisión
    legal o una autorización escrita. Los nombres siguen siendo provisionales (AGENTS.md).
+4. Crear desde ya al **Príncipe** (azul con detalles rojos) y al **Pitbull** (blanco
+   con franja celeste al centro). El roster canónico cita referentes reales para
+   ambos; aquí solo hay siluetas y trajes originales, sin rostros, escudos ni kits.
+   **Dorsales pendientes:** el plan prohíbe aprobar dorsales nuevos por inferencia,
+   así que las camisetas no llevan número hasta que el propietario lo decida.
 
 ## Turbo #11 — V1.1
 
@@ -87,7 +97,34 @@ la UI y es de Codex).
 | `M_Rey_Piel` | `#a8724f` | Piel |
 | `M_Rey_Brillo` | `#ffc94d` emisivo | Visor |
 
-## Contrato técnico (ambos)
+## Príncipe — V0 (solo arte)
+
+- **Rol de referencia:** estratega (precisión). Silueta esbelta y elegante, ≈1,91 m.
+- **Equipación:** azul (`#1a37a8`) con detalles rojos. Banda real roja cruzada del
+  hombro derecho a la cadera, charretera roja con flecos blancos en el hombro
+  izquierdo, cuello alto rojo, medias con doble ribete y talones rojos.
+- **Rostro:** abstracto. Visor táctico oscuro con **lente roja** en el ojo derecho
+  (lectura de precisión) y peinado oscuro barrido hacia un lado. Sin barba.
+- **Clips:** `kick` es un pase con el interior del pie; `celebrate` es una
+  **reverencia real** con saludo.
+- **Materiales:** Azul, Rojo `#d92332`, Blanco, Piel `#d9a07c`, Noche `#191b2b`,
+  Lente `#ff4d4d` (emisivo).
+
+## Pitbull — V0 (solo arte)
+
+- **Rol de referencia:** defensor (tackle corto, marca). Compacto y bajo (1,88 m
+  con pelo), centro de gravedad bajo y guardia defensiva en `idle`.
+- **Equipación:** camiseta blanca con **franja celeste horizontal al centro**
+  (`#5ec8f2`), short y botas azul marino, medias blancas con ribete celeste y
+  vendas blancas en las muñecas.
+- **Sello propio:** collar oscuro con diez tachas plateadas. Pelo rapado oscuro,
+  ceño marcado y visor ámbar. Sin tatuajes ni rasgos de una persona real.
+- **Clips:** `kick` es un **tackle corto** (estocada baja con barrido); `celebrate`
+  es un salto corto con brazos arriba.
+- **Materiales (7 de 8):** Blanco, Celeste, Marino `#1d2f6f`, Piel `#b9805c`,
+  Collar `#23232a`, Tacha `#c9ced8`, Visor `#ffb03b` (emisivo).
+
+## Contrato técnico (todos)
 
 - Pies en el origen, frente -Z en Godot y unidades métricas. Sin cámaras, luces,
   scripts ni física.
@@ -99,15 +136,20 @@ la UI y es de Codex).
 
 ## Métricas medidas
 
-| Métrica | Turbo V1.1 | Rey V0 | Presupuesto |
-|---|---|---|---|
-| Triángulos | 5.378 | 4.634 | ≤ 8.000 |
-| Materiales | 6 | 6 | ≤ 8 |
-| Huesos / clips | 17 / 5 | 17 / 5 | — |
-| Altura (con pelo o corona) | 2,09 m | 2,00 m | ≈ 2 m |
-| GLB | 335.944 B | 235.132 B | — |
-| `.blend` | 199.905 B | 187.996 B | — |
-| Lámina (10 vistas, Cycles CPU, 4 hilos) | 32,8 s | 32,2 s | — |
+| Métrica | Turbo V1.1 | Rey V0 | Príncipe V0 | Pitbull V0 | Presupuesto |
+|---|---|---|---|---|---|
+| Triángulos | 5.378 | 4.634 | 3.914 | 3.732 | ≤ 8.000 |
+| Materiales | 6 | 6 | 6 | 7 | ≤ 8 |
+| Huesos / clips | 17 / 5 | 17 / 5 | 17 / 5 | 17 / 5 | — |
+| Altura | 2,09 m | 2,00 m | 1,91 m | 1,88 m | ≈ 2 m (±0,15) |
+| GLB | 335.944 B | 235.132 B | 195.384 B | 196.600 B | — |
+| `.blend` | 199.905 B | 187.996 B | 179.129 B | 177.929 B | — |
+| Lámina (Cycles CPU, 4 hilos) | 32,8 s | 32,2 s | 34,6 s | 35,6 s | — |
+
+El Pitbull medía 1,84 m en la primera versión y no pasaba la regla de altura del
+contrato; se ajustó el modelo (cabeza y pelo) en lugar de relajar la verificación.
+Los GLB del Príncipe y del Pitbull se incluyen en el export de `game/` (≈0,4 MB)
+aunque todavía no se usen en partida.
 
 Draw calls de un frame completo en la arena A, con ambos héroes en GLB frente a
 ambos placeholders: **123 frente a 159** en Forward Mobile (Vulkan, lavapipe) y
@@ -124,9 +166,11 @@ Capturas reales de Godot 4.7.2 (Xvfb 1280×720, sin retoque). Forward Mobile
 - [Arena B (Rey humano, Turbo bot)](../captures/heroes-v1-1/mobile-04-arena-b.png): ampliaciones ×3 de [Rey](../captures/heroes-v1-1/mobile-04-arena-b-zoom-rey.png) y [Turbo](../captures/heroes-v1-1/mobile-04-arena-b-zoom-turbo.png)
 - Clips importados: [Turbo](../captures/heroes-v1-1/mobile-05-clips-turbo.png) · [Rey](../captures/heroes-v1-1/mobile-06-clips-rey.png)
 - Referencia con placeholders anteriores: [Turbo](../captures/heroes-v1-1/mobile-90-referencia-placeholders-zoom-turbo.png) · [Rey](../captures/heroes-v1-1/mobile-90-referencia-placeholders-zoom-rey.png)
+- Plantel de cuatro en idle: [vista frontal](../captures/heroes-v1-1/mobile-09-plantel-frente.png) · [con la inclinación de la cámara de juego](../captures/heroes-v1-1/mobile-10-plantel-camara-juego.png)
+- Clips del Príncipe y del Pitbull (con definición temporal en memoria): [Príncipe](../captures/heroes-v1-1/mobile-07-clips-principe.png) · [Pitbull](../captures/heroes-v1-1/mobile-08-clips-pitbull.png)
 - Compatibility (OpenGL llvmpipe): [Arena A](../captures/heroes-v1-1/compat-03-arena-a.png)
 
-Renders de Blender (no son capturas de juego): [lámina Turbo](../captures/heroes-v1-1/lamina_turbo.jpg) · [lámina Rey](../captures/heroes-v1-1/lamina_rey.jpg).
+Renders de Blender (no son capturas de juego): [lámina Turbo](../captures/heroes-v1-1/lamina_turbo.jpg) · [lámina Rey](../captures/heroes-v1-1/lamina_rey.jpg) · [lámina Príncipe](../captures/heroes-v1-1/lamina_principe.jpg) · [lámina Pitbull](../captures/heroes-v1-1/lamina_pitbull.jpg).
 
 ## Comandos reproducibles
 
@@ -136,17 +180,21 @@ Blender 5.2.3 LTS como módulo `bpy` de PyPI (GPL, gratuito) y Godot 4.7.2 estab
 python3 -m venv .venv-bpy && .venv-bpy/bin/pip install bpy==5.2.3 pillow
 .venv-bpy/bin/python art/turbo/build_turbo.py
 .venv-bpy/bin/python art/rey/build_rey.py
+.venv-bpy/bin/python art/principe/build_principe.py
+.venv-bpy/bin/python art/pitbull/build_pitbull.py
 .venv-bpy/bin/python art/lib/render_sheet.py turbo /tmp/laminas
 .venv-bpy/bin/python art/lib/render_sheet.py rey /tmp/laminas
 godot --headless --path game --editor --import
 godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=turbo
 godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=rey
+godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=principe
+godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=pitbull
 xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --audio-driver Dummy \
   --script ../art/lib/capture_heroes.gd -- --output=/tmp/heroes
 python3 tools/verify.py --godot godot --pack
 ```
 
-Resultados: contrato **Turbo 40/0 y Rey 40/0** (aprobadas/fallos). `verify.py
+Resultados del contrato (aprobadas/fallos): **Turbo 40/0, Rey 40/0, Príncipe 40/0 y Pitbull 40/0**. Los dos últimos se prueban con una definición temporal porque no tienen `.tres`. `verify.py
 --pack` pasa completo con las 192 comprobaciones de Codex, la exportación PCK y el
 arranque de las escenas.
 
@@ -168,5 +216,7 @@ OneDrive; se recomienda clonarlo fuera de carpetas sincronizadas.
 3. El pie de selección de `menu.gd` todavía dice «Integración artística GLB pendiente».
 4. No producido: VFX y audio nuevos, outline o toon, AnimationTree, rostros detallados
    y pruebas en GPU real o Android.
-5. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
+5. Príncipe y Pitbull: falta la ficha de combate, el `.tres`, el gameplay y la
+   activación en la selección (Codex), además del dorsal (propietario).
+6. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
    pasar a pesos suaves.

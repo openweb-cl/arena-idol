@@ -86,7 +86,48 @@ func run() -> void:
 	print("DRAW_CALLS arena_A_glb=%d arena_B_glb=%d arena_A_placeholders=%d" % [calls_a, calls_b, calls_placeholder])
 	await clip_strip(turbo, "05-clips-turbo")
 	await clip_strip(rey, "06-clips-rey")
+	# Héroes solo de arte (sin gameplay ni .tres): definiciones temporales en memoria.
+	var principe := art_only("principe")
+	var pitbull := art_only("pitbull")
+	await clip_strip(principe, "07-clips-principe")
+	await clip_strip(pitbull, "08-clips-pitbull")
+	await lineup([turbo, rey, principe, pitbull])
 	quit()
+
+func art_only(id: String) -> CharacterDefinition:
+	var definition := CharacterDefinition.new()
+	definition.id = id
+	definition.model_scene = load("res://assets/models/%s/%s.glb" % [id, id])
+	return definition
+
+func lineup(definitions: Array) -> void:
+	## Los cuatro héroes en idle: vista frontal y vista con la inclinación de la cámara de juego.
+	var world := Node3D.new()
+	root.add_child(world)
+	ArenaGeometry.world(world)
+	ArenaGeometry.box(world, Vector3(0, -0.1, 0), Vector3(14, 0.2, 6), Color("1d5c4e"))
+	for i in definitions.size():
+		var visual := CharacterVisual.new()
+		visual.definition = definitions[i]
+		visual.position = Vector3(-3.3 + i * 2.2, 0, 0)
+		visual.rotation_degrees.y = 180 + 20
+		world.add_child(visual)
+	var camera := Camera3D.new()
+	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	camera.size = 5.2
+	camera.position = Vector3(0, 2.4, 8)
+	world.add_child(camera)
+	camera.look_at(Vector3(0, 1.0, 0))
+	camera.current = true
+	await frames(8)
+	capture("09-plantel-frente")
+	camera.size = 7.5
+	camera.position = Vector3(0, 9.5, 8)
+	camera.look_at(Vector3(0, 0.8, 0))
+	await frames(4)
+	capture("10-plantel-camara-juego")
+	world.queue_free()
+	await frames(1)
 
 func clip_strip(definition: CharacterDefinition, name: String) -> void:
 	## Cinco instancias reales del GLB, cada una congelada en un instante de su clip.
