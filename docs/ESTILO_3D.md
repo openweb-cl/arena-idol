@@ -52,8 +52,9 @@ encuadre al aspecto y reservar zonas seguras para HUD. Selección: cámara de re
 Espera: respiración suave; carrera: braceo y paso alternado según velocidad real;
 remate: anticipación breve y golpe de pierna; impacto: squash y retroceso visual;
 celebración: salto y brazos elevados. No desplazar el collider con el mesh.
-Sprint: estela cian en punta; Embestida: arco ámbar frontal; Súper Turbo: proyectil
-cian de combate y estela; Súper Rey: anillo violeta expansivo con daño radial.
+Sprint: estelas azul y amarilla con rayo; Embestida: escudo ámbar frontal; Súper Turbo:
+proyectil eléctrico grande con anillos y estela; Súper Rey: onda violeta hasta su radio
+real con corona dorada. Detalle y presupuesto de cada efecto en `docs/arte/VFX.md`.
 Señales por forma y texto además de color. Duración 0,2–0,7 s, objetos liberados,
 no tapar proyectiles ni indicadores de vida, ni sumar luces por efecto. Audio queda pendiente.
 
