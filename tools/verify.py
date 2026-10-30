@@ -48,6 +48,9 @@ def main():
         shots = run("proyectiles y apuntado", "--fixed-fps", "60", "--script", "res://tests/test_projectiles.gd")
         if "PROYECTILES:" not in shots or "0 fallos" not in shots:
             sys.exit("La suite de proyectiles no confirmó finalización")
+        auto = run("selección automática y contacto", "--fixed-fps", "60", "--script", "res://tests/test_auto_target.gd")
+        if "AUTO:" not in auto or "0 fallos" not in auto:
+            sys.exit("La suite de selección automática no confirmó finalización")
         run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")
