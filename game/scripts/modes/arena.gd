@@ -3,6 +3,7 @@ extends Node3D
 const PLAYER_SCENE := preload("res://scenes/actors/player.tscn")
 enum Phase { PLAYING, PAUSED, FINISHED }
 @export var training_mode := false
+@export var auto_target_enabled := true
 @export var config: MatchConfig = preload("res://data/match.tres")
 var phase := Phase.PLAYING
 var rules: MatchRules
@@ -14,6 +15,11 @@ var camera: ArenaCamera
 var light: DirectionalLight3D
 var aim_marker: MeshInstance3D
 var aim_guide: AimGuide
+var actors: Array[ArenaPlayer] = []
+var auto_target: ArenaPlayer
+var target_marker: Node3D
+var mouse_fire_held := false
+var key_fire_held := false
 var show_aim_guide := false
 var shot_events: Array[Dictionary] = []
 var shot_counts: Dictionary = {}
@@ -45,6 +51,18 @@ func _ready() -> void:
 	hud.message.text = "Usa la cobertura · %d eliminaciones para ganar" % config.target_eliminations
 	aim_marker = ArenaGeometry.ring(self, 0.25, ArenaStyle.GOLD)
 	aim_marker.visible = false
+	target_marker = Node3D.new()
+	add_child(target_marker)
+	ArenaGeometry.ring(target_marker, 0.78, ArenaStyle.GOLD)
+	var target_label := Label3D.new()
+	target_label.text = "OBJETIVO"
+	target_label.position.y = 3.4
+	target_label.font_size = 36
+	target_label.pixel_size = 0.01
+	target_label.modulate = ArenaStyle.GOLD
+	target_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	target_marker.add_child(target_label)
+	target_marker.hide()
 	aim_guide = AimGuide.new()
 	add_child(aim_guide)
 	if training_mode:
@@ -65,6 +83,7 @@ func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaP
 	actor.action_requested.connect(on_action)
 	actor.ability_started.connect(on_ability)
 	actor.eliminated.connect(on_eliminated)
+	actors.append(actor)
 	return actor
 
 func _physics_process(delta: float) -> void:
@@ -79,8 +98,18 @@ func _physics_process(delta: float) -> void:
 		if phase != Phase.PLAYING:
 			return
 		human.command.move = keyboard_direction()
-		if mouse_aim:
+		if auto_target_enabled:
+			auto_target = TargetSelector.nearest(human, actors)
+			if is_instance_valid(auto_target):
+				var direction := CombatAim.direction(CombatAim.origin(human), CombatAim.origin(auto_target))
+				human.command.aim = Vector2(direction.x, direction.z)
+			else:
+				human.command.aim = Vector2.ZERO
+				human.command.shoot = false
+		elif mouse_aim:
 			update_aim()
+		if (mouse_fire_held or key_fire_held) and (not auto_target_enabled or is_instance_valid(auto_target)):
+			human.command.shoot = true
 		if training_mode:
 			bot.command.clear_actions()
 			bot.command.move = Vector2.ZERO
@@ -99,6 +128,16 @@ func _physics_process(delta: float) -> void:
 					apply_damage(rival, actor, actor.definition.ability.contact_damage, actor.dash_direction * 9)
 		if elapsed - last_message_at > 4:
 			hud.message.text = ""
+	target_marker.visible = auto_target_enabled and is_instance_valid(auto_target) and not auto_target.knocked_out and phase == Phase.PLAYING
+	if target_marker.visible:
+		target_marker.global_position = auto_target.global_position
+	aim_marker.visible = not auto_target_enabled and mouse_aim
+	hud.assist_status.text = "PUNTERÍA MANUAL · Mantén clic o Espacio para atacar · T: automático"
+	if auto_target_enabled:
+		hud.assist_status.text = "AUTO · Sin rival libre dentro del alcance · T: manual"
+		if is_instance_valid(auto_target) and not auto_target.knocked_out:
+			var protection := " · PROTEGIDO %.1f s" % auto_target.invulnerable if auto_target.invulnerable > 0 else ""
+			hud.assist_status.text = "AUTO → %s #%d%s · Mantén clic/Espacio para atacar · T: manual" % [auto_target.definition.display_name, auto_target.definition.number, protection]
 	aim_guide.visible = show_aim_guide and not human.knocked_out
 	if aim_guide.visible:
 		var direction := Vector3(human.command.aim.x, 0, human.command.aim.y) if human.command.aim.length() > 0.1 else human.facing
@@ -127,14 +166,22 @@ func update_aim() -> void:
 		if not aim.is_zero_approx():
 			human.command.aim = Vector2(aim.x, aim.z)
 
+func _input(event: InputEvent) -> void:
+	# Recibir liberaciones aunque el cursor esté sobre un botón del HUD.
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		mouse_fire_held = false
+	if event is InputEventKey and event.physical_keycode == KEY_SPACE and not event.pressed:
+		key_fire_held = false
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_aim = true
 		aim_position = event.position
-	if phase == Phase.PLAYING and event is InputEventMouseButton and event.pressed:
+	if phase == Phase.PLAYING and not human.knocked_out and event is InputEventMouseButton and event.pressed:
 		mouse_aim = true
 		aim_position = event.position
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			mouse_fire_held = true
 			human.command.shoot = true
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			human.command.super_shot = true
@@ -144,11 +191,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_ESCAPE: toggle_pause()
 		KEY_F3: hud.show_metrics = not hud.show_metrics
 		KEY_F2: show_aim_guide = not show_aim_guide
+		KEY_T:
+			auto_target_enabled = not auto_target_enabled
+			auto_target = null
+			human.command.aim = Vector2.ZERO
+			mouse_fire_held = false
+			key_fire_held = false
+			human.command.clear_actions()
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5:
 			if training_mode and phase == Phase.PLAYING:
 				set_training_case(event.physical_keycode - KEY_1)
 		KEY_SPACE:
-			if phase == Phase.PLAYING: human.command.shoot = true
+			if phase == Phase.PLAYING and not human.knocked_out:
+				key_fire_held = true
+				human.command.shoot = true
 		KEY_E, KEY_SHIFT:
 			if phase == Phase.PLAYING: human.command.ability = true
 		KEY_Q:
@@ -207,12 +263,17 @@ func spawn_effect(actor: ArenaPlayer, kind: String, color: Color) -> void:
 func on_eliminated(actor: ArenaPlayer) -> void:
 	if phase != Phase.PLAYING:
 		return
+	if actor == human:
+		mouse_fire_held = false
+		key_fire_held = false
 	hud.message.text = "¡Eliminación rival!" if actor == bot else "Te han eliminado · Reaparecerás pronto"
 	last_message_at = elapsed
 	if not training_mode:
 		rules.score(1 - actor.team)
 
 func freeze_combat(freeze: bool) -> void:
+	mouse_fire_held = false
+	key_fire_held = false
 	human.active = not freeze
 	bot.active = not freeze
 	human.command.clear_actions()
@@ -248,7 +309,7 @@ func on_projectile_resolved(projectile: CombatProjectile, reason: String, at: Ve
 	shot_events.append({"reason": reason, "at": at, "distance": projectile.travelled, "age": projectile.age, "team": projectile.source.team})
 	if shot_events.size() > 20:
 		shot_events.pop_front()
-	if training_mode or show_aim_guide:
+	if training_mode or show_aim_guide or (auto_target_enabled and projectile.source == human):
 		var feedback := ShotFeedback.new()
 		feedback.text = reason.to_upper()
 		feedback.color = Color("35c78a") if reason == "impacto" else (Color("ffb357") if reason == "cobertura" else Color("bd9aff"))

@@ -34,7 +34,10 @@ func run() -> void:
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = true
 		root.push_input(event, true)
-		await frames(12)
+		await frames(1)
+		event.pressed = false
+		root.push_input(event, true)
+		await frames(11)
 		if case == 2:
 			capture("01-projectile-in-flight")
 		await frames(38)

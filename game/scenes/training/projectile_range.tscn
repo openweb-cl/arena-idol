@@ -5,3 +5,4 @@
 script = ExtResource("1")
 config = ExtResource("2")
 training_mode = true
+auto_target_enabled = false

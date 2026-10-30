@@ -1,5 +1,9 @@
 # Evidencia de validación — combate 3D
 
+Actualización de selección AUTO y contacto: **122 verificaciones aprobadas** en
+Godot 4.7.2, con fuego iniciado por el jugador. Ver
+[APUNTADO_AUTOMATICO.md](APUNTADO_AUTOMATICO.md).
+
 Actualización de apuntado en Godot 4.7.2: **50 + 41 verificaciones aprobadas**,
 campo de tiro, exportación PCK y capturas de resultados físicos. Ver
 [APUNTADO_Y_PROYECTILES.md](APUNTADO_Y_PROYECTILES.md) para evidencia vigente.

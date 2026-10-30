@@ -66,10 +66,10 @@ func _physics_process(delta: float) -> void:
 		facing = Vector3(command.aim.x, 0, command.aim.y).normalized()
 	if command.ability:
 		ability()
-	if command.shoot:
-		act("shot")
-	elif command.super_shot:
+	if command.super_shot:
 		act("super")
+	elif command.shoot:
+		act("shot")
 	command.clear_actions()
 	var direction := Vector3(command.move.x, 0, command.move.y).limit_length()
 	if command.aim.length() > 0.1:
