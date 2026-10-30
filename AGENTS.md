@@ -1,6 +1,6 @@
 # Arena de Ídolos — instrucciones permanentes para Codex
 
-- Leer completamente `CLAUDE.md`, `docs/DECISIONES_Y_ALCANCE.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/GDD.md`, `docs/MECANICAS.md`, `docs/DIRECCION_VISUAL_UI.md`, `docs/ROADMAP.md`, `docs/ARQUITECTURA.md`, `docs/ESTILO_3D.md`, `docs/VERTICAL_SLICE_3D.md` y los documentos legales antes de modificar gameplay. Las decisiones v0.4 prevalecen.
+- Leer completamente `CLAUDE.md`, `docs/DECISIONES_Y_ALCANCE.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/GDD.md`, `docs/MECANICAS.md`, `docs/DIRECCION_VISUAL_UI.md`, `docs/ROADMAP.md`, `docs/ARQUITECTURA.md`, `docs/ESTILO_3D.md`, `docs/VERTICAL_SLICE_3D.md` y los documentos legales antes de modificar gameplay. La corrección vigente de combate 3D en DECISIONES_Y_ALCANCE prevalece; v0.4 conserva el plantel conceptual.
 - Idioma de comunicación y UI: español. Godot 4, GDScript, 3D real, renderizador Mobile con alternativa Compatibility, Android primero y PC para desarrollo.
 - Nunca desarrollar en `main`. Actualizar `origin/main`, crear una rama `codex/<tarea>` y trabajar en hitos pequeños con commits verificables. Publicar la rama y abrir PR a `main`; nunca fusionar sin aprobación explícita del usuario.
 - Cada tarea cloud ya está aislada: utilizar el checkout existente; no crear worktrees salvo petición explícita.

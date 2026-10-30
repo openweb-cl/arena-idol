@@ -1,12 +1,25 @@
-# Recursos del prototipo
+# Manifest de recursos y estado
 
-Todos los dibujos del runtime son geometría 2D original generada por los scripts
-`avatar.gd`, `pitch.gd`, `ball.gd` y `touch_controls.gd`. No hay imágenes, música,
-rostros, escudos ni recursos de terceros importados. La fuente es la fuente por
-defecto del motor Godot (Noto Sans; SIL Open Font License, distribuida por Godot).
-Las referencias en `/design/` no se cargan ni se exportan: la raíz del proyecto
-Godot es exclusivamente `/game/`.
+| Recurso | Procedencia | Estado | Reemplazo previsto |
+|---|---|---|---|
+| Turbo #11 y Rey #23 | Meshes originales creados en `character_visual.gd` | Provisional de mecánicas, sin rig/GLB | Claude Code: Blender/GLB original y rig |
+| Idle/run/kick/hit/celebrate | Animación procedural original en `character_visual.gd` | Provisional | Clips de artista según contrato |
+| Arena Prisma | Geometría original en `pitch.gd` | Graybox 3D provisional | Escena artística con colisiones compatibles |
+| Proyectiles/estelas/anillos | Geometría original en `projectile.gd` y `ability_effect.gd` | VFX provisional | VFX escalables Mobile/Compatibility |
+| UI | Controles Godot, diseño original en `scripts/ui/` | Interfaz funcional provisional | Producción artística coordinada |
+| Tipografía de fallback | Fuente predeterminada de Godot (Noto Sans) | Incluida por el motor | Revisar licencias si se añade otra fuente |
+| Audio | Ninguno | Pendiente | Original o CC0 con licencia verificada |
 
-Los nombres El Turbo y El Rey son provisionales para el prototipo solicitado.
-La licencia del código y una eventual publicación comercial siguen pendientes
-según `LICENSE-NOTE.md` y `legal/LICENCIAS_Y_DERECHOS.md`.
+No se incorporan modelos, texturas ni audio externos. Godot distribuye Noto Sans
+bajo SIL Open Font License; no se ha descargado una fuente adicional. Las nuevas
+fuentes/recursos de terceros deberán incluir archivo de licencia y procedencia.
+Las figuras geométricas actuales NO representan el resultado artístico final.
+
+No hay `.blend`/GLB producidos por Claude en esta entrega. El destino de modelos
+es `assets/models/`; las fuentes artísticas irán en `art/` de raíz. No es necesario
+Blender para abrir el juego. Contrato: `docs/CONTRATO_ARTE_3D.md` en el repositorio.
+
+Solo `game/` se exporta. Las referencias internas en `data/` y las imágenes de
+`design/` de raíz no se cargan ni empaquetan. Los nombres de héroes son provisionales
+para el prototipo, no autorización comercial; rigen `LICENSE-NOTE.md` y los textos
+legales. La titularidad/licencia del código sigue pendiente según esos documentos.

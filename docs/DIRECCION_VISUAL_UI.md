@@ -1,25 +1,34 @@
-# Dirección visual y pantallas — guía para implementar
+# Dirección visual y pantallas — combate arcade 3D
 
-## Estilo visual
-Hero-brawler futbolero original con perspectiva cenital/3-4 y estética 2.5D legible en Android. Contornos y siluetas fuertes, colores saturados, efectos impactantes, jerarquía clara, UI en español primero. Referencias visuales en `design/referencias/` son **conceptuales, no capturas ni assets definitivos**; texto y nombres de esas ilustraciones pueden tener errores generativos y no deben copiarse como interfaz definitiva.
+Esta versión refleja la corrección vigente de combate. Cámara superior inclinada,
+modelos 3D caricaturescos, poderes expresivos y UI en español. Las imágenes de
+`design/referencias/` son conceptos de ambición visual, no assets, interfaz para
+copiar ni modelos 3D terminados. Ver ESTILO_3D y CONTRATO_ARTE_3D.
 
-## Pantallas (orden propuesto)
-1. Splash y advertencia de conexión/privacidad.
-2. Inicio: personaje 3D/2.5D grande al centro, arriba moneda cosmética y perfil, abajo modo elegido y botón JUGAR.
-3. Selección de ídolos: cuadrícula de 16 avatares (concepto), clases y disponibilidad; ficha con ataque/activa/súper/debilidad; los de prototipo están desbloqueados.
-4. Modos: Balón de Gloria 3v3 prioritario, luego Duelo Total individual, Rey de la Cancha y Copa Relámpago.
-5. Emparejamiento: cola, latencia, región, cancelar.
-6. Pantalla de juego apaisada: joystick izq., botones contextuales de ataque/pase/tiro, habilidad y súper derecha; HUD marcador 0-0, cronómetro 3:00, indicador posesión, vida y carga súper.
-7. Resultado: goles, asistencias, jugadas, puntuación personal; rematch.
-8. Perfil/ranking: progreso individual, historial y personajes favoritos; club es identidad optativa, NO requisito para equipos 3v3.
-9. Torneos/creadores: invitaciones, sala privada, calendario y reglas; futuro.
-10. Ajustes: audio, sensibilidad, gráficos bajos/altos, accesibilidad, privacidad, reportes.
+## Pantallas de la demo
 
-## Design tokens provisionales (ajustables)
-Fondo #101A33; panel #202D4F; amarillo acción #F5C542; azul aliado #2F83F7; coral enemigo #FF6464; verde éxito #35C78A; texto #F8FAFF. Botones táctiles grandes y contrastados. Interfaz en español prioritario, localización inglés a futuro.
+1. Inicio: personaje destacado en visor 3D, nombre/dorsal, Batalla de Ídolos,
+   indicación de demo local 1 contra bot, JUGAR, selección y perfil gráfico.
+2. Selección: 16 plazas, dos jugables (Turbo #11/Rey #23); visor 3D, rol,
+   descripción de combate y parámetros. Pendientes deshabilitados claramente.
+3. Arena: combate 3D apaisado, obstáculos, apuntado, proyectiles, vida, cooldown,
+   carga de súper, eliminaciones y reloj. Sin marcador de goles o balón obligatorio.
+4. Pausa y resultado: reanudar, revancha y menú. Resultado cuenta eliminaciones.
 
-## Entregables de arte
-Por personaje: concepto frontal/lateral/espalda, silueta, paleta, 8 direcciones 2D si se usa animación orientada, idle, correr, atacar, habilidad, súper, recibir golpe, KO, pose de selección. Arte conceptual no implica derechos para usar escudos y rostros.
+No crear monedas, tienda, ranking, conexión o cuentas ficticias para simular un
+producto terminado. Menú y HUD actuales son funcionales/provisionales; arte final
+pendiente de Claude Code y revisión de capturas de build.
 
-## Calidad
-HUD legible en móvil económico; señales visuales de ataque antes del golpe; no efectos que tapen balón o arcos. Considerar controles, vibración y tamaño seguro en distintos Android.
+## Tokens y legibilidad
+
+Fondo #101A33; panel #202D4F; acción #F5C542; aliado #35C78A; rival #FF6464;
+texto #F8FAFF, secundario #A5B7D4. Señales por forma/texto además de color.
+Proyectil Turbo cian alargado; Embestida arco ámbar; Onda Real anillo violeta.
+Vida y poderes legibles sin ocultar el combate. Contraste y tamaños seguros en
+pantalla pequeña requieren pruebas reales; no quedan aprobados por capturas PC.
+
+## Próximas interfaces
+
+Adaptador táctil con movimiento y apuntado independientes, botones de habilidad/
+súper, safe areas y opciones de accesibilidad. Después equipos, salas y modos.
+Perfil, ranking y cosméticos solo cuando existan sistemas reales y gates aprobados.

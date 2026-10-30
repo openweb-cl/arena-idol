@@ -1,31 +1,116 @@
-# ARENA DE ÍDOLOS · Paquete maestro v0.4
+# Arena de Ídolos — fundación de combate 3D
 
-**Juego original en preproducción**, con inspiración mecánica en hero-brawlers futboleros. Objetivo: juego móvil top-down con arenas, 3v3, balón, habilidades, ranking individual, clubes temáticos y creadores de contenido. No contiene demo jugable.
+Videojuego de **combate arcade 3D estilizado**, inspirado conceptualmente en el
+universo del fútbol chileno. No es simulador de fútbol. La decisión vigente está
+en [DECISIONES_Y_ALCANCE](docs/DECISIONES_Y_ALCANCE.md) y prevalece sobre propuestas
+anteriores. Plantel conceptual de 16 conservado; solo dos héroes implementados.
 
-## Comienza aquí
-1. Lee [`docs/DECISIONES_Y_ALCANCE.md`](docs/DECISIONES_Y_ALCANCE.md).
-2. Lee [`docs/ROSTER_CANONICO_V0_4.md`](docs/ROSTER_CANONICO_V0_4.md): **plantel vigente de 16**; reemplaza anteriores.
-3. Mira [`design/referencias/`](design/referencias/) y [`docs/DIRECCION_VISUAL_UI.md`](docs/DIRECCION_VISUAL_UI.md).
-4. Lee [`docs/ROADMAP.md`](docs/ROADMAP.md) y [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md).
-5. En Claude Code abre el repositorio y di: **«Lee `CLAUDE.md` y ejecuta `prompts/CLAUDE_CODE_INICIO.md`, comenzando por el vertical slice jugable en Godot».**
+## Demo ejecutable actual
 
-## Documentos
-- `CLAUDE.md` contexto continuo del asistente
-- `prompts/CLAUDE_CODE_INICIO.md` instrucción maestra
-- `docs/GDD.md` visión de diseño
-- `docs/MECANICAS.md` reglas y controles
-- `docs/DIRECCION_VISUAL_UI.md` especificación de pantallas
-- `docs/ROSTER_CANONICO_V0_4.md` elenco y kits de habilidad
-- `data/referencias_internas_NO_PUBLICAR.csv` fuentes creativas internas con nombres reales
-- `data/personajes_publicos_BORRADOR.json` datos provisionales para prototipos, **no autorizados para publicación**
-- `docs/ROADMAP.md` hitos e issues
-- `docs/ARQUITECTURA.md` Godot, red y backend
-- `docs/GRATIS_Y_HERRAMIENTAS.md` presupuesto mínimo
-- `docs/REFERENCIAS.md` fuentes de inspiración
-- `legal/LICENCIAS_Y_DERECHOS.md` riesgos y permisos
+Batalla de entrenamiento local: **un jugador contra un bot**, sin red ni objetivos
+deportivos. El Turbo #11: pelotazos eléctricos, Turbo Sprint y Remate Relámpago.
+El Rey #23: golpe frontal, Embestida Real y Onda Real. Arena 3D con cobertura,
+cámara superior inclinada, apuntado, vida, daño, eliminación, respawn, marcador,
+resultado y revancha. 180 segundos o 5 eliminaciones; empate posible por tiempo.
+El modo completo Batalla de Ídolos 3v3 es un hito posterior.
 
-## GitHub y privacidad
-Crear repositorio privado `arena-de-idolos`, extraer el contenido de esta carpeta en la **raíz** del repositorio, subirlo. Evitar publicar `referencias_internas_NO_PUBLICAR.csv` o cualquier arte conceptual que pudiera sugerir un patrocinio oficial. Los mockups son solo referencias: no son assets de juego. No usar de entrada logos oficiales ni parecidos evidentes a personas reales.
+**Arte provisional:** personajes, arena, VFX y animaciones son recursos originales
+de entrenamiento, no modelos finales ni calidad comercial verificada. No se han
+validado 60 FPS en Android, export APK, táctil, GLB de artista ni multijugador.
+No se importan imágenes de `design/`, escudos o rostros al juego.
 
-## Hitos
-M0 fundación; M1 prueba jugable local; M2 móvil y tres clases; M3 online 1v1; M4 3v3 privado; M5 beta y tienda. Fechas estimativas, sujetas a pruebas.
+## Ejecutar en tu computador (Windows, Linux o macOS)
+
+1. Instala **Godot 4.6.3 estable, edición estándar** (GDScript, no requiere .NET),
+   desde [Godot](https://godotengine.org/download/). Esta es la versión probada;
+   4.7.2 en documentos antiguos no es requisito validado. No necesita Blender,
+   plugins, Python, cuentas ni servicios de pago para jugar.
+2. Descarga la rama del PR o clona y cambia a ella:
+
+   ```sh
+   git clone https://github.com/openweb-cl/arena-idol.git
+   cd arena-idol
+   git switch codex/game-foundation
+   ```
+
+3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
+   y abre el editor. Espera la importación inicial. Pulsa **F6** solo si quieres
+   probar una escena específica; para el juego completo pulsa **F5**.
+4. Elige ídolo y pulsa JUGAR. Si Vulkan no funciona, cambia el renderizador en la
+   esquina superior derecha a **Compatibility**, acepta el reinicio y pulsa F5.
+   El menú permite perfiles ALTO/BAJO (sombras/VFX/escala 3D); ese selector no cambia
+   el backend. Para volver a Mobile se debe reiniciar el editor/exportación.
+
+Por terminal, desde la raíz (sustituye `godot` por la ruta de tu ejecutable):
+
+```sh
+godot --path game
+# Alternativa sin Vulkan:
+godot --path game --rendering-method gl_compatibility
+```
+
+### Controles
+
+| Entrada | Acción |
+|---|---|
+| WASD / flechas | Mover con aceleración y frenado |
+| Ratón | Apuntar sobre el terreno, independiente del movimiento |
+| Clic izquierdo / Espacio | Ataque básico; cada pulsación dispara |
+| E / Shift | Turbo Sprint o Embestida Real |
+| Q / clic derecho | Súper con 100% de carga (se carga con impactos) |
+| Esc | Pausa / continuar |
+| F3 | FPS y contadores locales de render, no benchmark Android |
+| Botones de resultado | Revancha o regreso al menú |
+
+Sin movimiento previo del ratón, se apunta en la última dirección de movimiento.
+La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
+protección. Teclado/ratón primero; táctil queda pendiente.
+
+## Ajustar valores sin programar
+
+En el panel FileSystem de Godot abre `game/data/characters/turbo.tres` o `rey.tres`:
+velocidad, aceleración, frenado, giro, PV, daño, cadencia, alcance, proyectil,
+empuje y súper son campos del Inspector. Abre `game/data/abilities/*.tres` para
+cooldown, duración, multiplicador, escudo y daño de contacto. `game/data/match.tres`
+controla duración, eliminaciones objetivo y respawn. Guarda y reinicia partida
+para comprobar los cambios. Recursos compartidos: cambiar un héroe cambia todas
+sus instancias, no los dos arquetipos. No se guardan ajustes del menú entre sesiones.
+
+Para incorporar arte usa `model_scene` y el [contrato GLB](docs/CONTRATO_ARTE_3D.md).
+No hace falta modificar colisiones o scripts de daño. Las otras 14 plazas son
+marcadores deshabilitados, no héroes jugables.
+
+## Verificaciones
+
+Con Godot en PATH:
+
+```sh
+godot --headless --path game --editor --import
+godot --headless --path game --fixed-fps 60 --script res://tests/run_tests.gd
+```
+
+Con Python 3 opcional, el verificador también detecta errores de script aunque el
+motor devuelva código cero y prueba exportación/arranque de PCK:
+
+```sh
+python tools/verify.py --pack
+# Windows: python tools/verify.py --godot "C:/ruta/Godot_v4.6.3-stable_win64.exe" --pack
+```
+
+La suite ejerce reglas, escenas y física de combate; el tiempo fijo acelera
+simulación, no mide FPS reales. Evidencias, capturas y pendientes en
+[VALIDACION](docs/VALIDACION.md). Android: [guía de exportación](docs/ANDROID.md).
+
+## Coordinación y próximos hitos
+
+- [AGENTS.md](AGENTS.md): reglas de Codex. [CLAUDE.md](CLAUDE.md): reglas de Claude Code.
+- [Arquitectura](docs/ARQUITECTURA.md), [GDD](docs/GDD.md), [mecánicas](docs/MECANICAS.md)
+  y [roadmap](docs/ROADMAP.md).
+- [Reparto y siguiente trabajo](docs/COORDINACION_AGENTES.md),
+  [contrato artístico](docs/CONTRATO_ARTE_3D.md), [estilo 3D](docs/ESTILO_3D.md).
+- [Plantel conceptual v0.4](docs/ROSTER_CANONICO_V0_4.md),
+  [backlog](docs/issues/FOUNDATION.md), [derechos](legal/LICENCIAS_Y_DERECHOS.md).
+
+Nunca desarrollar en main; ramas independientes y PR, sin merge sin aprobación.
+Sin costes obligatorios de herramientas durante prototipado. La publicación
+comercial, licencias, tiendas y servidores reales requieren revisión posterior.

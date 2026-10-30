@@ -2,7 +2,7 @@
 
 ## Identidad
 
-Arena de entrenamiento nocturno «Cancha Prisma»: césped jade, arquitectura
+Arena de entrenamiento «Prisma»: suelo jade, arquitectura
 azul tinta, líneas menta, acentos ámbar y coral. Formas deportivas abstractas,
 sin patrocinadores, escudos ni rasgos de personas reales. Las imágenes de
 `design/` sirven para estudiar energía, jerarquía y claridad, no para calcar UI.
@@ -41,7 +41,7 @@ fuentes; GLB versionado permite abrir Godot sin Blender instalado.
 Luz principal cálida desde arriba/izquierda; relleno ambiental frío y sombras
 suaves limitadas a una direccional en ALTO. En BAJO: sombras apagadas y escala 3D
 reducida. Cámara ortográfica elevada, inclinación aproximada de 50 grados,
-sin rotación libre ni seguimiento brusco. Mantener ambos arcos visibles; adaptar
+sin rotación libre ni seguimiento brusco. Mantener límites y cobertura visibles; adaptar
 encuadre al aspecto y reservar zonas seguras para HUD. Selección: cámara de retrato
 3D y giro lento; UI original, sin monedas o tienda falsas.
 
@@ -53,7 +53,7 @@ celebración: salto y brazos elevados. No desplazar el collider con el mesh.
 Sprint: estela cian en punta; Embestida: arco ámbar frontal; Súper Turbo: proyectil
 cian de combate y estela; Súper Rey: anillo violeta expansivo con daño radial.
 Señales por forma y texto además de color. Duración 0,2–0,7 s, objetos liberados,
-no tapar el balón ni sumar luces por efecto. Audio queda pendiente.
+no tapar proyectiles ni indicadores de vida, ni sumar luces por efecto. Audio queda pendiente.
 
 ## Estado y aceptación
 
