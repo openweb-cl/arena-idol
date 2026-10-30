@@ -1,7 +1,19 @@
 # Mecánicas vigentes — combate arcade 3D
 
 La decisión de combate posterior a v0.4 prevalece. Plano XZ y cámara inclinada.
-No posesión, tiros a portería, árbitros o reglas de fútbol en la primera demo.
+Sin posesión, pases, goles, porterías ni reglas de fútbol en la visión vigente.
+
+## Roles y poderes
+
+Todos los héroes causan daño con su básico, incluidos asistentes/apoyos. El rol
+diferencia cómo participan en batalla: daño directo, resistencia, movilidad,
+mejoras temporales de daño/poder, protección, desplazamiento o control de zonas.
+Los especiales/súpers pueden alterar posiciones y sectores del mapa, con aviso
+y formas de responder. Un ataque con forma de balón no es un pase.
+
+La propuesta del Príncipe #20 combina básico ofensivo, mejora de poder y control
+de zona; ver `PRINCIPE_KIT.md`. Estos sistemas nuevos siguen en diseño, no están
+implementados. No se atribuyen a la demo equipos 3v3, buffs aliados o terreno móvil.
 
 ## Bucle de la demo
 

@@ -29,6 +29,13 @@ pelotazos eléctricos a distancia, Turbo Sprint y Remate Relámpago. Rey #23:
 golpe corto, Embestida Real y Onda Real. Estos kits prevalecen sobre las celdas
 de ataque/activa/súper anteriores para el runtime inicial. El resto no está implementado.
 
+Aclaración posterior del propietario (30 octubre 2026): todos los héroes tienen
+un básico ofensivo, incluidos asistentes/apoyos. Las menciones de pases, goles o
+roles deportivos de la tabla son referencias históricas; no definen mecánicas
+activas. Los kits de combate distinguen daño, resistencia, movilidad, mejoras de
+poder, protección y control de la arena. El Príncipe #20 se propone en
+`PRINCIPE_KIT.md`; Pitbull #17 espera su playtest. Se conserva el plantel de 16.
+
 ## Pendientes
 - Confirmar nombres PUBLICABLES mediante revisión jurídica y de marcas, especialmente El Rey, El Príncipe, El Turbo, El Pitbull, El Bati, El León de Collao y escudos/kits.
 - Que una caricatura sea distinta no garantiza ausencia de infracción de derechos de imagen. Diseñar siluetas, rostros y trajes originales.

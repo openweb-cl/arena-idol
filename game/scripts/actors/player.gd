@@ -5,6 +5,7 @@ signal ability_started(actor: ArenaPlayer)
 signal eliminated(actor: ArenaPlayer)
 signal attack_accepted(actor: ArenaPlayer, kind: String)
 @export var definition: CharacterDefinition = preload("res://data/characters/turbo.tres")
+@export_range(2.5, 5.0, 0.05) var status_label_height: float = 3.1
 var team := 0
 var health := 0
 var unlimited_ammo := false
@@ -46,9 +47,10 @@ func _ready() -> void:
 	add_child(visual)
 	ArenaGeometry.ring(self, 0.6, Color("35c78a") if team == 0 else Color("ff6464"))
 	health_label = Label3D.new()
-	health_label.position.y = 2.75
+	health_label.position.y = status_label_height
 	health_label.font_size = 40
-	health_label.pixel_size = 0.011
+	health_label.pixel_size = 0.009
+	health_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	health_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	health_label.modulate = Color("aaffd2") if team == 0 else Color("ffaaa2")
 	add_child(health_label)

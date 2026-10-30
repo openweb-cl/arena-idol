@@ -8,8 +8,10 @@ contra bot; equipos 3v3 y red son hitos posteriores.
 ## Toolchain y render
 
 Fundación validada con Godot 4.6.3; corrección de apuntado y campo de tiro
-validados con Godot 4.7.2 estable oficial. Mobile por defecto; arranque alternativo
-`--rendering-method gl_compatibility` para equipos sin Vulkan. Perfiles BAJO/ALTO:
+validados con Godot 4.7.2 estable oficial. Mobile por defecto y en Android;
+override `rendering_method.windows` a Compatibility para la pantalla negra
+reportada en Windows. Arranque explícito `--rendering-method mobile` para evaluar
+Vulkan y `--rendering-method gl_compatibility` como alternativa. Perfiles BAJO/ALTO:
 escala 3D, sombras y VFX; cambiar backend exige reinicio/exportación. Sin GI ni SSR.
 Meta 60 FPS Android no medida hasta prueba en hardware. Véase `ANDROID.md`.
 
@@ -52,8 +54,15 @@ Catálogo de 16 plazas, solo dos disponibles.
 `MatchRules` es la autoridad única del reloj/marcador/cierre. Cada eliminación
 válida concede un punto al equipo contrario. Demo: 180 s o 5 eliminaciones,
 respawn 4 s, empate por tiempo posible. Pausa detiene reloj, proyectiles y respawn;
-revancha reconstruye estado. Balón de Gloria será un módulo de objetivos futuro;
-ninguna lógica de balón/porterías condiciona combate base.
+revancha reconstruye estado. Los modos futuros son módulos de objetivos de combate;
+sin lógica de goles, porterías, posesión ni pases. Balón de Gloria requiere una
+redefinición de combate antes de planificar implementación.
+
+Extensión de roles (diseño): todos conservan el comando de ataque básico. Mejoras
+de poder, efectos de zona y desplazamientos se resuelven en gameplay, con filtros
+de equipo y colisiones; arte/UI solo los representan. Modificar cobertura exige
+mantener física y navegación coherentes. La ficha del Príncipe sigue pendiente de
+aprobación; ni esos efectos nuevos ni terreno dinámico están implementados.
 
 ## Frontera artística
 
