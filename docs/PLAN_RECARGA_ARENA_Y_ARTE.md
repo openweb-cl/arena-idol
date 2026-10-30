@@ -20,6 +20,14 @@ inicial del propietario no equivale a certificar equilibrio general.
 - [x] Ficha C1 del Príncipe #20 redactada: [PRINCIPE_KIT.md](PRINCIPE_KIT.md).
 - [ ] Aprobación del propietario antes de programar `codex/principe-gameplay`.
 - [ ] Probar al Príncipe antes de empezar el gameplay del Pitbull #17.
+- [x] PR #11 de Claude fusionado: VFX y corrección del núcleo del proyectil.
+- [x] Tarea A/P3: controles táctiles, ETC2/ASTC e ícono, pruebas y APK debug firmado.
+- [ ] Tarea A/P3: playtest/instalación en teléfono real y medición de rendimiento.
+
+La tarea A está en `codex/touch-controls`: [controles](CONTROLES_TACTILES.md),
+[instalación](ANDROID.md) y [reporte del APK](APK_TACTIL.md). La tarea B del Príncipe
+espera a A y a aprobación explícita del propietario; el merge de documentación no
+se toma como aprobación automática de programar. Reservas en COORDINACION_AGENTES.
 
 P2 conserva A y ofrece B como variante; el propietario ya probó ambas y la recarga.
 Sigue pendiente la serie comparativa con marcadores y duración. Las pruebas de bot
@@ -43,8 +51,8 @@ venció 5–3 al Rey humano. Son observaciones iniciales que justifican experime
 no certifican por sí solas equilibrio ni tasas de victoria generales.
 
 La versión jugable está en `main`: fundación, apuntado/AUTO, recarga, A/B y muestras
-GLB, con PR #8 de Claude integrado. El PR #9 (`codex/visual-handoff`) propone los
-ajustes de Windows, azul de Turbo, etiquetas y selección; se revisa por separado.
+GLB, con PR #8 de Claude integrado. El PR #9 de handoff visual y el #11 de VFX
+también están fusionados. La tarea A táctil se revisa en su PR independiente.
 Las ramas nuevas parten de main actualizado y ningún PR se fusiona automáticamente.
 `codex/principe-kit` solo contiene diseño; todavía no hay gameplay del Príncipe.
 
@@ -260,7 +268,7 @@ Resources y adaptador visual requiere handoff explícito por archivo. Commits
 pequeños, pruebas relevantes y PR independientes; nunca desarrollar en main o
 fusionar PR sin aprobación. Sin servicios de pago ni recursos protegidos copiados.
 
-**Paquete actual:** revisar el handoff visual #9 y la ficha C1 en PR independientes.
-Tras la aprobación de la ficha, implementar `codex/principe-gameplay`, probarlo y
-recién evaluar Pitbull #17. Este documento por sí solo no implementa ni valida
-esas funciones futuras.
+**Paquete actual:** revisar y probar `codex/touch-controls`/APK (tarea A).
+Después de A y de la aprobación explícita de la ficha, implementar
+`codex/principe-gameplay` (tarea B), probarlo y recién evaluar Pitbull #17.
+Este documento no valida rendimiento ni implementa esas funciones futuras.
