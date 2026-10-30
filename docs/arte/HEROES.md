@@ -205,19 +205,19 @@ Al pasar de 4.6 a 4.7, en el PC del propietario (Windows) el proyecto se veía
 negro con el renderizador Mobile (Vulkan) y se vio bien con
 `--rendering-method gl_compatibility`. En este entorno, 4.7.2 renderiza bien con
 Mobile sobre lavapipe, así que apunta al driver Vulkan de ese equipo. Pendiente:
-actualizar el driver de la GPU, y que Codex decida si conviene un aviso o un
-cambio de renderizador en `project.godot`. El proyecto, además, está dentro de
+actualizar el driver de la GPU y comprobar la solución de Codex: override Windows
+a Compatibility sin cambiar Mobile en Android ([handoff](VISUAL_HANDOFF.md)).
+El proyecto, además, está dentro de
 OneDrive; se recomienda clonarlo fuera de carpetas sincronizadas.
 
 ## Pendientes
 
-1. La etiqueta `#nº · PV / CARGAS` tapa la cabeza en la cámara de juego (UI de Codex).
-2. El campo `color` de `turbo.tres` (anillo y textos) sigue cian. Proponer a Codex
-   cambiarlo a azul/rojo para que coincida con la equipación.
-3. El pie de selección de `menu.gd` todavía dice «Integración artística GLB pendiente».
-4. No producido: VFX y audio nuevos, outline o toon, AnimationTree, rostros detallados
+1. Verificar en el PC del propietario el handoff de Codex: etiqueta sobre la cabeza,
+   `turbo.tres` azul `#1f3fbf` y pie de selección actualizado. Capturas y alcance en
+   [VISUAL_HANDOFF.md](VISUAL_HANDOFF.md).
+2. No producido: VFX y audio nuevos, outline o toon, AnimationTree, rostros detallados
    y pruebas en GPU real o Android.
-5. Príncipe y Pitbull: falta la ficha de combate, el `.tres`, el gameplay y la
+3. Príncipe y Pitbull: falta la ficha de combate, el `.tres`, el gameplay y la
    activación en la selección (Codex). Al crear sus `.tres`, usar `number` 20 y 17.
-6. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
+4. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
    pasar a pesos suaves.

@@ -8,8 +8,10 @@ contra bot; equipos 3v3 y red son hitos posteriores.
 ## Toolchain y render
 
 Fundación validada con Godot 4.6.3; corrección de apuntado y campo de tiro
-validados con Godot 4.7.2 estable oficial. Mobile por defecto; arranque alternativo
-`--rendering-method gl_compatibility` para equipos sin Vulkan. Perfiles BAJO/ALTO:
+validados con Godot 4.7.2 estable oficial. Mobile por defecto y en Android;
+override `rendering_method.windows` a Compatibility para la pantalla negra
+reportada en Windows. Arranque explícito `--rendering-method mobile` para evaluar
+Vulkan y `--rendering-method gl_compatibility` como alternativa. Perfiles BAJO/ALTO:
 escala 3D, sombras y VFX; cambiar backend exige reinicio/exportación. Sin GI ni SSR.
 Meta 60 FPS Android no medida hasta prueba en hardware. Véase `ANDROID.md`.
 
