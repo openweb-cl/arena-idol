@@ -2,7 +2,7 @@
 
 ## Identidad
 
-Estadio de entrenamiento nocturno «Cancha Prisma»: césped jade, arquitectura
+Arena de entrenamiento nocturno «Cancha Prisma»: césped jade, arquitectura
 azul tinta, líneas menta, acentos ámbar y coral. Formas deportivas abstractas,
 sin patrocinadores, escudos ni rasgos de personas reales. Las imágenes de
 `design/` sirven para estudiar energía, jerarquía y claridad, no para calcar UI.
@@ -23,14 +23,14 @@ Geometría opaca, normales limpias, bordes suaves, contraste entre piel/traje/fo
 Meta inicial: <= 8.000 triángulos por héroe y <= 8 materiales; medir antes de
 escalar a seis jugadores. Compartir materiales/meshes estáticos e instanciar
 repeticiones. Nada de transparencia sobre toda la cancha ni GI dinámica.
-Los modelos provisionales deben poder regenerarse sin paquetes comerciales.
+Los modelos provisionales deben poder regenerarse sin paquetes comerciales. En la fundación se generan con meshes de Godot, no son GLB entregados por artista.
 
 ## Blender → Godot
 
 Unidades métricas, escala aplicada, pies en origen, eje vertical Blender Z.
 GLB exporta al sistema Y-up de Godot. Frente del modelo: -Z en Godot.
-Pivotes: Body, Head, ArmL/R, LegL/R. En esta entrega son piezas independientes,
-no rig final; `CharacterVisual` aplica movimiento procedural a esos pivotes.
+Pivotes: Body, Head, ArmL/R, LegL/R. En la fundación son pivotes procedurales de Godot,
+no un GLB ni rig final; `CharacterVisual` aplica movimiento procedural a esos pivotes.
 Futuro: Armature única, clips `idle`, `run`, `kick`, `hit`, `celebrate` y blendspace
 mediante AnimationTree, root motion desactivado para física autoritativa.
 No exportar cámaras o luces desde modelos. Conservar generador y `.blend` como
@@ -50,14 +50,14 @@ encuadre al aspecto y reservar zonas seguras para HUD. Selección: cámara de re
 Espera: respiración suave; carrera: braceo y paso alternado según velocidad real;
 remate: anticipación breve y golpe de pierna; impacto: squash y retroceso visual;
 celebración: salto y brazos elevados. No desplazar el collider con el mesh.
-Sprint: estela cian en punta; Embestida: arco ámbar frontal; Súper Turbo: abanico
-cian y tiro potente; Súper Rey: anillo violeta expansivo y quite de área.
+Sprint: estela cian en punta; Embestida: arco ámbar frontal; Súper Turbo: proyectil
+cian de combate y estela; Súper Rey: anillo violeta expansivo con daño radial.
 Señales por forma y texto además de color. Duración 0,2–0,7 s, objetos liberados,
 no tapar el balón ni sumar luces por efecto. Audio queda pendiente.
 
 ## Estado y aceptación
 
-GLB, escenario y animaciones del primer hito: **provisionales de mecánicas**.
+Geometría procedural, escenario y animaciones del primer hito: **provisionales de mecánicas**.
 Ninguna figura de entrenamiento se presenta como resultado artístico final.
 Antes de calidad comercial: revisión de silueta por artista, rig y clips finales,
 pruebas de legibilidad en pantallas de 6 pulgadas, licencias, capturas de build y

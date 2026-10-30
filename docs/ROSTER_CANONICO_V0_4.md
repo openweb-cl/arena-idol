@@ -21,6 +21,14 @@
 | CON-01 | Deportes Concepción | El Bati | Joaquín Larrivey | Goleador | Disparo preciso | Remate cargado | Instinto Goleador | Poca movilidad |
 | CON-02 | Deportes Concepción | El León de Collao | Emblema león | Tanque | Zarpazo | Salto ofensivo | Rugido Lila | Rango corto |
 
+## Actualización de kits de combate (decisión posterior prioritaria)
+
+Se conserva este plantel de 16 como referencia conceptual. La primera demo es
+Batalla de Ídolos, combate 3D sin objetivos deportivos obligatorios. Turbo #11:
+pelotazos eléctricos a distancia, Turbo Sprint y Remate Relámpago. Rey #23:
+golpe corto, Embestida Real y Onda Real. Estos kits prevalecen sobre las celdas
+de ataque/activa/súper anteriores para el runtime inicial. El resto no está implementado.
+
 ## Pendientes
 - Confirmar nombres PUBLICABLES mediante revisión jurídica y de marcas, especialmente El Rey, El Príncipe, El Turbo, El Pitbull, El Bati, El León de Collao y escudos/kits.
 - Que una caricatura sea distinta no garantiza ausencia de infracción de derechos de imagen. Diseñar siluetas, rostros y trajes originales.

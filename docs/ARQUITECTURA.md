@@ -1,83 +1,80 @@
-# Arquitectura técnica — vertical slice 3D
+# Arquitectura vigente — combate arcade 3D
 
-Decisión vigente: **Godot 4 estable, GDScript y 3D real**. Sustituye el pipeline
-2D de la arquitectura v0.1. Validación inicial con Godot 4.6.3 estable, versión
-instalada en cloud; 4.7.2 citado por documentos antiguos no se presupone instalado.
+Godot 4 estable, GDScript, 3D real; cámara superior inclinada. La corrección más
+reciente de combate prevalece sobre v0.4 y sobre la primera propuesta 2D. No es
+simulación de fútbol. Primera demo: entrenamiento de Batalla de Ídolos 1 humano
+contra bot; equipos 3v3 y red son hitos posteriores.
 
-## Objetivo y límites del primer hito
+## Toolchain y render
 
-Menú → selección con vista 3D → duelo local de 180 segundos contra bot → resultado
-→ revancha. El Turbo #11 y El Rey #23. Dos goles terminan antes; al agotarse el
-reloj, gana el mayor marcador; empate sin prórroga en este hito.
-No es todavía 3v3 ni calidad comercial validada. Los modelos de entrenamiento son
-provisionales, originales y reemplazables; no se usan las imágenes de `design/`
-como texturas. Véase `ESTILO_3D.md` y `VERTICAL_SLICE_3D.md`.
+Validación con Godot 4.6.3 estable instalado en cloud; no suponer instalado 4.7.2
+que aparece en documentos antiguos. Mobile por defecto; arranque alternativo
+`--rendering-method gl_compatibility` para equipos sin Vulkan. Perfiles BAJO/ALTO:
+escala 3D, sombras y VFX; cambiar backend exige reinicio/exportación. Sin GI ni SSR.
+Meta 60 FPS Android no medida hasta prueba en hardware. Véase `ANDROID.md`.
 
-## Escena y responsabilidades
+## Estructura común
 
 ```
 game/
-  project.godot                    # Mobile por defecto, landscape, física 60 Hz
-  scenes/menu/main.tscn            # menú y selección; visor 3D independiente
-  scenes/arena/arena.tscn          # composición de partido
-  scenes/actors/player.tscn       # CharacterBody3D + colisión + vista
-  scenes/ball/ball.tscn           # CharacterBody3D, trayectoria controlada
-  scripts/core/                   # catálogo, datos, sesión, comandos de entrada
-  scripts/actors/                 # movimiento, vida, habilidades, vista animada
-  scripts/ball/                   # única autoridad de posesión y rebotes
-  scripts/modes/                  # reloj, goles, bot, geometría y orquestación
-  scripts/ui/                     # menú/HUD: no deciden goles ni daño
-  scripts/vfx/                    # efectos efímeros sin autoridad de gameplay
-  data/characters/*.tres          # parámetros y recurso GLB por héroe
-  assets/models/                  # GLB original, estado documentado
-  art/                            # fuente Blender y generador reproducible
-  tests/                          # reglas y escenarios de integración headless
+  project.godot                 # raíz exclusiva exportable, landscape, física 60 Hz
+  scenes/menu/main.tscn         # menú/selección con SubViewport de retrato 3D
+  scenes/arena/arena.tscn        # composición de partido, MatchConfig exportado
+  scenes/actors/player.tscn     # CharacterBody3D; presentación intercambiable
+  scripts/core/                # catálogo, Resources, sesión, PlayerCommand
+  scripts/actors/              # movimiento, vida, habilidades, adaptador visual
+  scripts/combat/              # proyectiles y resolución de ataques
+  scripts/modes/               # reglas de eliminaciones, arena, bot, cobertura
+  scripts/ui/                  # controles/presentación sin autoridad de daño
+  scripts/vfx/                 # efectos provisionales desacoplados
+  data/characters/*.tres       # estadísticas + modelo GLB opcional
+  data/abilities/*.tres        # duración, fuerza, cooldown y color provisional
+  data/match.tres              # duración, objetivo, respawn
+  assets/models/               # destino de GLB de Claude (pendiente)
+  tests/                      # pruebas de reglas e integración headless
 ```
 
-Coordenadas de cancha: X horizontal, Y altura, Z profundidad; metros Godot.
-Movimiento y balón se resuelven sobre XZ a 60 ticks físicos. Un nodo de reglas
-resuelve marcador/tiempo/fin. El balón es dueño de la posesión; ni UI ni actor
-incrementan goles. El detector exige balón completo fuera de la línea del arco.
-La cámara ortográfica inclinada encuadra la cancha y ajusta tamaño según aspecto.
+## Responsabilidades y flujo
 
-## Sistemas intercambiables
+Teclado/ratón o bot → `PlayerCommand` → `ArenaPlayer` (movimiento/acciones) →
+resolución de combate → vida/eliminación → `MatchRules` → HUD. La visual recibe
+velocidad/estado/eventos, nunca decide daño. XZ es terreno, Y altura, unidades
+métricas. Física a 60 Hz, aceleración/frenado, dirección de apuntado independiente,
+colisión con obstáculos. Capas 1 terreno, 2 actores. Los proyectiles excluyen emisor.
 
-- `CharacterDefinition`: estadísticas, dorsal, color, habilidad y PackedScene GLB.
-  Catálogo de 16 plazas; solo dos implementadas. No leer referencias internas.
-- `PlayerCommand`: movimiento y acciones independientes de teclado/bot. Punto de
-  integración para joystick táctil y futuros comandos de red.
-- `ArenaPlayer`: aceleración, frenado, colisión, vida, cooldown y respawn.
-- `CharacterVisual`: carga GLB, pivotes de animación procedural (idle/run/kick/hit/
-  celebrate). Sustituible por rig y AnimationTree sin cambiar reglas.
-- `ArenaBall`: libre/poseído/disparo, pase de menor potencia y rebotes. Sin física
-  libre de RigidBody que comprometa la conducción; no prometer determinismo entre
-  máquinas con CharacterBody3D.
-- `AbilityDefinition`: configuración de Turbo Sprint y Embestida Real; súpers
-  diferenciadas por forma/color/alcance y reglas separadas del VFX.
-- `MatchRules`: marcador, 180 s, victoria y cierre idempotente.
+`CharacterDefinition` exporta velocidad, aceleración, frenado, giro, vida, ataque,
+alcance, cadencia, empuje, parámetros de súper y habilidad; además PackedScene
+opcional y corrección de escala/rotación visual. No contiene referencias internas.
+`AbilityDefinition` configura Turbo Sprint y Embestida Real. Los Resources son la
+interfaz del propietario en el inspector, no requieren editar scripts para balance.
+Catálogo de 16 plazas, solo dos disponibles.
 
-## Android y renderizado
+`MatchRules` es la autoridad única del reloj/marcador/cierre. Cada eliminación
+válida concede un punto al equipo contrario. Demo: 180 s o 5 eliminaciones,
+respawn 4 s, empate por tiempo posible. Pausa detiene reloj, proyectiles y respawn;
+revancha reconstruye estado. Balón de Gloria será un módulo de objetivos futuro;
+ninguna lógica de balón/porterías condiciona combate base.
 
-Mobile (Vulkan) por defecto; Compatibility se selecciona al arrancar con
-`--rendering-method gl_compatibility` o desde el editor antes de exportar.
-Perfiles ALTO/BAJO ajustan sombras, escala 3D y VFX. Cambiar renderizador requiere
-reinicio/reexport; el selector gráfico no finge cambiar de backend en caliente.
-Materiales opacos, luz direccional única, ambientación simple; sin GI, SSR ni
-texturas pesadas. Objetivo 60 FPS en dispositivos compatibles; requiere perfilado
-en teléfonos reales y no constituye resultado de este hito. `ANDROID.md` detalla
-requisitos gratuitos, exportación y matriz de pruebas pendiente.
+## Frontera artística
 
-## Preparación competitiva sin servidores
+`CharacterVisual` acepta `model_scene` GLB/wrapper y clips `idle/run/kick/hit/
+celebrate`. En ausencia de modelo usa **geometría provisional de entrenamiento**
+con animación procedural; no son GLB finales ni arte comercial. Fuentes Blender,
+rig y clips serán responsabilidad de Claude Code según `CONTRATO_ARTE_3D.md`.
+Escenario y VFX actuales también provisionales. La UI es funcional, pendiente de
+producción artística. `COORDINACION_AGENTES.md` evita ediciones simultáneas.
 
-Separar comandos de entrada, estado de partido y presentación. El partido local
-es hoy la autoridad única. No hay sockets, cuentas ni ranking. En el siguiente
-hito de red el servidor deberá validar movimiento/posesión/gol/daño, versionar
-comandos y producir snapshots. Harán falta predicción, reconciliación,
-interpolación y pruebas de latencia. No sincronizar transformaciones como solución
-final ni confiar resultados al cliente. GitHub Pages no aloja partidas.
+## Preparación competitiva
 
-## Recursos y privacidad
+Comandos separados de presentación y estado; autoridad única local. No hay sockets,
+servidores, cuentas, ranking ni persistencia de resultados. Para red: servidor
+valida movimiento, daño y score; comandos secuenciados, snapshots, predicción y
+reconciliación. `CharacterBody3D` no garantiza determinismo entre máquinas.
+Primero combate local y equipos; después ensayo autoritativo 1v1 antes de 3v3.
+No usar sincronización de transforms como solución final ni confiar score al cliente.
 
-Blender → glTF/GLB explícito, sin dependencia de Blender al abrir el juego.
-Solo `game/` es raíz exportable. `data/` y `design/` del repositorio quedan fuera.
-Sin servicios externos, secretos, keystores, pagos ni logos licenciados.
+## Seguridad y coste
+
+Solo `game/` es raíz exportable, excluye referencias privadas en `data/` y `design/`
+de raíz. Sin servicios comerciales ni backend en este hito, sin recursos externos
+copiados. Modelos actuales propios/provisionales. No subir claves ni keystores.

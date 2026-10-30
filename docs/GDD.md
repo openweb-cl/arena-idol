@@ -1,37 +1,50 @@
-# Documento de diseño (GDD) v0.1
-## 1. Elevator pitch
-Arena de Ídolos es un **hero-brawler futbolero** mobile-first: encuentros frenéticos de 3 contra 3, duelos individuales y jugadores que eligen libremente su avatar, independientemente de su club favorito. Gana quien combina posicionamiento, control del balón, pases y habilidades con su equipo.
+# GDD vigente — Arena de Ídolos / combate 3D
 
-## 2. Público
-Audiencia chilena aficionada al fútbol, adolescentes y adultos, y comunidades de creadores. Pruebas iniciales con adultos; política de menores y privacidad antes de lanzamiento abierto.
+## Visión y prioridad
 
-## 3. Principios de juego
-- Partidas de 2:30 min, gana primer equipo a 2 goles o quien tenga más goles al finalizar.
-- Cámara cenital/3⁄4, mapa simétrico, controles táctiles: stick izquierdo + ataque, súper y pase/tiro.
-- En equipos mixtos, el avatar no está restringido por club.
-- El primer objetivo es diversión mecánica: movimiento, impacto, balón y goles satisfactorios.
-- Sin compra de estadísticas, sin ventajas de pago.
+Juego de combate arcade 3D estilizado con personajes ficticios inspirados
+conceptualmente en el universo del fútbol chileno. Encuentros rápidos, apuntado
+claro, poderes expresivos y cooperación. No es fútbol tradicional ni simulación.
+La corrección de combate en `DECISIONES_Y_ALCANCE.md` prevalece sobre v0.4.
 
-## 4. Modo principal: Balón de Gloria
-3v3, balón al centro, cada jugador ataca, defiende o controla. Tomar balón reduce ligeramente la velocidad, pero habilita pase y remate dirigido; impacto o derribo suelta balón. Dos porterías. Respawn breve tras eliminación, invulnerabilidad de aparición limitada, tiempo extra solo si empate (por definir).
+## Pilares
 
-## 5. Otros modos (solo tras validar el principal)
-- Duelo del Ídolo (1v1 por eliminación o posesión).
-- Último en Pie (todos contra todos, mapas distintos).
-- Copa Relámpago (torneos comunitarios, llaves fuera de partida).
+- Respuesta: aceleración/frenado ágiles y apuntado independiente de movimiento.
+- Combate legible: vida, cobertura, pelotazos como proyectiles, impactos no
+  violentos, telegraph de habilidades, siluetas y efectos distinguibles.
+- Decisiones: atacar, esquivar, buscar cobertura, gestionar cooldown y súper.
+- Identidad original: héroes ficticios, estética intensa, arenas diseñadas para
+  combatir; ninguna dependencia de un balón o portería en el modo inicial.
+- Android primero, PC de desarrollo; objetivo 60 FPS sujeto a perfilado real.
 
-## 6. Meta y progresión
-Clasificación individual (MMR oculto + rango visible); maestría de héroes; cosméticos, gestos, banners. Club favorito opcional en perfil, eventos de hinchada como capa adicional. No imponer equipo según avatar.
+## Modos
 
-## 7. Diferenciación
-Fútbol arcade de héroes con cultura chilena, narrativa de creadores, partidas rápidas, liga personal y eventos locales. Evitar copiar modos exactos, UX, nombres o recursos visuales de Brawl Stars.
+Batalla de Ídolos (prioridad): equipos 3v3 por eliminaciones. Balón de Gloria:
+combate 3v3 con balón especial como objetivo. Rey de la Arena: control territorial.
+Último Ídolo: supervivencia individual. Duelo de Leyendas: combate 1v1.
 
-## 8. Definición de éxito del prototipo
-En playtest con al menos 20 adultos: ≥70% entienden controles sin guía en 90 s; ≥60% quiere repetir inmediatamente; tasa de bugs bloqueantes 0; no prometer KPIs de retención aún.
+## Primera demo / gate de fundación
 
-## 9. Referencia visual
-`design/concepto_visual.png` es una **visualización exploratoria**. No representa el estado del desarrollo ni assets licenciados.
+Batalla de entrenamiento local: **un jugador contra bot**, selección Turbo #11 o
+Rey #23, arena 3D con cobertura, ataques, vida/daño, eliminación temporal y
+reaparición, habilidad y súper. 180 segundos o 5 eliminaciones; empate al agotar
+reloj con mismo marcador. Resultado y revancha. Sin balón ni goles. No confundir
+este duelo técnico con implementación completa del modo 3v3 o del multijugador.
 
+Turbo: pelotazos eléctricos a distancia, Turbo Sprint, Remate Relámpago.
+Rey: golpe frontal de corto alcance, Embestida Real, Onda Real radial.
+Mismos comandos para humano y bot. Bot persigue, ataca y evade proyectiles.
 
-## Actualización vinculante v0.4
-Ver `DECISIONES_Y_ALCANCE.md` y `ROSTER_CANONICO_V0_4.md` para las decisiones finales. Si aquí figuran clubes, personajes o cantidades distintas, prevalece v0.4.
+## Arte y validación
+
+Modelos originales provisionales de entrenamiento, cámara inclinada y luz simple.
+Vista 3D de selección; animaciones de espera, carrera, ataque, impacto y victoria.
+Las referencias de `design/` fijan ambición, no acreditan assets terminados.
+Se exige revisión visual de builds y medición en hardware antes de calidad
+comercial. `ESTILO_3D.md` y `CONTRATO_ARTE_3D.md` guían el relevo artístico.
+
+Playtest posterior con adultos: entender controles, tiempo hasta primer impacto,
+uso de cobertura, deseo de repetir y bloqueos. No afirmar diversión, balance o
+retención a partir de pruebas automatizadas. Objetivos anteriores de 20 usuarios
+siguen pendientes. Clasificación, progresión y cosméticos se posponen a gameplay
+validado; sin ventajas de pago ni datos de personas reales en el cliente.

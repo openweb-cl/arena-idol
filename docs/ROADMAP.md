@@ -1,61 +1,48 @@
-# Hoja de ruta — comenzar 30-oct-2026
-**Horizontes tentativos y condicionados a dedicación del equipo; no son compromisos de entrega.**
+# Hoja de ruta vigente — combate arcade 3D
 
-## M0 · Semana 1 — Fundación
-- [ ] Crear repo privado `arena-de-idolos` e importar ZIP
-- [ ] Definir 1 responsable de diseño, 1 de código y 1 de arte (pueden coincidir)
-- [ ] Acordar que los futbolistas reales son referencias internas, no assets publicables
-- [ ] Abrir proyecto en GitHub: Backlog / En curso / QA / Hecho
-- [ ] 10 entrevistas a jugadores potenciales; ver si prefieren 3v3 con balón o 1v1
-- [ ] Instalar Godot 4.7.2 y crear proyecto 2D vacío
+La corrección de combate posterior a v0.4 sustituye los hitos deportivos previos.
+Hitos por resultados verificables, sin fechas de compromiso.
 
-## M1 · Semanas 2-3 — Graybox jugable
-- [ ] Mapa simple simétrico con obstáculos
-- [ ] Movimiento teclado y stick virtual
-- [ ] Balón, posesión, pase/tiro, porterías y marcador
-- [ ] Un héroe con daño, vida, respawn y súper
-- [ ] Bot básico que busca balón y remata
-**Exit gate:** una partida completa local sin errores bloqueantes.
+## M0 — Fundación técnica y colaboración (esta entrega)
 
-## M2 · Semanas 4-5 — Sensación y móvil
-- [ ] Arte temporal coherente, cámara, sacudida leve, audio de impactos
-- [ ] Tres héroes distintos, equilibrio provisional
-- [ ] Export Android con controles táctiles
-- [ ] Pruebas en 3 teléfonos de distinta potencia
-**Exit gate:** 20 pruebas de usuarios y ≥60% desea repetir.
+Godot 4 estable y GDScript, arena 3D real, cámara superior inclinada, menú y
+selección Turbo #11 / Rey #23, parámetros en inspector. AGENTS y CLAUDE alineados,
+contrato de arte, ramas separadas, PR sin merge. Pruebas ejecutadas y límites
+explícitos. Geometría provisional no equivale a arte final.
 
-## M3 · Semanas 6-9 — Primera red
-- [ ] Prototipo online 1v1 con servidor autoritativo
-- [ ] Sincronización de pelota, daño, goles, reloj y resultados
-- [ ] Telemetría mínima, reconexión y manejo de latencia
-- [ ] Pruebas con pérdida de paquetes y abuso básico
-**Exit gate:** 1v1 estable en conexiones reales; decidir costo hosting.
+## M1 — Combate local (demo inicial)
 
-## M4 · Semanas 10-14 — 3v3 y comunidad cerrada
-- [ ] 3v3 con lobby, invitación, asignación de equipos y bots de reemplazo
-- [ ] Perfil, avatar, ranking personal (solo resultados verificados)
-- [ ] 6 héroes y 2 arenas; roster total previsto 16
-- [ ] Moderación básica sin chat libre
-**Exit gate:** 50-100 jugadores invitados, métricas de partidas terminadas y regreso.
+Batalla de entrenamiento: 1 humano y bot, proyectiles, melee, cobertura, apuntado,
+vida, daño, eliminación, respawn, Turbo Sprint, Embestida Real, dos súpers,
+resultado y revancha. Bot persigue/ataca/evade. Gate: ciclo completo sin bloqueo,
+pruebas de reglas/colisiones y playtest manual. No declarar diversión o balance
+solo con tests. Primer PR puede incluir base funcional de estos sistemas.
 
-## M5 · Después — Beta pública
-- [ ] 16 héroes progresivamente, temporadas, más modos
-- [ ] Revisar licencias oficiales, marcas, audio, legal y tienda
-- [ ] Antitrampas, protección de menores, hosting escalable, soporte
-- [ ] Monetización cosmética tras medir retención real
+## M2 — Producción artística y Android
 
-## Los primeros 12 issues para GitHub
-1. Inicializar Godot y control de versiones
-2. Escena de arena graybox
-3. Control CharacterBody2D
-4. Cámara y límites
-5. Balón y colisiones
-6. Pase/remate y posesión
-7. Portería y detector de gol
-8. Temporizador, marcador y fin de ronda
-9. Bot perseguir balón y atacar
-10. Vida/daño/respawn
-11. Habilidad especial prototipo
-12. Export y test Android
+Claude Code integra modelos Blender/GLB originales, rig, clips, materiales, VFX,
+UI y audio con licencias. Codex integra táctil, accesibilidad y perfiles de
+rendimiento. Export APK gratuito de pruebas; medir CPU/GPU y frame times en tres
+dispositivos. Gate: 60 FPS objetivo en hardware acordado y ajustes para gama baja,
+20 playtests con adultos y resultados de legibilidad/deseo de repetir.
 
-**No intentar simultáneamente** 12 personajes, 3v3 online, clasificación y tienda antes de validar la diversión local.
+## M3 — Equipos y primera red
+
+Primero validar combate local 3v3, luego prueba 1v1 autoritativa con comandos y
+snapshots. Predicción, reconciliación, interpolación, latencia, desconexiones y
+abuso. No instalar servidores ni contratar servicios en M0/M1.
+
+## M4 — Batalla de Ídolos 3v3 online y expansión
+
+Salas privadas, equipos, validación de resultados y bots de reemplazo. Agregar
+personajes gradualmente hasta los 16 del roster v0.4. Balón de Gloria, Rey de la
+Arena, Último Ídolo y Duelo de Leyendas como modos separados, después del combate.
+
+## M5 — Beta y calidad comercial
+
+Arte final revisado, licencias/marca/derechos, menores/privacidad/moderación,
+optimización real, pruebas de accesibilidad, hosting y tiendas. Cosméticos sin
+ventajas de pago. Gate comercial no se satisface con placeholders o capturas.
+
+Backlog técnico y reparto siguiente: `issues/FOUNDATION.md` y
+`COORDINACION_AGENTES.md`. Casillas solo con evidencia en `VALIDACION.md`.
