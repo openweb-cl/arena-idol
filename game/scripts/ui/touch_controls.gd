@@ -14,6 +14,12 @@ var playing := true
 var ability_status := "LISTA"
 var super_status := "0%"
 var attack_status := "ATACAR"
+# Valores numéricos para el aspecto (TouchSkin); no influyen en las reglas.
+var ability_ratio := 0.0
+var super_ratio := 0.0
+var ammo_charges := 0
+var ammo_capacity := 0
+var ammo_progress := 0.0
 
 static func requested() -> bool:
 	return OS.has_feature("mobile") or DisplayServer.is_touchscreen_available() or OS.get_cmdline_user_args().has("--touch-controls")
@@ -98,6 +104,11 @@ func update_player(player: ArenaPlayer) -> void:
 	ability_status = "LISTA" if player.cooldown <= 0 else "%.1f s" % player.cooldown
 	super_status = "%d%%" % player.super_charge
 	attack_status = ("%d/%d" % [player.ammo.charges, player.ammo.capacity()]) if player.ammo.limited() else "ATACAR"
+	ability_ratio = clampf(player.cooldown / maxf(0.001, player.definition.ability.cooldown), 0, 1) if player.definition.ability else 0.0
+	super_ratio = player.super_charge / 100.0
+	ammo_capacity = player.ammo.capacity() if player.ammo.limited() else 0
+	ammo_charges = player.ammo.charges
+	ammo_progress = player.ammo.progress()
 	queue_redraw()
 
 static func world_direction(axis: Vector2, camera: Camera3D) -> Vector2:
@@ -118,31 +129,5 @@ func text_at(at: Vector2, text: String, font_size: int = 17) -> void:
 	draw_string(font, at - Vector2(width / 2, -font_size * 0.35), text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
 
 func _draw() -> void:
-	if centers.is_empty():
-		return
-	for action: String in centers:
-		var center: Vector2 = centers[action]
-		var radius: float = radii[action]
-		var active := state.fingers.values().has(action)
-		draw_circle(center, radius, Color(0.06, 0.1, 0.2, 0.85 if active else 0.68))
-		var edge := Color("f5c542") if action in ["super", "pause"] else Color("a5b7d4")
-		if not combat_enabled and action != "pause": edge = Color("555d70")
-		draw_arc(center, radius - 2, 0, TAU, 48, edge, 3, true)
-		match action:
-			"move":
-				draw_circle(center + state.movement * radius * 0.55, radius * 0.32, Color(0.65, 0.8, 1.0, 0.65))
-				text_at(center + Vector2(0, radius + 19), "MOVER", 16)
-			"attack":
-				if not state.auto_mode and not state.aim.is_zero_approx():
-					draw_line(center, center + state.aim * radius * 0.85, Color("ffe14a"), 4, true)
-				text_at(center - Vector2(0, 14), "ATACAR", 19)
-				text_at(center + Vector2(0, 16), attack_status, 18)
-			"ability":
-				text_at(center - Vector2(0, 10), "HABILIDAD", 14)
-				text_at(center + Vector2(0, 14), ability_status, 17)
-			"super":
-				text_at(center - Vector2(0, 10), "SÚPER", 17)
-				text_at(center + Vector2(0, 16), super_status, 18)
-			"pause": text_at(center, "PAUSA", 13)
-	draw_style_box(ArenaStyle.box(Color(0.06, 0.1, 0.2, 0.9), 12, Color("a5b7d4")), mode_rect)
-	text_at(mode_rect.get_center(), "AUTO" if state.auto_mode else "MANUAL · ARRASTRA", 14)
+	# Aspecto en TouchSkin (Claude Code); posiciones y zonas de toque siguen aquí.
+	TouchSkin.draw(self)
