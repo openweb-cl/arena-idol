@@ -11,8 +11,8 @@
 | Arena Prisma A/B | Original, Claude Code, 2026-10-30: `scripts/art/arena_dressing.gd` (geometría procedural y MultiMesh de Godot, sin texturas); colliders en `pitch.gd` | **V2 visual provisional**, pendiente de revisión | Ajuste tras playtest (docs/arte/ARENA.md) |
 | VFX de combate (disparo, proyectil, sprint, súper, golpe, embestida, onda, impacto, escudo, cobertura, eliminación) | Originales, Claude Code, 2026-10-30, en `scripts/vfx/` (geometría y partículas de Godot, sin texturas) | **VFX V1 provisionales**, pendientes de revisión | Ajuste tras playtest (docs/arte/VFX.md) |
 | Ícono `ui/icono_provisional.png` | Original, render Cycles del busto de Turbo (`art/lib/render_icon.py`) | Provisional, sin enlazar | Identidad de app definitiva |
-| UI | Controles Godot, diseño original en `scripts/ui/` | Interfaz funcional provisional | Producción artística coordinada |
-| Tipografía de fallback | Fuente predeterminada de Godot (Noto Sans) | Incluida por el motor | Revisar licencias si se añade otra fuente |
+| UI (menú, selección, HUD, controles táctiles) | Original: lógica táctil de Codex; aspecto V2 de Claude Code, 2026-10-30, en `scripts/ui/style.gd`, `menu_backdrop.gd`, `touch_skin.gd`, `hud.gd` y `menu.gd` (dibujo vectorial, sin texturas) | **UI V2 provisional**, pendiente de revisión | Ajuste tras prueba en teléfono (docs/arte/UI.md) |
+| Tipografía de fallback | Fuente predeterminada de Godot (Noto Sans); la negrita es una `FontVariation` de esa misma fuente | Incluida por el motor | Revisar licencias si se añade otra fuente |
 | Audio | Ninguno | Pendiente | Original o CC0 con licencia verificada |
 
 No se incorporan modelos, texturas ni audio externos. Godot distribuye Noto Sans
