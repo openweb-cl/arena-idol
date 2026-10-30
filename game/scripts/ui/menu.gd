@@ -96,7 +96,7 @@ func show_home() -> void:
 	hero.custom_minimum_size.x = 420
 	body.add_child(hero)
 	add_portrait(hero, Vector2(420, 330))
-	hero.add_child(ArenaStyle.label("%02d / %s" % [GameSession.selected.number, GameSession.selected.display_name.to_upper()], 32, GameSession.selected.color))
+	hero.add_child(ArenaStyle.label("%02d / %s" % [GameSession.selected.number, GameSession.selected.display_name.to_upper()], 32, GameSession.selected.color.lightened(0.45)))
 	hero.add_child(ArenaStyle.label(GameSession.selected.role, 20, ArenaStyle.MUTED))
 	page.add_child(ArenaStyle.label("WASD: mover   ·   Apuntado automático   ·   T: apuntado manual   ·   Clic / Espacio: atacar\nMantén pulsado para repetir   ·   E: habilidad   ·   Q: súper   ·   Esc: pausa", 18, ArenaStyle.MUTED))
 	page.add_child(ArenaStyle.label("MODELOS DE ENTRENAMIENTO PROVISIONALES · Sin cuentas, compras ni servicios externos", 16, ArenaStyle.MUTED))
@@ -123,7 +123,7 @@ func show_selection() -> void:
 		if index < CharacterCatalog.AVAILABLE.size():
 			var def := CharacterCatalog.AVAILABLE[index]
 			card.text = "%s  #%d\n%s" % [def.display_name, def.number, def.role]
-			card.add_theme_color_override("font_color", def.color)
+			card.add_theme_color_override("font_color", def.color.lightened(0.45))
 			card.pressed.connect(select_character.bind(def))
 		else:
 			card.disabled = true
@@ -138,7 +138,7 @@ func show_selection() -> void:
 	select_character(GameSession.selected)
 	var actions := HBoxContainer.new()
 	page.add_child(actions)
-	page.add_child(ArenaStyle.label("MODELOS PROVISIONALES · Integración artística GLB pendiente", 15, ArenaStyle.MUTED))
+	page.add_child(ArenaStyle.label("MODELOS 3D PROVISIONALES · Arte en revisión", 15, ArenaStyle.MUTED))
 	var back := ArenaStyle.button("← INICIO")
 	actions.add_child(back)
 	back.pressed.connect(show_home)
