@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=5 format=3]
 [ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/turbo.tres" id="2"]
 [ext_resource type="Resource" path="res://data/ammo/turbo.tres" id="3"]
+[ext_resource type="PackedScene" path="res://assets/models/turbo/turbo.glb" id="4"]
 [resource]
 script = ExtResource("1")
 id = "turbo"
@@ -20,3 +21,4 @@ projectile_speed = 19.0
 attack_interval = 0.42
 super_damage = 2300
 ammo = ExtResource("3")
+model_scene = ExtResource("4")
