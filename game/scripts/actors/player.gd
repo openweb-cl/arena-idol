@@ -3,9 +3,12 @@ extends CharacterBody3D
 signal action_requested(actor: ArenaPlayer, kind: String)
 signal ability_started(actor: ArenaPlayer)
 signal eliminated(actor: ArenaPlayer)
+signal attack_accepted(actor: ArenaPlayer, kind: String)
 @export var definition: CharacterDefinition = preload("res://data/characters/turbo.tres")
 var team := 0
 var health := 0
+var unlimited_ammo := false
+var ammo: AmmoState
 var facing := Vector3.RIGHT
 var command := PlayerCommand.new()
 var cooldown := 0.0
@@ -27,6 +30,7 @@ var health_label: Label3D
 
 func _ready() -> void:
 	health = definition.max_health
+	ammo = AmmoState.new(definition.ammo, unlimited_ammo)
 	collision_layer = 2
 	collision_mask = 1 | 2
 	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
@@ -62,6 +66,7 @@ func _physics_process(delta: float) -> void:
 			reset_at_spawn()
 		command.clear_actions()
 		return
+	ammo.tick(delta)
 	if command.aim.length() > 0.1:
 		facing = Vector3(command.aim.x, 0, command.aim.y).normalized()
 	if command.ability:
@@ -89,16 +94,21 @@ func _physics_process(delta: float) -> void:
 	visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-facing.x, -facing.z), minf(1, definition.turn_speed * delta))
 	visual.speed_ratio = minf(1, velocity.length() / definition.speed)
 	health_label.text = "#%d · %d PV" % [definition.number, health]
+	if ammo.limited():
+		health_label.text += "\n" + ("RECARGANDO" if ammo.charges == 0 else "%d/%d CARGAS" % [ammo.charges, ammo.capacity()])
 
 func act(kind: String = "shot") -> bool:
 	if not active or knocked_out or attack_cooldown > 0:
 		return false
 	if kind == "super" and super_charge < 100:
 		return false
+	if kind == "shot" and not ammo.consume():
+		return false
 	attack_cooldown = definition.attack_interval
 	if kind == "super":
 		super_charge = 0
 	visual.trigger("kick")
+	attack_accepted.emit(self, kind)
 	action_requested.emit(self, kind)
 	return true
 
@@ -130,6 +140,7 @@ func take_damage(amount: int, push: Vector3 = Vector3.ZERO) -> bool:
 	return true
 
 func reset_at_spawn() -> void:
+	ammo.reset()
 	position = spawn_point
 	velocity = Vector3.ZERO
 	command.move = Vector2.ZERO

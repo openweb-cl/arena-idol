@@ -51,6 +51,9 @@ def main():
         auto = run("selección automática y contacto", "--fixed-fps", "60", "--script", "res://tests/test_auto_target.gd")
         if "AUTO:" not in auto or "0 fallos" not in auto:
             sys.exit("La suite de selección automática no confirmó finalización")
+        ammo = run("munición y recarga", "--fixed-fps", "60", "--script", "res://tests/test_ammo.gd")
+        if "MUNICIÓN:" not in ammo or "0 fallos" not in ammo:
+            sys.exit("La suite de recarga no confirmó finalización")
         run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")

@@ -24,6 +24,7 @@ extends Resource
 @export_range(1, 8, 0.1) var super_radius: float = 4.0
 @export_range(5, 50, 1) var charge_per_hit: float = 25.0
 @export var ability: AbilityDefinition
+@export var ammo: AmmoDefinition
 @export_group("Arte / integración Claude Code")
 @export var model_scene: PackedScene
 @export var model_scale: Vector3 = Vector3.ONE

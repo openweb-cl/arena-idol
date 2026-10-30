@@ -47,9 +47,9 @@ func show_home() -> void:
 	page.add_child(body)
 	var left := VBoxContainer.new()
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left.add_theme_constant_override("separation", 12)
+	left.add_theme_constant_override("separation", 8)
 	body.add_child(left)
-	left.add_child(ArenaStyle.label("DOMINA\nLA ARENA.", 58))
+	left.add_child(ArenaStyle.label("DOMINA\nLA ARENA.", 48))
 	left.add_child(ArenaStyle.label("BATALLA DE ÍDOLOS", 24, ArenaStyle.GOLD))
 	left.add_child(ArenaStyle.label("Combate local · Tú contra un bot\n%d segundos · %d eliminaciones para ganar" % [match_settings.duration_seconds, match_settings.target_eliminations], 23, ArenaStyle.MUTED))
 	var play := ArenaStyle.button("JUGAR  →", true)
@@ -72,6 +72,14 @@ func show_home() -> void:
 		graphics.text = "GRÁFICOS: " + ("BAJO" if GraphicsSettings.low else "ALTO")
 		GraphicsSettings.apply(preview.get_viewport(), preview_light)
 	)
+	var rules := ArenaStyle.button("REGLAS: " + ("RECARGA" if GameSession.reload_enabled else "REFERENCIA SIN RECARGA"))
+	left.add_child(rules)
+	rules.pressed.connect(func() -> void:
+		GameSession.reload_enabled = not GameSession.reload_enabled
+		rules.text = "REGLAS: " + ("RECARGA" if GameSession.reload_enabled else "REFERENCIA SIN RECARGA")
+	)
+	rules.add_theme_font_size_override("font_size", 18)
+	rules.custom_minimum_size.y = 42
 	play.grab_focus()
 	var hero := VBoxContainer.new()
 	hero.custom_minimum_size.x = 420
@@ -138,6 +146,8 @@ func select_character(def: CharacterDefinition) -> void:
 		preview.definition = def
 		parent.add_child(preview)
 	detail.text = "%s  /  #%d\n%s\n%s\nVida %d  ·  Velocidad %.1f m/s\nHabilidad: %.1f s de recarga" % [def.display_name, def.number, def.role, def.description, def.max_health, def.speed, def.ability.cooldown]
+	if def.ammo != null and def.ammo.enabled:
+		detail.text += "\n%d cargas · +1 cada %.1f s" % [def.ammo.capacity, def.ammo.seconds_per_charge]
 
 func start_match() -> void:
 	get_tree().change_scene_to_file("res://scenes/arena/arena.tscn")
