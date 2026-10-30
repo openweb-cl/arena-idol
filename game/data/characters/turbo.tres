@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "turbo"
+display_name = "El Turbo"
+number = 11
+role = "VELOCISTA"
+description = "Abre espacios con velocidad.\nTurbo Sprint: acelera en tu dirección.\nMenos resistencia, más movilidad."
+color = Color(0.18, 0.72, 1, 1)
+speed = 285.0
+max_health = 4000
+attack_damage = 850
+ability_name = "Turbo Sprint"
+ability_cooldown = 4.5
+dash_multiplier = 2.7

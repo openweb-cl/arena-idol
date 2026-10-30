@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+id = "rey"
+display_name = "El Rey"
+number = 23
+role = "TANQUE"
+description = "Disputa el balón con firmeza.\nPresión Real: avance corto con escudo.\nMás resistencia, menor velocidad."
+color = Color(1, 0.64, 0.26, 1)
+speed = 225.0
+max_health = 6200
+attack_damage = 1100
+ability_name = "Presión Real"
+ability_cooldown = 6.0
+dash_multiplier = 1.9
