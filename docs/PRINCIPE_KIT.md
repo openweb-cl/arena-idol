@@ -1,166 +1,160 @@
-# El Príncipe #20 — ficha C1 para revisión
+# El Príncipe #20 — combate, apoyo y control de arena
 
-**Estado: PROPUESTA, pendiente de aprobación del propietario. No implementada.**
-Rama `codex/principe-kit`, solo documentación. `codex/principe-gameplay` comienza
-después de revisar esta ficha. Pitbull #17 queda después de probar al Príncipe.
+**Estado: PROPUESTA corregida, pendiente de revisión del propietario. No implementada.**
+Rama `codex/principe-kit`, solo documentación. `codex/principe-gameplay` empieza
+tras revisar esta ficha. Pitbull #17 queda después de probar al Príncipe.
 
-## Identidad y decisión que ofrece
+## Dirección vigente
 
-Estratega de precisión: busca un pasillo, acierta un tiro preparado para frenar
-brevemente al rival y aprovecha ese segundo para cambiar de posición o rematar.
-Menor potencia sostenida que Turbo y sin su sprint; vulnerable si Rey llega al
-cuerpo a cuerpo. El control exige impactos: fallar consume recursos sin ventaja.
+El propietario reiteró el 30 octubre 2026: son batallas; todos tienen básicos
+ofensivos, incluidos los asistentes. Los especiales pueden dar poder, apoyar y
+alterar movimientos o zonas del mapa. Sin goles, porterías, posesión ni pases.
 
-Se conserva el concepto canónico de pase preciso, Visión de Juego y Pase Maestro,
-adaptado a combate, sin balón obligatorio, pases aliados ni objetivos deportivos.
-«Visión» nombra la preparación táctica: no revela rivales tras muros ni añade un
-sistema de visión. Sin curación, trampas, invisibilidad, críticos o daño aleatorio.
+El Príncipe es un **estratega de precisión, apoyo y control**: dispara para causar
+daño, activa una mejora temporal de poder y usa su súper para desplazar enemigos
+y condicionar una zona. Conserva el personaje y dorsal canónicos; los nombres
+ofensivos de esta ficha sustituyen los términos deportivos del roster histórico.
 
-## Valores iniciales propuestos
+## Valores de ensayo
 
-Son hipótesis editables desde Resources, no balance aprobado. No cambian las
-estadísticas actuales de Turbo ni Rey.
+No aprobados como balance; no cambian a Turbo ni Rey.
 
-| Parámetro | Príncipe | Propósito |
-|---|---|---|
-| Vida | 4400 PV | Algo más de margen que Turbo, lejos de la resistencia de Rey |
-| Velocidad | 6,6 m/s | Reposiciona caminando, sin escape acelerado |
-| Aceleración / frenado / giro | 38 / 48 / 14 | Reutiliza la respuesta base |
-| Cargas básicas | 3 | Misma lectura de munición que Turbo |
-| Recuperación | Una cada 1,6 s, secuencial | Disparar no reinicia el ciclo |
-| Cadencia mínima | 0,60 s desde aceptar el ataque | Menos presión continua que Turbo |
-| Empuje básico / súper | 1 / 2 m/s | El control viene de ralentizar, no de alejar al melee a golpes |
-| Carga de súper | 25 por básico con daño válido | Cuatro impactos; fallos/protección no cargan |
+| Parámetro | Propuesta |
+|---|---|
+| Vida / velocidad | 4400 PV / 6,6 m/s |
+| Aceleración / frenado / giro | 38 / 48 / 14, respuesta base |
+| Munición | 3 cargas; recupera una cada 1,6 s, disparar no reinicia el ciclo |
+| Básico | 750 daño, 12 m, velocidad 22 m/s, radio 0,12 m |
+| Cadencia / anticipación básica | 0,60 s / 0,12 s |
+| Activa | +20 % daño básico durante 3 s; cooldown 8 s |
+| Súper | Zona radio 3 m, colocación hasta 8 m, aviso 0,60 s |
+| Efectos de la súper | Pulso inicial de 900 daño y empuje radial; zona lenta durante 3 s |
+| Carga de súper | 25 por básico con daño válido; cuatro impactos |
 
-## Básico — Pase de Precisión
+## Básico — Pulso Certero
 
-- Pelotazo recto, sin homing, rebotes ni penetración. Radio **0,12 m**, velocidad
-  **22 m/s**, alcance **12 m**, daño **750**. Impacta al primer rival o cobertura.
-- Anticipación **0,12 s**, alineada con el pase de interior del clip `kick`.
-  Puede moverse normalmente durante ella. Dirección capturada al aceptar el tiro;
-  el proyectil sale del origen de combate actualizado al terminar la anticipación.
-- Consume una carga al aceptar, no otra al aparecer el proyectil. Si queda
-  eliminado antes de soltarlo, se cancela; no hay devolución de carga. Pausa congela
-  la anticipación. No encola varios ataques durante ella.
-- AUTO conserva rival cercano visible y apuntado al centro; no predice ni asegura
-  impactos. MANUAL permite anticipar el movimiento. El propietario inicia el
-  ataque; mantener pulsado respeta cargas, anticipación y cadencia.
-- Comparación orientativa sin habilidades: 750/1,6 ≈ **469 daño/s** sostenido a
-  largo plazo, frente a 850/1,5 ≈ **567** de Turbo si todos los tiros impactan.
-  No son DPS medidos en partida ni incluyen la ráfaga inicial o la cobertura.
+Proyectil de combate preciso que daña al primer rival o se bloquea con cobertura.
+Sin homing, rebotes, pases, críticos o penetración. La forma puede ser una esfera
+de energía o un pelotazo de combate; no hay receptor aliado ni circulación de balón.
 
-## Activa — Visión de Juego
+Consume una carga al aceptar el ataque y fija entonces la dirección. Tras 0,12 s
+sale del origen de combate actualizado. Puede caminar durante la anticipación;
+no encola ataques. Si queda KO antes de disparar, se cancela sin devolver carga.
+La cadencia de 0,60 s comienza al aceptar; pausa congela anticipación y cooldown.
 
-Preparar **un siguiente básico** durante hasta **3 s**; cooldown **7 s**, desde
-activar E/Shift. No es un ataque automático ni consume munición al activarse.
+AUTO mantiene blanco visible y no garantiza impactos; MANUAL permite anticipar
+movimientos. El jugador inicia el disparo, mantener pulsado respeta cargas y
+cadencia. La súper tiene prioridad si ambas acciones llegan en el mismo comando.
 
-- Ese básico conserva daño, radio, alcance y anticipación, viaja a **27,5 m/s** y,
-  si causa daño válido, ralentiza **25 % durante 1 s** al adversario.
-- El preparado se consume al aceptar ese básico, incluso si luego falla, encuentra
-  un muro o un rival protegido. El efecto queda en el proyectil hasta resolverse,
-  aunque termine la ventana de 3 s mientras vuela.
-- Sin cargas puede activarse, pero debe recuperar y disparar antes de que expire.
-  La súper no consume ni recibe el preparado. No acumula dos preparados.
-- Sin escudo, inmunidad, sprint o daño extra. Dejar pasar la ventana pierde el
-  efecto; el cooldown continúa. Pausa congela ventana y cooldown.
+## Activa — Impulso Táctico
 
-## Súper — Pase Maestro
+Mejora de poder activada con E/Shift: **+20 % de daño básico durante 3 s**, cooldown
+**8 s** desde aceptar la activación. No consume munición, no dispara y no mejora
+la súper, efectos de zona, recarga o duración de otros poderes.
 
-Pelotazo de control de pasillo, recto y anunciado: **1600 de daño**, radio **0,20 m**,
-velocidad **26 m/s**, alcance **12 m**. Un impacto válido ralentiza **35 % durante
-1,5 s**. No atraviesa obstáculos, aliados ni el primer adversario.
+- En la demo 1v1 afecta al propio Príncipe: sus básicos pasan de 750 a **900**.
+  Tiene utilidad aunque no haya aliados; sigue siendo un combatiente.
+- Diseño de equipo: también beneficiará a aliados vivos a **2,5 m al activar**,
+  durante los mismos 3 s aunque luego se separen. Esa extensión exige probar
+  varios actores/equipos; no se declara implementada ni obliga a crear 3v3 ahora.
+- La mejora se captura al aceptar cada básico. Si el proyectil llega después de
+  expirar, conserva el daño asignado; no se modifica el Resource del héroe.
+- No acumula multiplicadores: igual potencia refresca duración; una más débil no
+  sustituye ni prolonga una más fuerte. El efecto y su tiempo se muestran en HUD.
+- KO/respawn limpia la mejora del afectado; pausa la congela. No da escudo, sprint
+  o invulnerabilidad. El crédito de daño y carga de súper sigue siendo del atacante.
 
-- Requiere y consume **100 de carga**, sin gastar munición básica. La súper no
-  carga otra súper. No incorpora el preparado de Visión de Juego.
-- Anticipación **0,35 s** con corredor visible para ambos bandos. Dirección fija al
-  aceptar la acción; el origen de la guía sigue al emisor durante la preparación.
-  El disparo sale de ese origen al completarse. Sin giro automático posterior.
-- Durante la anticipación camina al **50 %** de su velocidad efectiva. No puede
-  aceptar otro ataque o activar la activa. Eliminarlo cancela el disparo; pausa
-  congela la preparación. No devuelve la carga consumida.
-- La cobertura puede cortar el corredor: la guía muestra el primer bloqueo real,
-  no promete atravesarlo. Los rivales pueden salir lateralmente o cubrirse.
+## Súper — Campo de Dominio
 
-## Reglas compartidas del control
+**Control espacial de la batalla**, no otro disparo básico más fuerte. Coloca un
+campo temporal en el terreno para separar enemigos, abrir una retirada o negar
+un acceso durante unos segundos.
 
-Único estado nuevo: ralentización temporal modular, independiente de arte y UI.
-Se aplica solo si `take_damage` acepta el impacto; no afecta aliados, KO ni rivales
-invulnerables. No impide apuntar, atacar, usar habilidades o cambiar de dirección.
+1. Elegir un centro hasta **8 m**, con línea de visión. MANUAL coloca con el cursor
+   y muestra área válida; AUTO usa un rival visible dentro de ese alcance al
+   aceptar. Sin centro válido no consume carga. MANUAL permite elegir un área
+   vacía para controlar una ruta; fuera de alcance/cobertura se muestra inválida.
+2. Consume **100 de súper**, no munición básica. Fija el centro en el mundo y avisa
+   **0,60 s** con contorno y cuenta visual. El área no sigue al adversario. Durante
+   la preparación camina al 50 % y no acepta otro ataque/activa. Si lo eliminan
+   antes de activar, cancela sin devolver carga; pausa congela la preparación.
+3. Al activarse, un pulso aplica **900 daño una vez por enemigo**, dentro de radio
+   **3 m**, y un impulso radial de **10 m/s** desde el centro. La distancia final
+   depende del frenado y las colisiones: no es un teletransporte ni atraviesa muros.
+   Si un actor coincide con el centro, usar la dirección fijada al activar como
+   salida determinista. Aliados y dueño no reciben daño ni empuje.
+4. El campo dura **3 s**: enemigos dentro se mueven un **25 % más lento**; al salir
+   desaparece ese modificador. No hace daño continuo ni repite empujes; tampoco
+   inmoviliza, desactiva habilidades o impide atacar. El sprint/embestida usa la velocidad ya
+   reducida; el impulso físico no se multiplica por la ralentización.
 
-No se suman porcentajes: prevalece el más fuerte. Un efecto igual refresca su
-duración; uno más débil no rebaja ni prolonga el fuerte. Al expirar se recupera
-la velocidad base, sin modificar el Resource. El sprint/embestida multiplica la
-velocidad ya reducida; el empuje recibido se mantiene independiente.
+Cobertura corta el pulso, empuje y ralentización: consultar línea del centro de
+combate del campo al afectado, además del radio. La protección de aparición/
+embestida bloquea el daño/efectos mientras esté activa. No hay efectos a aliados.
+La súper no recarga otra súper. Solo un campo activo por emisor; uno nuevo sustituye
+al anterior. Un campo ya activado persiste sus 3 s aunque su dueño quede KO; al
+terminar partida/revancha se limpia. Pausa congela duración y efectos.
 
-Cooldowns, recarga, carga de súper y animaciones no se ralentizan. Pausa congela
-el temporizador; KO, respawn y revancha limpian estados y anticipaciones pendientes.
-La aparición conserva los actuales 4 s de espera y 1 s de protección. Bot y humano
-usan exactamente la misma autoridad, velocidades de proyectil y tiempos.
+Los campos lentos no suman porcentajes; prevalece el más fuerte entre fuentes
+que realmente afecten al actor. Al perder todas las fuentes se restaura su
+velocidad base. No se heredan ralentizaciones tras KO/respawn.
 
-## Lectura visual y modelo existente
+Este poder **desplaza adversarios y cambia rutas útiles** mediante una zona de
+amenaza; no mueve la geometría de los muros. Barreras móviles, cobertura temporal
+y cambios físicos de terreno son opciones de otros kits/hitos, que requerirían
+actualizar colliders y navegación. No se añaden todos esos sistemas a este héroe.
 
-El futuro `game/data/characters/principe.tres` deberá tener `id="principe"`,
-`display_name="El Príncipe"`, `number=20`, `role="ESTRATEGA"` y asignar
-**`res://assets/models/principe/principe.glb` a `model_scene`**. No duplicar el
-modelo ni reemplazarlo por geometría. Mantener collider base radio 0,42/altura 1,6;
-el modelo no determina el origen, el alcance o el daño del ataque.
+## Respuestas y roles
 
-Usar los cinco clips existentes: `idle`, `run`, `kick`, `hit`, `celebrate`. La
-anticipación de la súper puede sostener visualmente la preparación de `kick`
-desde el adaptador; el AnimationPlayer no decide cuándo se aplica daño.
+Turbo tiene más velocidad y presión sostenida; puede salir del campo con sprint,
+esquivar y presionar cuando termina la mejora de poder. Rey usa cobertura,
+protección y embestida para acercarse; si llega a melee, el Príncipe carece de
+sprint/escudo para escapar. El aviso permite abandonar la zona antes del pulso.
 
-- Básico: pelota clara con estela roja fina, distinguible de la eléctrica de Turbo.
-- Preparado: retícula doble y texto/contador «VISIÓN LISTA», visible para el
-  propietario; destello breve sobre el modelo como aviso al rival.
-- Súper: corredor discontinuo con puntas y anticipación, proyectil con doble
-  estela. El corredor avisa, no hace daño por sí mismo.
-- Ralentización: marcas bajo los pies y texto «LENTO» con duración. Nada de elevar
-  una etiqueta sobre la cara, ocultar siluetas o añadir luces por proyectil.
+La precisión aporta daño; el apoyo aporta poder; la súper aporta posicionamiento.
+Ninguna parte depende de objetivos deportivos. Todo se prueba en ambos sentidos:
+Príncipe humano contra Turbo/Rey y Príncipe bot contra ambos humanos.
 
-VFX/UI de esta primera integración serán provisionales e identificados. Claude
-conserva modelos, fuentes Blender y materiales; cualquier ajuste de clips o nuevo
-recurso artístico se coordina por PR, sin edición simultánea.
+## GLB, señales y bot
 
-## Respuestas de los rivales y uso del bot
+El futuro `game/data/characters/principe.tres` tendrá `id="principe"`,
+`display_name="El Príncipe"`, `number=20`, `role="ESTRATEGA"` y
+**`res://assets/models/principe/principe.glb` en `model_scene`**. Mantener collider
+base radio 0,42/altura 1,6, y origen de ataque Y=0,85; no los decide el mesh.
 
-Turbo puede esquivar lateralmente, usar el sprint para salir del corredor y
-presionar mientras el Príncipe recarga. Rey puede avanzar entre coberturas,
-reservar su protección para el tiro preparado y castigar la falta de escape al
-alcanzar melee. El Príncipe debe controlar distancia y acertar, no encadenar una
-inmovilización permanente.
+Reutilizar `idle`, `run`, `kick`, `hit`, `celebrate`: `kick` representa un ataque,
+no un pase. El AnimationPlayer no aplica daño. Básico con estela roja/clara;
+mejora con icono y texto «PODER +20 %»; campo con borde, aviso, pulso y marcas de
+movimiento lento. Los colores no son la única señal. VFX/UI provisionales,
+legibles sin tapar cabezas ni sumar luces por ataque. Claude conserva GLB/fuentes;
+coordinar cambios de clips/arte por PR, sin edición simultánea.
 
-El bot busca línea libre entre 6 y 9 m, prepara Visión con munición y línea de
-tiro; usa la súper con blanco visible, sin conocer entradas futuras del humano.
-No hereda «activa de ranged = esquiva con sprint»: debe evaluar el tipo de habilidad
-por configuración. Puede reaccionar al corredor visible y a proyectiles mediante
-reglas compartidas, sin privilegios de alcance, cargas o impactos garantizados.
+Bot: conserva líneas de tiro y rutas válidas, activa poder con munición y blanco
+alcanzable, y coloca el campo en una posición visible para separar o controlar.
+Debe evaluar tipos de habilidad, no tratar toda activa ranged como un sprint.
+Reacciona a zonas anunciadas mediante percepción compartida, sin conocer entradas
+futuras del humano ni recibir inmunidad a campos o privilegios de daño.
 
-## Plan de implementación y aceptación, después de aprobar
+## Implementación y pruebas, después de revisar la ficha
 
-1. Recursos para héroe/munición/activa y perfiles de ataque; anticipación,
-   preparación y ralentización como estados genéricos, sin ramas por dorsal/nombre.
-2. Enlazar GLB, anticipación/VFX/HUD y estado de preparado. Mantener autoridad de
-   daño separada. Selector de rival para poder probar los tres enfrentamientos
-   sin introducir red ni cambiar el campo de tiro histórico Turbo/Rey.
-3. Pruebas de consumo/cadencia, cancelación de anticipaciones, origen Y=0,85,
-   trayectorias estrechas, cobertura, protección, cargas de súper y efectos no
-   acumulativos. Pausa/KO/respawn/revancha, AUTO/MANUAL, bot/humano y GLB/clips.
-4. Ejecutar las 192 regresiones actuales, importar/exportar PCK y revisar render
-   con los tres héroes en selección y arenas A/B. Android y seis actores aún
-   requieren un hito propio; este duelo no acredita 3v3 o red.
-5. Playtest Príncipe↔Turbo y Príncipe↔Rey en A/B, intercambiando héroe del humano.
-   Registrar marcadores, duración, impactos/intentos, uso de preparados/súper,
-   tiempo lento y oportunidades de llegar a melee. Los informes actuales deben
-   ampliarse con esos datos; no se presume que ya existan.
+1. Resources de ataques, mejora de poder y zona; estados modulares con filtros de
+   equipo. Separar lógica de daño, VFX y UI; nada de ramas por dorsal/nombre.
+2. GLB en selección y selector de rival para probar los tres héroes. Mantener
+   el campo de tiro histórico Turbo/Rey y sus reglas como referencia.
+3. Verificar básico, munición/cadencia, cancelaciones y origen; mejora sin
+   acumulación, daño capturado y expiración; selección de centro por rayo al mundo,
+   alcance/cobertura, pulso único por actor, empuje físico y entrada/salida de zona.
+   Probar centro exacto, obstáculos, inmunidad, equipos, pausa/KO/respawn/revancha
+   y paridad bot/humano. No introducir daño aliado ni movimientos a través de muros.
+4. Ejecutar las 192 regresiones actuales, importar/exportar PCK y revisar selección
+   y A/B. No declarar 3v3, red, apoyo aliado o Android probado a partir del duelo.
+5. Playtest Príncipe↔Turbo/Rey en A/B: marcadores, duración, tiros/impactos, tiempo
+   potenciado, colocación/eficacia del campo y oportunidades melee. Ampliar informes
+   locales con esos datos; no se presume que ya los registren.
 
-Salida: el propietario entiende preparación/control, percibe respuesta ante la
-súper y puede ganar o perder por decisiones; revisar cifras de una en una si las
-partidas muestran problemas. Las simulaciones no aprueban diversión o equilibrio.
+## Seguimiento
 
-## Gate actual
-
-- [x] GLB y dorsal #20 disponibles en main por PR #8.
-- [x] Ficha de combate redactada para mostrar al propietario.
-- [ ] Propietario revisa/aprueba ficha y valores iniciales.
-- [ ] Rama/implementación `codex/principe-gameplay` y pruebas.
-- [ ] Playtest del Príncipe; decidir cambios antes del Pitbull #17.
+- [x] GLB y dorsal #20 disponibles por PR #8.
+- [x] Ficha alineada con la aclaración de batallas, apoyo y control del propietario.
+- [ ] Revisión/aprobación de este kit y sus valores iniciales.
+- [ ] `codex/principe-gameplay`, pruebas y playtest; luego evaluar Pitbull #17.

@@ -35,8 +35,10 @@ abuso. No instalar servidores ni contratar servicios en M0/M1.
 ## M4 — Batalla de Ídolos 3v3 online y expansión
 
 Salas privadas, equipos, validación de resultados y bots de reemplazo. Agregar
-personajes gradualmente hasta los 16 del roster v0.4. Balón de Gloria, Rey de la
-Arena, Último Ídolo y Duelo de Leyendas como modos separados, después del combate.
+personajes gradualmente hasta los 16 del roster v0.4, todos con básico ofensivo y
+roles de daño, resistencia, apoyo o control. Rey de la Arena, Último Ídolo y Duelo
+de Leyendas como modos separados. Balón de Gloria requiere redefinición de combate;
+su antigua descripción deportiva no entra al backlog de implementación.
 
 ## M5 — Beta y calidad comercial
 

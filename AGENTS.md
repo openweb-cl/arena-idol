@@ -14,8 +14,16 @@
 ## Corrección prioritaria: combate arcade 3D
 
 - El juego NO es un simulador de fútbol. Priorizar Batalla de Ídolos: ataques
-  apuntados, proyectiles, melee, vida/daño, eliminación y respawn; balón opcional
-  de un modo futuro. Esta decisión prevalece sobre documentos deportivos previos.
+  apuntados, proyectiles, melee, vida/daño, eliminación y respawn. Sin goles,
+  porterías, posesión ni pases. Un proyectil con forma de balón sigue siendo
+  un ataque de combate. Esta decisión prevalece sobre documentos deportivos previos.
+- Aclaración más reciente del propietario (30 octubre 2026): todos los héroes,
+  incluidos asistentes/apoyos, tienen un ataque básico que causa daño. Los roles
+  se diferencian por daño, resistencia, movilidad, mejoras de poder, protección o
+  control/desplazamiento en la arena. Sus especiales/súpers pueden ayudar aliados
+  y alterar zonas o cobertura; requieren ficha y pruebas antes de implementarlos.
+  No convertir el apoyo en pases de pelota ni importar nombres deportivos del
+  roster histórico como especificación de gameplay. Mantener el plantel de 16.
 - Primera demo técnica local 1 humano contra bot; 3v3 es meta posterior y no debe
   afirmarse implementado. Turbo #11 eléctrico a distancia; Rey #23 corto alcance,
   Embestida Real y Onda Real. Plantel v0.4 conservado.

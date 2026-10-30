@@ -13,15 +13,20 @@ La corrección de combate en `DECISIONES_Y_ALCANCE.md` prevalece sobre v0.4.
 - Combate legible: vida, cobertura, pelotazos como proyectiles, impactos no
   violentos, telegraph de habilidades, siluetas y efectos distinguibles.
 - Decisiones: atacar, esquivar, buscar cobertura, gestionar cooldown y súper.
+- Roles de combate: daño, tanque, apoyo y control; todos tienen básicos ofensivos.
+  Los especiales pueden mejorar daño/poder, proteger aliados, desplazar adversarios
+  o controlar/modificar zonas de la arena. El apoyo sigue atacando.
 - Identidad original: héroes ficticios, estética intensa, arenas diseñadas para
-  combatir; ninguna dependencia de un balón o portería en el modo inicial.
+  combatir; sin goles, porterías, posesión ni pases. El balón puede ser la forma
+  visual de un proyectil de daño, no un objetivo deportivo.
 - Android primero, PC de desarrollo; objetivo 60 FPS sujeto a perfilado real.
 
 ## Modos
 
-Batalla de Ídolos (prioridad): equipos 3v3 por eliminaciones. Balón de Gloria:
-combate 3v3 con balón especial como objetivo. Rey de la Arena: control territorial.
-Último Ídolo: supervivencia individual. Duelo de Leyendas: combate 1v1.
+Batalla de Ídolos (prioridad): equipos 3v3 por eliminaciones. Rey de la Arena:
+control territorial. Último Ídolo: supervivencia individual. Duelo de Leyendas:
+combate 1v1. Balón de Gloria queda como antecedente pendiente de redefinición de
+combate; su antigua descripción deportiva no es una tarea vigente.
 
 ## Primera demo / gate de fundación
 

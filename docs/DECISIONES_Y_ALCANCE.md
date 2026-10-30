@@ -13,7 +13,7 @@ fútbol chileno aporta inspiración conceptual, sin licencias ni identidades rea
   pelotazos de combate, golpes caricaturescos, esquiva, cobertura, vida, daño,
   eliminación temporal, reaparición, habilidades y súper.
 - El balón no es centro obligatorio. No hay porterías, posesión o goles en la
-  primera demo. Balón de Gloria es un modo futuro con objetivo propio.
+  visión vigente; tampoco pases. Un proyectil con forma de balón es un ataque.
 - Godot 4 estable, GDScript, 3D real. Mobile por defecto, Compatibility evaluable
   para hardware menos potente. Android es objetivo; PC permite desarrollo.
 - Meta artística: 3D caricaturesco comercial. Recursos geométricos iniciales se
@@ -23,6 +23,20 @@ fútbol chileno aporta inspiración conceptual, sin licencias ni identidades rea
 
 ## Plantel e identidad conservados
 
+### Aclaración prioritaria del propietario — 30 octubre 2026
+
+Todos los personajes tienen ataques básicos ofensivos. Daño, tanque, asistente/
+apoyo y controlador son roles de batalla: el apoyo también combate, y puede
+potenciar daño/poder, proteger o facilitar movimientos aliados. Especiales y
+súpers pueden desplazar enemigos, controlar zonas o modificar temporalmente la
+arena/cobertura, con señales claras y respuesta para el rival. Cada poder necesita
+su ficha; estos ejemplos no significan sistemas ya implementados o kits aprobados.
+
+El roster conserva personajes y conceptos, pero sus antiguos «pases», «goles» y
+roles deportivos no son requisitos jugables. Esta aclaración prevalece también
+sobre la primera propuesta del Príncipe: su ficha debe definir ataques, apoyo y
+control de arena, no acciones futbolísticas.
+
 Se conserva el plantel conceptual canónico de 16 en `ROSTER_CANONICO_V0_4.md`.
 Primeros: El Turbo #11 (proyectiles eléctricos, velocidad, remate especial) y
 El Rey #23 (corto alcance, Embestida Real y onda de choque). Los kits de combate
@@ -31,10 +45,11 @@ Clubes y futbolistas del roster son referencias internas; no van al runtime.
 Nombres provisionales no implican aprobación comercial ni disponibilidad de marca.
 Sin logos, uniformes, rostros, voces, tatuajes o parecidos reconocibles sin permiso.
 
-## Modos aprobados
+## Modos y alcance vigente
 
 1. Batalla de Ídolos: combate 3v3 por eliminaciones.
-2. Balón de Gloria: combate 3v3, lanzar un balón especial a la zona rival.
+2. Balón de Gloria: antecedente de modo con objetivo, pendiente de redefinir bajo
+   la aclaración de combate; no implementar la antigua descripción deportiva.
 3. Rey de la Arena: control territorial.
 4. Último Ídolo: supervivencia individual.
 5. Duelo de Leyendas: combate 1v1.

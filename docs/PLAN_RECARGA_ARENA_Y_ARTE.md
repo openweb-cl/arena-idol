@@ -29,6 +29,13 @@ Android como objetivo, herramientas gratuitas, recursos e identidad originales.
 No es simulación deportiva; Batalla de Ídolos es el primer modo. La selección AUTO
 apunta y el propietario inicia el disparo, según la elección vigente.
 
+**Aclaración más reciente del propietario (30 octubre 2026):** todos tienen
+ataques básicos ofensivos, incluidos asistentes/apoyos. Los roles se diferencian
+por daño, resistencia, movilidad, mejoras de poder, protección y control de
+zonas/desplazamientos en la arena. Especiales y súpers pueden cambiar posiciones
+o sectores del mapa. Sin goles, porterías, posesión ni pases; los nombres
+deportivos del roster histórico no fijan mecánicas. Cada kit sigue sujeto a revisión.
+
 ## Punto de partida y dependencia
 
 En el playtest del propietario, Turbo ganó 5–0 bajo control humano y el bot Turbo
@@ -202,10 +209,10 @@ Se conserva el plantel v0.4. Nombres e identidad comercial continúan provisiona
 **Tercero propuesto: El Príncipe #20 (UCH-02), estratega.** Amplía el triángulo de roles:
 Turbo movilidad/distancia, Rey presión/cercanía y Príncipe precisión/control. Antes
 de programarlo, definir una ficha de combate (ataque/activa/súper/debilidad) que
-adapte su concepto al modo actual sin hacer obligatorio un balón deportivo.
-La ficha mantiene su identidad canónica sin introducir visión oculta, curación o
-pases aliados. [PRINCIPE_KIT.md](PRINCIPE_KIT.md) propone precisión y ralentización
-breve por impactos; es un estado nuevo aislado, pendiente de aprobación. Su GLB
+defina combate, apoyo y control de la arena. [PRINCIPE_KIT.md](PRINCIPE_KIT.md)
+propone Pulso Certero (básico de daño), Impulso Táctico (mejora temporal de poder)
+y Campo de Dominio (pulso que desplaza enemigos y zona lenta temporal). La ficha
+está pendiente de aprobación; no hay pases ni objetivos deportivos. Su GLB
 ya existe en `res://assets/models/principe/principe.glb`, para usar por `model_scene`.
 El dorsal #20 y el #17 del Pitbull fueron decididos por el propietario en el hito
 artístico de Claude. El Pitbull sigue solo como arte hasta probar al Príncipe.
