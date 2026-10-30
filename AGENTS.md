@@ -31,3 +31,8 @@
 - Regresión de apuntado: ejecutar también `game/tests/test_projectiles.gd`. Cursor
   al torso y espacio vacío comparten altura con proyectil; no ocultar fallos con
   cambios de daño/vida. Evidencia vigente en docs/APUNTADO_Y_PROYECTILES.md.
+
+- AUTO selecciona y apunta; el propietario inicia el disparo. No añadir fuego
+  autónomo como valor por defecto. Ejecutar tests/test_auto_target.gd y conservar
+  manual, cadencia, cobertura y señales de protección. APUNTADO_AUTOMATICO.md
+  registra el alcance aprobado y evidencia.

@@ -12,7 +12,8 @@ protección. El futuro modo Batalla de Ídolos será 3v3, no implementado aquí.
 
 ## Controles iniciales
 
-WASD/flechas mueven. Ratón apunta en el plano de combate a la altura del disparo (Y=0,85).
+WASD/flechas mueven. AUTO selecciona al rival cercano en alcance y sin cobertura;
+T cambia a MANUAL. El jugador inicia el disparo, no hay fuego autónomo. Ratón apunta en el plano de combate a la altura del disparo (Y=0,85).
 Si atraviesa el cuerpo de un actor, apunta al centro de combate. Clic izquierdo o Espacio
 atacan. E o Shift: habilidad. Q o clic derecho: súper con carga completa. Esc:
 pausa; pérdida de foco pausa automáticamente. Menú de resultado ofrece revancha.
@@ -49,3 +50,7 @@ Pruebas de red, latencia, reconexión y prevención de abuso siguen pendientes.
 F2 alterna la guía del ataque básico. Campo de tiro desde el menú: 1/2/3 distancias,
 4 cobertura, 5 fuera de alcance; Rey inmóvil sin IA. No modifica balance.
 Ver APUNTADO_Y_PROYECTILES para reglas y diagnóstico.
+
+Mantener clic/Espacio repite ataques respetando la cadencia. Soltar, pausa,
+eliminación o cambio de modo cancela la repetición. Ver APUNTADO_AUTOMATICO.md
+para pruebas de contacto y selección; no se cambió daño/vida ni IA.

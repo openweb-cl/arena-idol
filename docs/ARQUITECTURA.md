@@ -87,3 +87,12 @@ CombatProjectile limita distancia, barre contra terreno/actores y emite resoluci
 para diagnóstico sin cambiar la autoridad de daño. Campo de tiro sin IA en
 `scenes/training/projectile_range.tscn`; guía opcional F2. Detalles y evidencia
 en APUNTADO_Y_PROYECTILES.md. Misma física/datos para humano y bot.
+
+## Selección asistida
+
+TargetSelector filtra candidatos registrados en la arena, compara distancia XZ y
+barre esfera contra terreno antes de seleccionar. AUTO rellena PlayerCommand.aim;
+MANUAL mantiene CombatAim. Ambos usan los mismos ataques y física. Los controles
+sostenidos pertenecen al adaptador de entrada, no alteran cooldown ni activan
+fuego autónomo. Indicador de selección y protección visible en HUD. Detalles y
+validación en APUNTADO_AUTOMATICO.md.

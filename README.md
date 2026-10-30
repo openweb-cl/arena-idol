@@ -29,7 +29,7 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/fix-projectile-aim
+   git switch codex/auto-target
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
@@ -53,8 +53,9 @@ godot --path game --rendering-method gl_compatibility
 | Entrada | Acción |
 |---|---|
 | WASD / flechas | Mover con aceleración y frenado |
-| Ratón | Apuntar sobre el terreno, independiente del movimiento |
-| Clic izquierdo / Espacio | Ataque básico; cada pulsación dispara |
+| T | Alternar AUTO (rival cercano) / MANUAL (ratón) |
+| Ratón | Apuntar en modo MANUAL |
+| Clic izquierdo / Espacio | Ataque básico; mantener pulsado repite a la cadencia del héroe |
 | E / Shift | Turbo Sprint o Embestida Real |
 | Q / clic derecho | Súper con 100% de carga (se carga con impactos) |
 | Esc | Pausa / continuar |
@@ -62,7 +63,10 @@ godot --path game --rendering-method gl_compatibility
 | F3 | FPS y contadores locales de render, no benchmark Android |
 | Botones de resultado | Revancha o regreso al menú |
 
-Sin movimiento previo del ratón, se apunta en la última dirección de movimiento.
+En combate, AUTO selecciona al rival más cercano dentro del alcance y sin cobertura.
+T cambia a MANUAL; allí, sin movimiento previo del ratón se apunta en la última
+dirección de movimiento. La selección no dispara sola ni convierte tiros en
+proyectiles teledirigidos. [Controles y evidencia](docs/APUNTADO_AUTOMATICO.md).
 La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
 protección. Teclado/ratón primero; táctil queda pendiente.
 
@@ -70,7 +74,9 @@ protección. Teclado/ratón primero; táctil queda pendiente.
 
 En el menú elige **CAMPO DE TIRO**. Turbo dispara al Rey inmóvil y sin ataques.
 Teclas **1/2/3**: 3/7/12 metros; **4**: cobertura; **5**: fuera de alcance (14 m).
-Apunta al torso y haz clic. El panel muestra impactos, bloqueos y expiraciones.
+El campo abre en MANUAL: apunta al torso y haz clic. T permite practicar AUTO.
+El panel muestra impactos, bloqueos y expiraciones. PROTEGIDO explica colisiones
+sin daño durante la invulnerabilidad temporal del rival.
 **F2** alterna línea de apuntado e indicador de alcance, también en combate normal.
 No se cambiaron daño, vida, alcance ni evasión del bot.
 
