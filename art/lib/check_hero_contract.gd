@@ -1,8 +1,8 @@
 extends SceneTree
-## Verificación del contrato de arte para El Turbo #11 (muestra V1 provisional).
+## Verificación del contrato de arte de un héroe (muestras provisionales).
 ## Vive fuera de game/ para no empaquetarse ni tocar las pruebas de Codex.
-## Uso: godot --headless --path game --script ../art/turbo/check_turbo_contract.gd
-const GLB := "res://assets/models/turbo/turbo.glb"
+## Uso: godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=turbo
+var hero := "turbo"
 const CLIPS := {"idle": true, "run": true, "kick": false, "hit": false, "celebrate": true}
 var passed := 0
 var failed := 0
@@ -16,10 +16,14 @@ func check(ok: bool, label: String) -> void:
 		print("  FALLO  ", label)
 
 func _initialize() -> void:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--hero="):
+			hero = arg.trim_prefix("--hero=")
 	call_deferred("run")
 
 func run() -> void:
-	var scene: PackedScene = load(GLB)
+	print("HÉROE ", hero)
+	var scene: PackedScene = load("res://assets/models/%s/%s.glb" % [hero, hero])
 	check(scene != null, "GLB importado sin Blender")
 	var model := scene.instantiate() as Node3D
 	root.add_child(model)
@@ -74,14 +78,14 @@ func run() -> void:
 		check(muzzle.global_position.z < -0.3, "frente hacia -Z (Muzzle z=%.2f)" % muzzle.global_position.z)
 	model.queue_free()
 	# Integración real a través del adaptador de Codex, sin modificarlo.
-	var definition: CharacterDefinition = load("res://data/characters/turbo.tres")
-	check(definition.model_scene != null, "turbo.tres usa model_scene")
+	var definition: CharacterDefinition = load("res://data/characters/%s.tres" % hero)
+	check(definition.model_scene != null, hero + ".tres usa model_scene")
 	var visual := CharacterVisual.new()
 	visual.definition = definition
 	root.add_child(visual)
 	await process_frame
 	check(visual.animation_player != null, "CharacterVisual encuentra AnimationPlayer")
-	check(visual.find_child("PLACEHOLDER_REPLACE_WITH_GLB", true, false) == null, "sin placeholder procedural para Turbo")
+	check(visual.find_child("PLACEHOLDER_REPLACE_WITH_GLB", true, false) == null, "sin placeholder procedural")
 	visual.speed_ratio = 1.0
 	await process_frame
 	check(visual.animation_player.current_animation == "run", "velocidad normalizada activa run")
@@ -89,9 +93,7 @@ func run() -> void:
 	await process_frame
 	check(visual.animation_player.current_animation == "kick", "trigger kick")
 	visual.queue_free()
-	var rey: CharacterDefinition = load("res://data/characters/rey.tres")
-	check(rey.model_scene == null, "Rey conserva placeholder (fuera de alcance V1)")
-	print("CONTRATO TURBO: %d aprobadas; %d fallos" % [passed, failed])
+	print("CONTRATO %s: %d aprobadas; %d fallos" % [hero.to_upper(), passed, failed])
 	quit(1 if failed else 0)
 
 func _moves_root(anim: Animation) -> bool:

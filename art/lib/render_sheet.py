@@ -1,8 +1,8 @@
-"""Lámina de revisión de El Turbo #11 (muestra V1 provisional).
+"""Lámina de revisión de un héroe (muestra provisional, no arte final).
 
 Renderiza vistas de giro y una pose por clip con Cycles en CPU (sin GPU) desde
-art/turbo/turbo.blend y compone una lámina PNG. Uso:
-    python art/turbo/render_turbo_sheet.py [carpeta_salida]   # por defecto, temporal
+art/<id>/<id>.blend y compone una lámina JPG. Uso:
+    python art/lib/render_sheet.py <turbo|rey> [carpeta_salida]   # por defecto, temporal
 Requiere bpy 5.2 (o Blender 5.2 --background --python) y Pillow para componer.
 Las imágenes son renders de Blender, no capturas del juego.
 """
@@ -16,7 +16,10 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(sys.argv[-1]) if len(sys.argv) > 1 and not sys.argv[-1].endswith(".py") else Path(tempfile.gettempdir()) / "turbo-v1-renders"
+ARGS = [a for a in sys.argv[1:] if not a.endswith(".py")]
+HERO = ARGS[0] if ARGS else "turbo"
+OUT = Path(ARGS[1]) if len(ARGS) > 1 else Path(tempfile.gettempdir()) / f"{HERO}-renders"
+TITLES = {"turbo": "EL TURBO #11", "rey": "EL KING #23"}
 SAMPLES = 24
 SIZE = (420, 560)
 
@@ -28,7 +31,7 @@ POSES = [("idle", 0), ("run", 0), ("kick", 4), ("hit", 2), ("celebrate", 11)]
 
 
 def setup():
-    bpy.ops.wm.open_mainfile(filepath=str(ROOT / "art" / "turbo" / "turbo.blend"))
+    bpy.ops.wm.open_mainfile(filepath=str(ROOT / "art" / HERO / f"{HERO}.blend"))
     scene = bpy.context.scene
     scene.render.engine = "CYCLES"
     scene.cycles.device = "CPU"
@@ -104,6 +107,14 @@ def main():
     compose([n for n, _, _ in VIEWS], [c for c, _ in POSES])
 
 
+def linear_to_hex(color):
+    out = ""
+    for c in color[:3]:
+        c = 12.92 * c if c <= 0.0031308 else 1.055 * c ** (1 / 2.4) - 0.055
+        out += f"{round(max(0, min(1, c)) * 255):02x}"
+    return out
+
+
 def compose(views, poses):
     try:
         from PIL import Image, ImageDraw
@@ -119,17 +130,17 @@ def compose(views, poses):
             sheet.paste(img, (col * w, 70 + row * h))
             draw.rectangle((col * w, 70 + row * h, col * w + 150, 92 + row * h), fill=(12, 18, 38))
             draw.text((col * w + 8, 75 + row * h), name.replace("_", " ").upper(), fill=(230, 240, 255))
-    draw.text((12, 12), "EL TURBO #11 - MUESTRA V1 PROVISIONAL (render Blender Cycles CPU, no captura de juego)", fill=(124, 255, 228))
+    draw.text((12, 12), f"{TITLES.get(HERO, HERO.upper())} - MUESTRA PROVISIONAL (render Blender Cycles CPU, no captura de juego)", fill=(124, 255, 228))
     draw.text((12, 36), "Fila 1: giro y vista de camara de juego. Fila 2: idle / run / kick / hit / celebrate.", fill=(200, 210, 230))
-    swatches = [("2eb8ff", "Cian"), ("27318f", "Indigo"), ("eef7ff", "Blanco"), ("c98a66", "Piel"), ("141b3d", "Noche"), ("7cffe4", "Chispa")]
+    swatches = [(linear_to_hex(m.diffuse_color), m.name.split("_")[-1]) for m in bpy.data.materials if m.name.startswith("M_")]
     for i, (hex_color, label) in enumerate(swatches):
         x = 12 + i * 170
         y = 80 + h * 2
         color = tuple(int(hex_color[j:j + 2], 16) for j in (0, 2, 4))
         draw.rectangle((x, y, x + 50, y + 50), fill=color, outline=(255, 255, 255))
         draw.text((x + 58, y + 10), f"{label}\n#{hex_color}", fill=(230, 240, 255))
-    sheet.save(OUT / "lamina_turbo_v1.jpg", quality=88)
-    print("SHEET", OUT / "lamina_turbo_v1.jpg")
+    sheet.save(OUT / f"lamina_{HERO}.jpg", quality=88)
+    print("SHEET", OUT / f"lamina_{HERO}.jpg")
 
 
 if __name__ == "__main__":
