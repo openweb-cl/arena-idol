@@ -81,6 +81,28 @@ xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --audio-driver Dummy --
   --script ../art/lib/check_projectile_core.gd -- --output=/tmp/nucleo [--low]
 ```
 
+## Efectos preparados para el Príncipe #20 (sin gameplay todavía)
+
+Según `docs/PRINCIPE_KIT.md` (propuesta pendiente de aprobación). Codex los llamará
+al implementar `codex/principe-gameplay`; hoy no se usan en partida.
+
+| `kind` | Uso | Lectura visual |
+|---|---|---|
+| `principe_shot` | Pulso Certero | Destello rojo y claro, estrecho, por encima del cuerpo |
+| proyectil | Vuelo del básico | Núcleo claro visible, halo rojo menor detrás, retícula fina y estela **recta** |
+| `principe_buff` | Impulso Táctico | Anillo rojo, chevrones que suben a los costados y texto **«PODER +20 %»**; sigue al héroe |
+| `principe_field_warning` | Aviso de 0,6 s | Contorno del radio real, anillo que se cierra como cuenta atrás, marcador central y flechas hacia adentro |
+| `principe_field` | Campo de Dominio, 3 s | Pulso hasta el radio, zona opaca a ras de suelo y marcas de lentitud que giran |
+
+Contrato para Codex:
+- Los campos se colocan en el **centro del área**, no en el actor (por ejemplo,
+  con `spawn_effect_at`). Hay que pasar `radius` (3 m) y `duration` (0,6 s y 3 s).
+- La mejora usa `follow` y puede recibir `duration`.
+- `ProjectileVisual` elige el estilo según el `definition.id` de quien dispara y
+  toma el tamaño del radio real del collider, sin valores fijos de Turbo.
+
+Captura: [ficha del Príncipe](../captures/vfx-v1/mobile-01b-efectos-principe.png).
+
 ## Presupuesto y perfiles
 
 - Sin luces dinámicas, sombras ni texturas. Materiales sin iluminación, compartidos

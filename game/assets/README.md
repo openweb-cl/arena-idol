@@ -8,7 +8,7 @@
 | Pitbull — `models/pitbull/pitbull.glb` | Original, Claude Code, 2026-10-30. `art/pitbull/build_pitbull.py` + kit común. Fuente `.blend` en `art/pitbull/` | **Muestra V0 solo arte**, dorsal 17; sin `.tres` ni gameplay | Ficha C2 (Codex) |
 | Clips idle/run/kick/hit/celebrate de los cuatro | Keyframes originales en los generadores; bucles en los `.glb.import` | Provisionales | Ajuste tras playtest |
 | Materiales `M_Turbo_*`, `M_Rey_*`, `M_Principe_*`, `M_Pitbull_*` (6 + 6 + 6 + 7) | Colores planos originales dentro de cada GLB, sin texturas | Provisionales | — |
-| Arena Prisma | Geometría original en `pitch.gd` | Graybox 3D provisional | Escena artística con colisiones compatibles |
+| Arena Prisma A/B | Original, Claude Code, 2026-10-30: `scripts/art/arena_dressing.gd` (geometría procedural y MultiMesh de Godot, sin texturas); colliders en `pitch.gd` | **V2 visual provisional**, pendiente de revisión | Ajuste tras playtest (docs/arte/ARENA.md) |
 | VFX de combate (disparo, proyectil, sprint, súper, golpe, embestida, onda, impacto, escudo, cobertura, eliminación) | Originales, Claude Code, 2026-10-30, en `scripts/vfx/` (geometría y partículas de Godot, sin texturas) | **VFX V1 provisionales**, pendientes de revisión | Ajuste tras playtest (docs/arte/VFX.md) |
 | Ícono `ui/icono_provisional.png` | Original, render Cycles del busto de Turbo (`art/lib/render_icon.py`) | Provisional, sin enlazar | Identidad de app definitiva |
 | UI | Controles Godot, diseño original en `scripts/ui/` | Interfaz funcional provisional | Producción artística coordinada |
