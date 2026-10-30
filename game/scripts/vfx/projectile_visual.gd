@@ -14,14 +14,15 @@ var tail_timer := 0.0
 func _ready() -> void:
 	quality = not GraphicsSettings.low
 	var radius := 0.32 if power else 0.16
-	# Núcleo brillante legible a distancia, con halo azul y anillo(s) giratorios.
+	# Núcleo amarillo siempre a la vista desde la cámara de juego: nada opaco lo
+	# envuelve. El halo azul es menor que el núcleo y va detrás (cabeza de cometa),
+	# y los anillos giran en horizontal, por fuera de la silueta del núcleo.
 	core = VFXKit.sphere(self, Vector3.ZERO, radius, VFXKit.TURBO_SPARK, 12)
-	VFXKit.sphere(self, Vector3(0, 0, 0.06), radius * 1.25, VFXKit.TURBO_BLUE, 10)
+	VFXKit.sphere(self, Vector3(0, 0, radius * 1.35), radius * 0.62, VFXKit.TURBO_BLUE, 10)
 	for i in (2 if power else 1):
 		var holder := Node3D.new()
 		add_child(holder)
-		var ring := VFXKit.ring(holder, Vector3.ZERO, radius * (1.45 + i * 0.3), 0.05 if power else 0.035, VFXKit.TURBO_BOLT if i == 0 else VFXKit.TURBO_RED)
-		ring.rotation_degrees.x = 90
+		VFXKit.ring(holder, Vector3.ZERO, radius * (1.75 + i * 0.35), 0.05 if power else 0.035, VFXKit.TURBO_BOLT if i == 0 else VFXKit.TURBO_RED)
 		rings.append(holder)
 	if power:
 		VFXKit.box(self, Vector3(0, 0, 0.5), Vector3(0.16, 0.16, 0.9), VFXKit.TURBO_BLUE)
@@ -39,8 +40,9 @@ func _rebuild_tail() -> void:
 func _process(delta: float) -> void:
 	age += delta
 	for i in rings.size():
-		rings[i].rotation.z += delta * (14.0 if i == 0 else -10.0)
-	core.scale = Vector3.ONE * (1.0 + 0.12 * sin(age * 40.0))
+		rings[i].rotation.y += delta * (14.0 if i == 0 else -10.0)
+	# Pulso que solo agranda: el núcleo nunca se ve menor que el radio del collider.
+	core.scale = Vector3.ONE * (1.04 + 0.04 * sin(age * 40.0))
 	if quality:
 		tail_timer -= delta
 		if tail_timer <= 0:

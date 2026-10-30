@@ -24,8 +24,8 @@ No tocan daño, vida, recarga, movimiento, colisiones ni puntuación.
 | Evento (`kind`) | Cuándo | Lectura visual | Vida |
 |---|---|---|---|
 | `shot` | Disparo básico de Turbo | Destello amarillo y azul a la altura del socket `Muzzle`, chispas hacia el frente; se dibuja por encima del cuerpo | 0,2 s |
-| proyectil | Vuelo del disparo | Núcleo amarillo claro, halo azul, anillo giratorio y estela en rayo zigzag que parpadea | vuelo |
-| proyectil súper | Bombazo Turbo | Núcleo doble de tamaño, dos anillos (amarillo y rojo) y estela gruesa | vuelo |
+| proyectil | Vuelo del disparo | Núcleo amarillo claro siempre visible, halo azul más pequeño detrás (cabeza de cometa), anillo horizontal giratorio y estela en rayo zigzag | vuelo |
+| proyectil súper | Bombazo Turbo | Núcleo doble de tamaño, dos anillos horizontales (amarillo y rojo) por fuera de su silueta y estela gruesa | vuelo |
 | `turbo_sprint` | Turbo Sprint | Estelas de velocidad azul y amarilla que siguen al héroe, rayo vivo y anillo eléctrico en el punto de partida | 0,45 s |
 | `turbo_super` | Lanzar Bombazo | Anillos de carga, rayos verticales, destello grande y abanico de esquirlas | 0,5 s |
 | `melee` | Golpe de Rey | Arco dorado que barre de derecha a izquierda y polvo | 0,3 s |
@@ -39,6 +39,47 @@ No tocan daño, vida, recarga, movimiento, colisiones ni puntuación.
 Los alias heredados `sprint` y `charge` siguen funcionando. Las formas y los
 colores combinan con los héroes (`docs/arte/HEROES.md`): Turbo eléctrico
 amarillo, azul y rojo; Rey dorado, ámbar y violeta.
+
+## Corrección tras la revisión técnica: visibilidad del núcleo del proyectil
+
+En la revisión del PR #11 se detectó que el halo azul de `ProjectileVisual` envolvía
+y ocultaba el núcleo amarillo, sobre todo en la súper. Causas:
+
+- El halo era una esfera opaca 1,25 veces más grande que el núcleo y casi concéntrica.
+- Los anillos giraban en un plano vertical, así que su arco superior cruzaba el
+  núcleo como una franja.
+- El pulso del núcleo lo encogía hasta un 12 %.
+
+Corrección, solo visual:
+
+- El halo ahora mide 0,62 veces el núcleo y va detrás de él (a 1,35 radios).
+- Los anillos giran en horizontal con radio de 1,75 y 2,1 núcleos, por fuera de la
+  silueta del núcleo vista desde la cámara inclinada.
+- El pulso solo agranda el núcleo (entre ×1,00 y ×1,08), así que nunca se ve menor
+  que el radio del collider.
+
+`projectile.gd` no cambia: collider, velocidad, daño y alcance quedan intactos.
+
+Verificación medible `art/lib/check_projectile_core.gd`: dispara desde la arena A,
+proyecta el centro del proyectil a la cámara de juego y cuenta los píxeles con color
+de núcleo dentro del 85 % de su disco proyectado. Exige al menos un 75 %.
+
+| Caso | Antes | Después (Mobile) | Después (Compatibility) |
+|---|---|---|---|
+| Básico, ALTO | 50 % (FALLA) | 100 % | 100 % |
+| Súper, ALTO | **0 %** (FALLA) | 100 % | 100 % |
+| Básico, BAJO | 36 % (FALLA) | 100 % | 100 % |
+| Súper, BAJO | **0 %** (FALLA) | 100 % | 100 % |
+
+Capturas: [antes y después, recortes ×4](../captures/vfx-v1/proyectil-antes-despues.png) ·
+arena completa con [básico ALTO](../captures/vfx-v1/mobile-arena-proyectil-basico-alto.png),
+[súper ALTO](../captures/vfx-v1/mobile-arena-proyectil-super-alto.png) y
+[súper BAJO](../captures/vfx-v1/mobile-arena-proyectil-super-bajo.png).
+
+```bash
+xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --audio-driver Dummy --fixed-fps 60 \
+  --script ../art/lib/check_projectile_core.gd -- --output=/tmp/nucleo [--low]
+```
 
 ## Presupuesto y perfiles
 
