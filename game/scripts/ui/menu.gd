@@ -20,6 +20,8 @@ func _ready() -> void:
 	margin.add_theme_constant_override("margin_top", 24)
 	margin.add_theme_constant_override("margin_bottom", 24)
 	add_child(margin)
+	# Solo márgenes seguros; la producción visual del menú sigue en manos de Claude.
+	margin.add_child(TouchSafeArea.new())
 	page = VBoxContainer.new()
 	page.add_theme_constant_override("separation", 12)
 	margin.add_child(page)
