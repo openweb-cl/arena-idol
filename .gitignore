@@ -1,0 +1,16 @@
+# Godot
+.godot/
+.import/
+.export/
+*.tmp
+# Secretos
+.env
+.env.*
+!.env.example
+*.keystore
+*.p12
+*.pfx
+*.jks
+# Sistemas
+.DS_Store
+Thumbs.db

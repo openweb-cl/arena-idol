@@ -1,0 +1,1 @@
+Planificación redactada para este proyecto. La imagen de concepto es exploratoria y no debe tratarse como arte final licenciable sin revisión. Los assets de terceros no se incluyen. Decidir licencia de código y reparto de propiedad antes de publicar el repositorio.

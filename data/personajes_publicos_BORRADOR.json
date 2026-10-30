@@ -1,0 +1,162 @@
+[
+  {
+    "id": "UCH-01",
+    "nombre_provisional": "El Turbo",
+    "rol": "Velocista",
+    "ataque": "Ráfaga Azul",
+    "habilidad": "Turbo Sprint",
+    "super": "Bombazo Turbo",
+    "debilidad": "Baja resistencia",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "UCH-02",
+    "nombre_provisional": "El Príncipe",
+    "rol": "Estratega",
+    "ataque": "Pase de precisión",
+    "habilidad": "Visión de Juego",
+    "super": "Pase Maestro",
+    "debilidad": "Poca potencia",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COL-01",
+    "nombre_provisional": "El Rey",
+    "rol": "Tanque",
+    "ataque": "Choque frontal",
+    "habilidad": "Presión Real",
+    "super": "Dominio Real",
+    "debilidad": "Lento",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COL-02",
+    "nombre_provisional": "El Cacique",
+    "rol": "Guerrero",
+    "ataque": "Remate fuerte",
+    "habilidad": "Escudo temporal",
+    "super": "Grito del Cacique",
+    "debilidad": "Movilidad media",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "CAT-01",
+    "nombre_provisional": "Caballero Cruzado",
+    "rol": "Goleador",
+    "ataque": "Remate colocado",
+    "habilidad": "Salto de cabezazo",
+    "super": "Gol de Cruzado",
+    "debilidad": "Posicionamiento",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "CAT-02",
+    "nombre_provisional": "El Pitbull",
+    "rol": "Defensor",
+    "ataque": "Tackle corto",
+    "habilidad": "Marca Personal",
+    "super": "No Pasarás",
+    "debilidad": "Alcance corto",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "SWA-01",
+    "nombre_provisional": "El Elegante",
+    "rol": "Defensor técnico",
+    "ataque": "Quite de precisión",
+    "habilidad": "Anticipación",
+    "super": "Defensa Perfecta",
+    "debilidad": "Ataque limitado",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "SWA-02",
+    "nombre_provisional": "El Porteño",
+    "rol": "Defensor",
+    "ataque": "Empuje de ola",
+    "habilidad": "Escudo marinero",
+    "super": "Maremoto",
+    "debilidad": "Poca agilidad",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COB-01",
+    "nombre_provisional": "El Artillero Loíno",
+    "rol": "Goleador",
+    "ataque": "Disparo rápido",
+    "habilidad": "Olfato Goleador",
+    "super": "Cañonazo Naranja",
+    "debilidad": "Vulnerable cargando tiro",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COB-02",
+    "nombre_provisional": "El Zorro del Desierto",
+    "rol": "Velocista",
+    "ataque": "Disparo rasante",
+    "habilidad": "Evasión",
+    "super": "Espejismo",
+    "debilidad": "Frágil",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COQ-01",
+    "nombre_provisional": "El Guardián",
+    "rol": "Arquero",
+    "ataque": "Bloqueo frontal",
+    "habilidad": "Salto lateral",
+    "super": "Muralla Aurinegra",
+    "debilidad": "Poco alcance ofensivo",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "COQ-02",
+    "nombre_provisional": "El Pirata",
+    "rol": "Creativo",
+    "ataque": "Tiro curvo",
+    "habilidad": "Garfio de recuperación",
+    "super": "Abordaje",
+    "debilidad": "Alta dificultad",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "PAL-01",
+    "nombre_provisional": "El Ilusionista",
+    "rol": "Técnico",
+    "ataque": "Balón con efecto",
+    "habilidad": "Finta Fantasma",
+    "super": "Jugadón",
+    "debilidad": "Baja resistencia",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "PAL-02",
+    "nombre_provisional": "El Tricolor",
+    "rol": "Apoyo",
+    "ataque": "Pase veloz",
+    "habilidad": "Escudo aliado",
+    "super": "Unidad",
+    "debilidad": "Bajo daño",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "CON-01",
+    "nombre_provisional": "El Bati",
+    "rol": "Goleador",
+    "ataque": "Disparo preciso",
+    "habilidad": "Remate cargado",
+    "super": "Instinto Goleador",
+    "debilidad": "Poca movilidad",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  },
+  {
+    "id": "CON-02",
+    "nombre_provisional": "El León de Collao",
+    "rol": "Tanque",
+    "ataque": "Zarpazo",
+    "habilidad": "Salto ofensivo",
+    "super": "Rugido Lila",
+    "debilidad": "Rango corto",
+    "estado": "conceptual_NO_PUBLICAR_sin_revision_legal"
+  }
+]
