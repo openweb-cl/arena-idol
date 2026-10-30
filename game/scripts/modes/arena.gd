@@ -15,6 +15,7 @@ var aim_marker: MeshInstance3D
 var projectiles: Array[CombatProjectile] = []
 var elapsed := 0.0
 var mouse_aim := false
+var aim_position := Vector2.ZERO
 var impacts := 0
 var last_message_at := 0.0
 
@@ -54,7 +55,10 @@ func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaP
 	return actor
 
 func _physics_process(delta: float) -> void:
-	projectiles = projectiles.filter(func(p: CombatProjectile) -> bool: return is_instance_valid(p) and not p.is_queued_for_deletion())
+	# No pasar referencias liberadas a lambdas tipadas: Godot falla al convertirlas.
+	for index in range(projectiles.size() - 1, -1, -1):
+		if not is_instance_valid(projectiles[index]) or projectiles[index].is_queued_for_deletion():
+			projectiles.remove_at(index)
 	if phase == Phase.PLAYING:
 		elapsed += delta
 		rules.tick(delta)
@@ -82,7 +86,7 @@ func keyboard_direction() -> Vector2:
 	return Vector2(x, y).limit_length()
 
 func update_aim() -> void:
-	var point := get_viewport().get_mouse_position()
+	var point := aim_position
 	var origin := camera.project_ray_origin(point)
 	var ray := camera.project_ray_normal(point)
 	var hit: Variant = Plane(Vector3.UP, 0).intersects_ray(origin, ray)
@@ -96,7 +100,10 @@ func update_aim() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_aim = true
+		aim_position = event.position
 	if phase == Phase.PLAYING and event is InputEventMouseButton and event.pressed:
+		mouse_aim = true
+		aim_position = event.position
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			human.command.shoot = true
 		elif event.button_index == MOUSE_BUTTON_RIGHT:

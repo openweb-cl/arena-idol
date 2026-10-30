@@ -4,6 +4,7 @@ var preview: CharacterVisual
 var detail: Label
 var selection := false
 var preview_light: DirectionalLight3D
+var match_settings: MatchConfig = preload("res://data/match.tres")
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -50,7 +51,7 @@ func show_home() -> void:
 	body.add_child(left)
 	left.add_child(ArenaStyle.label("DOMINA\nLA ARENA.", 58))
 	left.add_child(ArenaStyle.label("BATALLA DE ÍDOLOS", 24, ArenaStyle.GOLD))
-	left.add_child(ArenaStyle.label("Combate local · Tú contra un bot\n3 minutos · 5 eliminaciones para ganar", 23, ArenaStyle.MUTED))
+	left.add_child(ArenaStyle.label("Combate local · Tú contra un bot\n%d segundos · %d eliminaciones para ganar" % [match_settings.duration_seconds, match_settings.target_eliminations], 23, ArenaStyle.MUTED))
 	var play := ArenaStyle.button("JUGAR  →", true)
 	left.add_child(play)
 	play.pressed.connect(start_match)
