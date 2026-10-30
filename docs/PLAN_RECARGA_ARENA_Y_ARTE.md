@@ -81,7 +81,8 @@ No reducir daño o aumentar vida simultáneamente para forzar un resultado desea
   segundos por carga. Configuración por héroe, no por dueño humano/bot.
 - Estado de munición en actor/componente de gameplay, independiente de UI y VFX.
 - Consumir dentro de la validación de ataque, no en entrada ni al dibujar el HUD.
-  Rechazo por cooldown, eliminación o ausencia de blanco válido no consume cargas.
+  Rechazo por cooldown, eliminación o ausencia de blanco válido en AUTO no consume cargas. En MANUAL, un tiro
+  válido al espacio vacío sí consume munición.
 - HUD propio: tres segmentos y progreso de la siguiente carga, sin calcar recursos
   o interfaz comercial. Mostrar disponibilidad junto al personaje seleccionado.
 - Campo de tiro con recarga activada para practicar. Un ajuste de laboratorio
