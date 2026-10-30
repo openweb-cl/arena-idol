@@ -54,3 +54,9 @@ Ver APUNTADO_Y_PROYECTILES para reglas y diagnóstico.
 Mantener clic/Espacio repite ataques respetando la cadencia. Soltar, pausa,
 eliminación o cambio de modo cancela la repetición. Ver APUNTADO_AUTOMATICO.md
 para pruebas de contacto y selección; no se cambió daño/vida ni IA.
+
+P1: Turbo tiene tres cargas básicas y recupera una cada 1,5 s; súper y sprint
+independientes. No cambian daño/vida/velocidad. P2: mapa A original y B experimental,
+con las mismas reglas de combate. Selector del menú independiente de recarga.
+Se puede comparar con REFERENCIA sin recarga; ver PROGRESO_P1_P2.md. Equilibrio
+pendiente de playtest humano, no aprobado por resultados de simulación.

@@ -96,3 +96,16 @@ MANUAL mantiene CombatAim. Ambos usan los mismos ataques y física. Los controle
 sostenidos pertenecen al adaptador de entrada, no alteran cooldown ni activan
 fuego autónomo. Indicador de selección y protección visible en HUD. Detalles y
 validación en APUNTADO_AUTOMATICO.md.
+
+## P1/P2: munición y mapas
+
+AmmoDefinition es configuración compartida y AmmoState es estado por actor. Turbo
+consume una de tres cargas en ataque básico aceptado y recupera una cada 1,5 s;
+súper/sprint independientes. GameSession permite referencia sin recarga para
+comparar. MatchReport guarda resultados locales, geometría y revisión de navegación.
+
+ArenaDefinition alimenta visual, colisión, apariciones y navegación de A/B. El bot
+usa espacio del cuerpo para decidir ruta y barrido del ataque para línea de tiro.
+La arena original queda en prisma_a.tres; B experimental en prisma_b.tres. El
+campo de tiro fija A para conservar regresiones. Recursos editables requieren
+reiniciar escena. Evidencia y pendientes: PROGRESO_P1_P2.md.

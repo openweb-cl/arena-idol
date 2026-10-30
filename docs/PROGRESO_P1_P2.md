@@ -9,8 +9,8 @@ separa implementación técnica y validación humana del equilibrio.
 | P1 recarga | Implementada y verificada | 30 pruebas específicas; suite completa 152 comprobaciones |
 | P1 capturas | Revisadas en runtime | Véase capturas/recarga abajo |
 | P1 playtest | Pendiente del propietario | Repetir con Turbo y Rey en arena A |
-| P2 mapas A/B | Pendiente | Se implementará después del paquete de recarga |
-| P2 pruebas y capturas | Pendiente | Colisión, navegación y paridad A/B |
+| P2 mapas A/B | Implementados | Selector del menú y Resource compartido; A original, B experimental |
+| P2 pruebas y capturas | Verificadas | 40 pruebas de mapas; suite total 192 y capturas A/B |
 | Equilibrio aprobado | Pendiente | No se deduce de pruebas automatizadas |
 | Refresh visual y nuevos héroes | No iniciado | Fuera de los puntos 1/2 de esta entrega |
 
@@ -44,7 +44,8 @@ Al finalizar combate normal se guarda automáticamente JSON en
 `user://playtests/`. En el editor Godot, Project → Open User Data Folder permite
 abrir esa carpeta. No hay envío a red ni datos personales.
 
-Incluye esquema, configuración (recarga/referencia), mapa A, versión de motor,
+Incluye esquema, configuración de munición (recarga/referencia), mapa A/B, geometría,
+revisión de navegación, versión de motor,
 modo de apuntado al finalizar, duración, marcador, héroe de humano/bot, ataques
 aceptados, eventos de daño, tiempo/periodos sin cargas y tiempo en distancia melee
 con trayectoria libre. Son datos de prueba, no estadísticas de servidor o ranking.
@@ -80,3 +81,60 @@ cargas y daño resueltos por gameplay, sin retoque ni prueba de rendimiento Andr
 3. Comparar con REFERENCIA SIN RECARGA, sin modificar otros parámetros.
 4. Tras incorporar P2, comparar A/B con reglas idénticas. No cambiar a la vez daño,
    vida, velocidad, recarga y geometría para atribuir mejoras a una sola causa.
+
+## P2 — Variantes comparables
+
+El menú añade **ARENA A / ARENA B**. A es la distribución original exacta. B cambia
+cobertura, no armas: siete bloques simétricos, dos protecciones intermedias en la
+ruta frontal, cuatro coberturas hacia los extremos y una central. Tiene corredores
+de al menos 2,4 m entre bloques y bordes. Se conserva la cancha común de 26 x 14 m.
+No hay paredes destructibles, arbustos, cambios de altura de tiro o nuevos héroes.
+
+Los Resources `res://data/maps/prisma_a.tres` / `prisma_b.tres` contienen Rect2 XZ,
+apariciones y color provisional. `ArenaDefinition` alimenta a la vez visual,
+colliders y rejilla del bot. Guardar y reiniciar partida tras editar el inspector.
+Se puede asignar `arena_override` en una escena; `prisma_b.tscn` sirve para probar B
+con F6 y para verificar su arranque dentro del PCK.
+
+El bot ahora verifica espacio para su cuerpo al aproximarse a esquinas y usa el
+barrido del ataque para comprobar si puede disparar. Es una corrección de
+navegación/colisión necesaria en ambos mapas, no un cambio de daño, velocidad o
+cadencia. La opción REFERENCIA conserva ataques sin recarga; ya incluye estas
+correcciones de navegación en P2, por lo que no es una copia binaria íntegra de #3.
+
+El campo de tiro permanece en A para conservar sus distancias/regresiones. Combate
+normal usa el mapa elegido; revancha lo mantiene. HUD e informes identifican A/B.
+Las reglas RECARGA/REFERENCIA son independientes del selector del mapa.
+
+### Verificación de P2
+
+Godot 4.7.2: 152 comprobaciones previas + **40 de mapas**, todas aprobadas. Se
+comprobó geometría original A, simetría, apariciones libres, collider y celda de
+navegación de cada bloque, conexión entre todas las celdas transitables, rutas en
+ambos sentidos, movimiento contra muros, tiros pegados y bloqueo de AUTO.
+
+Bots de ambos kits navegan y emiten ataques en A/B en escenarios de 15 s simulados
+con diana quieta protegida; no son duelos competitivos ni certifican equilibrio.
+Selector, independencia de reglas, iniciar B, revancha y regreso al menú probados.
+Exportación PCK y arranque de A y B verificados. No se mide rendimiento con tiempo
+fijo ni se declara completado el playtest humano.
+
+Capturas renderizadas reales (posiciones preparadas) en Compatibility/software:
+
+- [Selector A/B y reglas](captures/maps/01-menu-map-selector.png)
+- [Arena A original](captures/maps/02-prisma-a.png)
+- [Arena B experimental](captures/maps/02-prisma-b.png)
+
+### Cómo comparar ahora
+
+1. En el menú elegir héroe y REGLAS RECARGA, probar **ARENA A**.
+2. Repetir con **ARENA B**, manteniendo héroe, modo AUTO/MANUAL y reglas.
+3. Repetir la pareja de mapas con el otro héroe. Registrar sensación al cerrar
+   distancia, retirada, bloqueo visual, munición y cualquier atasco.
+4. Para aislar recarga, comparar RECARGA/REFERENCIA en **el mismo mapa**.
+5. Conservar los JSON locales: reflejan mapa y geometría utilizados. El equilibrio
+   y qué arena resulta más divertida siguen pendientes del propietario.
+
+Estado de revisión: P1 en PR #5; P2 se publica en un PR separado con #5 como base
+funcional. No se ha fusionado ningún PR en main. Refresh visual y personajes
+siguientes siguen sin iniciar según el alcance aprobado (puntos 1 y 2).
