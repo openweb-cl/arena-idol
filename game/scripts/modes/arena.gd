@@ -258,14 +258,14 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 		projectile.resolved.connect(on_projectile_resolved)
 		add_child(projectile)
 		projectiles.append(projectile)
-		spawn_effect(actor, "turbo_super" if is_super else "sprint", Color("62e7ff"))
+		spawn_effect(actor, "turbo_super" if is_super else "shot", Color("62e7ff"))
 	else:
 		var rival := bot if actor == human else human
 		var offset := rival.position - actor.position
 		var reach := actor.definition.super_radius if is_super else actor.definition.attack_range
 		if not rival.knocked_out and offset.length() <= reach and (is_super or actor.facing.dot(offset.normalized()) > 0.25) and brain.line_clear(actor, rival):
 			apply_damage(rival, actor, actor.definition.super_damage if is_super else actor.definition.attack_damage, offset.normalized() * actor.definition.attack_push * (2 if is_super else 1))
-		spawn_effect(actor, "rey_super" if is_super else "charge", Color("ba8bff") if is_super else actor.definition.color)
+		spawn_effect(actor, "rey_super" if is_super else "melee", Color("ba8bff") if is_super else actor.definition.color)
 
 func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: Vector3) -> void:
 	if phase != Phase.PLAYING or target.team == source.team:
@@ -275,9 +275,11 @@ func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: V
 		damage_events[source.team] += 1
 		source.super_charge = minf(100, source.super_charge + source.definition.charge_per_hit)
 		spawn_effect(target, "hit", Color("ffbb85"))
+	elif target.invulnerable > 0 and not target.knocked_out:
+		spawn_effect(target, "shield", Color.WHITE)
 
 func on_ability(actor: ArenaPlayer) -> void:
-	spawn_effect(actor, "sprint" if actor.definition.attack_type == "Ranged" else "charge", actor.definition.ability.effect_color)
+	spawn_effect(actor, "turbo_sprint" if actor.definition.attack_type == "Ranged" else "rey_charge", actor.definition.ability.effect_color)
 
 func spawn_effect(actor: ArenaPlayer, kind: String, color: Color) -> void:
 	var effect := AbilityEffect.new()
@@ -286,11 +288,21 @@ func spawn_effect(actor: ArenaPlayer, kind: String, color: Color) -> void:
 	effect.quality = not GraphicsSettings.low
 	effect.position = actor.position
 	effect.rotation.y = atan2(-actor.facing.x, -actor.facing.z)
+	effect.follow = actor
+	effect.radius = actor.definition.super_radius
+	add_child(effect)
+
+func spawn_effect_at(at: Vector3, kind: String) -> void:
+	var effect := AbilityEffect.new()
+	effect.kind = kind
+	effect.quality = not GraphicsSettings.low
+	effect.position = at
 	add_child(effect)
 
 func on_eliminated(actor: ArenaPlayer) -> void:
 	if phase != Phase.PLAYING:
 		return
+	spawn_effect(actor, "elimination", actor.definition.color)
 	if actor == human:
 		mouse_fire_held = false
 		key_fire_held = false
@@ -335,6 +347,8 @@ func on_finished() -> void:
 
 func on_projectile_resolved(projectile: CombatProjectile, reason: String, at: Vector3) -> void:
 	shot_counts[reason] = shot_counts.get(reason, 0) + 1
+	if reason == "cobertura":
+		spawn_effect_at(to_local(at), "impact_cover")
 	shot_events.append({"reason": reason, "at": at, "distance": projectile.travelled, "age": projectile.age, "team": projectile.source.team})
 	if shot_events.size() > 20:
 		shot_events.pop_front()

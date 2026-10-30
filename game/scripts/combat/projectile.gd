@@ -27,16 +27,10 @@ func _ready() -> void:
 	sphere.radius = 0.32 if power else 0.16
 	collider.shape = sphere
 	add_child(collider)
-	var core := ArenaGeometry.sphere(self, Vector3.ZERO, sphere.radius, Color("c0ffff") if power else Color("65e4ff"))
-	var material := StandardMaterial3D.new()
-	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	material.albedo_color = Color("c0ffff") if power else Color("65e4ff")
-	core.material_override = material
-	core.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	var ring := ArenaGeometry.ring(self, sphere.radius * 1.3, Color("248bff"))
-	ring.rotation_degrees.x = 90
-	var trail := ArenaGeometry.box(self, Vector3(0, 0, 0.4), Vector3(0.06, 0.06, 0.7), Color("2ebdff"))
-	trail.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	# Aspecto delegado a VFX (Claude Code); collider y movimiento siguen aquí.
+	var visual := ProjectileVisual.new()
+	visual.power = power
+	add_child(visual)
 	if not direction.is_zero_approx():
 		look_at(global_position + direction)
 
