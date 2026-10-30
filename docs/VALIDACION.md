@@ -1,5 +1,10 @@
 # Evidencia de validación — combate 3D
 
+Tarea A / táctil: **243 comprobaciones aprobadas** en Godot 4.7.2 (192 anteriores
+y 51 táctiles), PCK y arranque de escenas con controles. APK debug firmado,
+alineado y analizado, aún sin teléfono real. [Reporte APK](APK_TACTIL.md),
+[controles/evidencia](CONTROLES_TACTILES.md) e [instalación](ANDROID.md).
+
 P1/P2: **192 comprobaciones aprobadas** en Godot 4.7.2; recarga, mapas A/B,
 PCK y capturas. [Seguimiento vigente](PROGRESO_P1_P2.md). Playtest de equilibrio
 del propietario pendiente. Los informes siguientes conservan evidencia anterior.

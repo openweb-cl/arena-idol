@@ -18,13 +18,18 @@ var ammo_title: Label
 var ammo_cells: HBoxContainer
 var ammo_progress: ProgressBar
 var show_metrics := false
+var top: PanelContainer
+var pause_button: Button
+var keyboard_hints: Label
+var footer: Label
+var ammo_panel: VBoxContainer
 
 func _ready() -> void:
 	var root := Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
-	var top := PanelContainer.new()
+	top = PanelContainer.new()
 	top.position = Vector2(28, 16)
 	top.size = Vector2(1224, 70)
 	top.add_theme_stylebox_override("panel", ArenaStyle.box(ArenaStyle.PANEL))
@@ -36,7 +41,7 @@ func _ready() -> void:
 	scoreboard.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	scoreboard.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(scoreboard)
-	var pause_button := ArenaStyle.button("PAUSA / Esc")
+	pause_button = ArenaStyle.button("PAUSA / Esc")
 	pause_button.custom_minimum_size = Vector2(160, 40)
 	pause_button.add_theme_font_size_override("font_size", 18)
 	row.add_child(pause_button)
@@ -45,9 +50,11 @@ func _ready() -> void:
 	status.position = Vector2(40, 624)
 	root.add_child(status)
 	var hints := ArenaStyle.label("WASD  MOVER   /   RATÓN  APUNTAR\nCLIC / ESPACIO  ATACAR   /   E / SHIFT  HABILIDAD\nQ  SÚPER   /   F2  GUÍA   /   F3  MÉTRICAS", 16, ArenaStyle.MUTED)
+	keyboard_hints = hints
 	hints.position = Vector2(720, 622)
 	root.add_child(hints)
 	var placeholder := ArenaStyle.label("DEMO LOCAL 1 vs BOT · ARTE PROVISIONAL · Sin objetivos deportivos", 15, ArenaStyle.MUTED)
+	footer = placeholder
 	placeholder.position = Vector2(40, 693)
 	root.add_child(placeholder)
 	message = ArenaStyle.label("", 22, ArenaStyle.GOLD)
@@ -58,7 +65,7 @@ func _ready() -> void:
 	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
 	metrics.position = Vector2(40, 120)
 	root.add_child(metrics)
-	var ammo_panel := VBoxContainer.new()
+	ammo_panel = VBoxContainer.new()
 	ammo_panel.position = Vector2(40, 536)
 	ammo_panel.size.x = 300
 	ammo_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE

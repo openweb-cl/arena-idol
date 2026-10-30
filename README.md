@@ -16,7 +16,8 @@ El modo completo Batalla de Ídolos 3v3 es un hito posterior.
 
 **Arte provisional:** personajes, arena, VFX y animaciones son recursos originales
 de entrenamiento, no modelos finales ni calidad comercial verificada. No se han
-validado 60 FPS en Android, export APK, táctil ni multijugador. Turbo y Rey usan
+validado 60 FPS, instalación/entrada táctil en Android real ni multijugador. Hay
+un APK debug firmado con adaptador táctil ([instalación](docs/ANDROID.md)). Turbo y Rey usan
 muestras GLB de Claude; Príncipe #20 y Pitbull #17 tienen arte, todavía sin gameplay.
 No se importan imágenes de `design/`, escudos o rostros al juego.
 
@@ -25,12 +26,12 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
 1. Instala **Godot 4.7.2 estable, edición estándar** (GDScript, no requiere .NET),
    desde [Godot](https://godotengine.org/download/). Esta corrección se validó con 4.7.2; la fundación anterior se probó con 4.6.3. No necesita Blender,
    plugins, Python, cuentas ni servicios de pago para jugar.
-2. Descarga la rama del PR o clona el repositorio. Para esta revisión visual:
+2. Descarga la rama del PR o clona el repositorio. Para esta entrega táctil:
 
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/visual-handoff
+   git switch codex/touch-controls
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
@@ -73,14 +74,22 @@ T cambia a MANUAL; allí, sin movimiento previo del ratón se apunta en la últi
 dirección de movimiento. La selección no dispara sola ni convierte tiros en
 proyectiles teledirigidos. [Controles y evidencia](docs/APUNTADO_AUTOMATICO.md).
 La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
-protección. Teclado/ratón primero; táctil queda pendiente.
+protección. Teclado/ratón y adaptador táctil disponibles; prueba móvil real pendiente.
+
+En Android: stick izquierdo para mover; mantén **ATACAR** en AUTO. En MANUAL,
+arrastra ATACAR para elegir dirección y disparar. Botones de habilidad, súper y
+pausa independientes. [Controles y evidencia](docs/CONTROLES_TACTILES.md).
+Para visualizar la UI táctil en PC: `godot --path game -- --touch-controls`.
 
 ## Avance del plan
 
 - [x] P1: cargas/recarga y referencia sin recarga, verificadas en A.
 - [x] P2: arena A original y B experimental, colisión y navegación compartidas.
 - [ ] Playtest humano para aprobar equilibrio y distribución.
-- [ ] Refresh visual y personajes siguientes (otro hito).
+- [x] Muestras GLB y VFX de Claude integrados; arte todavía provisional.
+- [x] Adaptador táctil y exportación APK debug firmada, verificados técnicamente.
+- [ ] Playtest y rendimiento en teléfono real.
+- [ ] Príncipe #20: gameplay tras aprobación explícita de su ficha; Pitbull después.
 
 El menú permite elegir **ARENA A / ARENA B** y, por separado, **REGLAS RECARGA /
 REFERENCIA SIN RECARGA**. Revancha conserva esas opciones. Para comparar mapas,

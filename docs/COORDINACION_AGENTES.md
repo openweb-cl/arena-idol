@@ -29,6 +29,25 @@ autoriza merge. Cambios de contrato requieren actualización y prueba de ambos l
 
 ## Siguiente trabajo de Codex
 
+### Reserva vigente: primer APK táctil
+
+Codex toma `codex/touch-controls`: archivos propios `scripts/ui/touch_*`, pruebas
+y exportación/configuración Android; integración mínima en arena/HUD/menú.
+Claude reserva `scripts/art/*`, `assets/models/arena/`, `scripts/vfx/` y solo
+presentación de `pitch.gd`. No cambian colliders, Rect2, apariciones o navegación;
+Codex revisa ese diff. No editar simultáneamente esos archivos.
+
+El refresh de style/menú/selección/HUD de Claude espera la fusión del PR táctil.
+[CONTROLES_TACTILES.md](CONTROLES_TACTILES.md) documenta las referencias del HUD y
+safe areas que deben conservarse. Esta reserva prevalece sobre el backlog siguiente.
+
+Tarea B: `codex/principe-gameplay` después de A y de aprobación explícita de
+`PRINCIPE_KIT.md`. Usar GLB existente y dorsal 20. Emitir `principe_shot`,
+`principe_buff`, `principe_field_warning`, `principe_field` mediante `spawn_effect`;
+Claude dibuja esos VFX. Pitbull #17 queda tras probar al Príncipe.
+
+### Backlog técnico
+
 1. Playtest y corregir apuntado/cobertura/IA con observaciones del propietario.
 2. Añadir pruebas de equipo local 3v3 sin red y separar resolución por modo.
 3. Adaptador táctil de dos sticks, botones y accesibilidad; probar Android real.
