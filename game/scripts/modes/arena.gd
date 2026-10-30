@@ -5,12 +5,15 @@ enum Phase { PLAYING, PAUSED, FINISHED }
 @export var training_mode := false
 @export var laboratory_unlimited_ammo := false
 @export var auto_target_enabled := true
+@export var arena_override: ArenaDefinition
 @export var config: MatchConfig = preload("res://data/match.tres")
 var phase := Phase.PLAYING
 var rules: MatchRules
 var human: ArenaPlayer
 var bot: ArenaPlayer
-var brain := ArenaBot.new()
+var brain: ArenaBot
+var layout: ArenaDefinition
+var pitch: ArenaPitch
 var hud: ArenaHUD
 var camera: ArenaCamera
 var light: DirectionalLight3D
@@ -40,21 +43,26 @@ var last_message_at := 0.0
 
 func _ready() -> void:
 	rules = MatchRules.new(config)
-	add_child(ArenaPitch.new())
+	layout = GameSession.ARENAS[0] if training_mode else (arena_override if arena_override != null else GameSession.selected_arena)
+	brain = ArenaBot.new(layout)
+	pitch = ArenaPitch.new()
+	pitch.definition = layout
+	add_child(pitch)
 	light = ArenaGeometry.world(self)
 	GraphicsSettings.apply(get_viewport(), light)
 	camera = ArenaCamera.new()
 	add_child(camera)
-	human = spawn_player(CharacterCatalog.AVAILABLE[0] if training_mode else GameSession.selected, 0, Vector3(-10, 0, 0))
+	human = spawn_player(CharacterCatalog.AVAILABLE[0] if training_mode else GameSession.selected, 0, layout.player_spawn)
 	var other := CharacterCatalog.AVAILABLE[1] if human.definition.id == "turbo" else CharacterCatalog.AVAILABLE[0]
-	bot = spawn_player(other, 1, Vector3(10, 0, 0))
+	bot = spawn_player(other, 1, layout.bot_spawn)
 	rules.finished.connect(on_finished)
 	hud = ArenaHUD.new()
 	add_child(hud)
+	hud.arena_name = "A" if layout.id == "prisma-a" else "B"
 	hud.pause_requested.connect(toggle_pause)
 	hud.replay_requested.connect(func() -> void: get_tree().reload_current_scene())
 	hud.menu_requested.connect(func() -> void: get_tree().change_scene_to_file("res://scenes/menu/main.tscn"))
-	hud.message.text = "Usa la cobertura · %d eliminaciones para ganar" % config.target_eliminations
+	hud.message.text = "%s · %d eliminaciones para ganar" % [layout.display_name, config.target_eliminations]
 	aim_marker = ArenaGeometry.ring(self, 0.25, ArenaStyle.GOLD)
 	aim_marker.visible = false
 	target_marker = Node3D.new()
@@ -378,7 +386,7 @@ func report_data() -> Dictionary:
 	var participants: Array[Dictionary] = []
 	for actor: ArenaPlayer in [human, bot]:
 		participants.append({"character": actor.definition.id, "team": actor.team, "controller": "human" if actor == human else "bot", "limited_ammo": actor.ammo.limited(), "capacity": actor.ammo.capacity(), "seconds_per_charge": actor.ammo.interval(), "basic_attacks": basic_attacks[actor.team], "super_attacks": super_attacks[actor.team], "damage_events": damage_events[actor.team], "empty_seconds": actor.ammo.empty_seconds, "empty_periods": actor.ammo.empty_periods, "melee_opportunity_seconds": close_seconds[actor.team]})
-	return {"schema": 1, "configuration": "reload-p1-v1" if GameSession.reload_enabled else "reference-pr3", "map": "prisma-a", "engine": Engine.get_version_info().string, "aim_mode": "auto" if auto_target_enabled else "manual", "scores": rules.scores.duplicate(), "elapsed_seconds": elapsed, "participants": participants}
+	return {"schema": 1, "configuration": "reload-p1-v1" if GameSession.reload_enabled else "reference-pr3", "map": layout.id, "navigation_revision": "shared-layout-p2-v1", "map_obstacles": layout.obstacles.map(func(rect: Rect2) -> Array: return [rect.position.x, rect.position.y, rect.size.x, rect.size.y]), "engine": Engine.get_version_info().string, "aim_mode": "auto" if auto_target_enabled else "manual", "scores": rules.scores.duplicate(), "elapsed_seconds": elapsed, "participants": participants}
 
 func save_report() -> void:
 	if not training_mode and report_path.is_empty():

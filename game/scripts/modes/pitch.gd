@@ -3,11 +3,7 @@ extends Node3D
 ## Arena Prisma, geometría provisional. No porterías ni objetivos deportivos.
 const HALF_WIDTH := 13.0
 const HALF_DEPTH := 7.0
-const OBSTACLES: Array[Rect2] = [
-	Rect2(-6, -4.8, 2.5, 2.0), Rect2(3.5, -4.8, 2.5, 2.0),
-	Rect2(-6, 2.8, 2.5, 2.0), Rect2(3.5, 2.8, 2.5, 2.0),
-	Rect2(-0.8, -1.3, 1.6, 2.6),
-]
+@export var definition: ArenaDefinition = preload("res://data/maps/prisma_a.tres")
 
 func _ready() -> void:
 	ArenaGeometry.box(self, Vector3(0, -0.5, 0), Vector3(29, 0.8, 19), Color("152b3e"))
@@ -18,15 +14,17 @@ func _ready() -> void:
 		ArenaGeometry.box(self, Vector3(0, 1.21, z), Vector3(26.6, 0.05, 0.15), Color("55c5b0"))
 	for x in [-13.2, 13.2]:
 		wall(Vector3(x, 0.6, 0), Vector3(0.4, 1.2, 14.4), Color("263b56"))
-	for rect in OBSTACLES:
+	for index in definition.obstacles.size():
+		var rect := definition.obstacles[index]
 		var center := rect.get_center()
-		wall(Vector3(center.x, 0.75, center.y), Vector3(rect.size.x, 1.5, rect.size.y), Color("476783"))
+		var obstacle := wall(Vector3(center.x, 0.75, center.y), Vector3(rect.size.x, 1.5, rect.size.y), definition.wall_color)
+		obstacle.set_meta("obstacle_index", index)
 		ArenaGeometry.box(self, Vector3(center.x, 1.51, center.y), Vector3(rect.size.x * 0.8, 0.06, 0.15), Color("9bccc3"))
-	for x in [-10, 10]:
+	for spawn: Vector3 in [definition.player_spawn, definition.bot_spawn]:
 		var pad := Node3D.new()
-		pad.position.x = x
+		pad.position = spawn
 		add_child(pad)
-		ArenaGeometry.ring(pad, 1.05, Color("64cffe") if x < 0 else Color("ff9a72"))
+		ArenaGeometry.ring(pad, 1.05, Color("64cffe") if spawn.x < 0 else Color("ff9a72"))
 	for side in [-1, 1]:
 		for row in 2:
 			var z: float = side * (8.3 + row * 0.75)
@@ -34,7 +32,7 @@ func _ready() -> void:
 			for seat in 17:
 				ArenaGeometry.box(self, Vector3(-12 + seat * 1.5, 0.5 + row * 0.6, z), Vector3(0.6, 0.23, 0.5), Color("446582") if seat % 3 else Color("ddaf52"))
 
-func wall(at: Vector3, size: Vector3, color: Color) -> void:
+func wall(at: Vector3, size: Vector3, color: Color) -> StaticBody3D:
 	var body := StaticBody3D.new()
 	body.position = at
 	body.collision_layer = 1
@@ -46,3 +44,4 @@ func wall(at: Vector3, size: Vector3, color: Color) -> void:
 	body.add_child(collider)
 	add_child(body)
 	ArenaGeometry.box(body, Vector3.ZERO, size, color)
+	return body

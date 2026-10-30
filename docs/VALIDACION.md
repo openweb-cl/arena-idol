@@ -1,5 +1,9 @@
 # Evidencia de validación — combate 3D
 
+P1/P2: **192 comprobaciones aprobadas** en Godot 4.7.2; recarga, mapas A/B,
+PCK y capturas. [Seguimiento vigente](PROGRESO_P1_P2.md). Playtest de equilibrio
+del propietario pendiente. Los informes siguientes conservan evidencia anterior.
+
 Actualización de selección AUTO y contacto: **122 verificaciones aprobadas** en
 Godot 4.7.2, con fuego iniciado por el jugador. Ver
 [APUNTADO_AUTOMATICO.md](APUNTADO_AUTOMATICO.md).

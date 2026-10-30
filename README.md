@@ -29,7 +29,7 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/turbo-reload
+   git switch codex/arena-cover-variants
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
@@ -69,6 +69,19 @@ dirección de movimiento. La selección no dispara sola ni convierte tiros en
 proyectiles teledirigidos. [Controles y evidencia](docs/APUNTADO_AUTOMATICO.md).
 La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
 protección. Teclado/ratón primero; táctil queda pendiente.
+
+## Avance del plan
+
+- [x] P1: cargas/recarga y referencia sin recarga, verificadas en A.
+- [x] P2: arena A original y B experimental, colisión y navegación compartidas.
+- [ ] Playtest humano para aprobar equilibrio y distribución.
+- [ ] Refresh visual y personajes siguientes (otro hito).
+
+El menú permite elegir **ARENA A / ARENA B** y, por separado, **REGLAS RECARGA /
+REFERENCIA SIN RECARGA**. Revancha conserva esas opciones. Para comparar mapas,
+mantén las mismas reglas; para comparar recarga, mantén el mismo mapa.
+El campo de tiro usa A. B también puede abrirse con F6 en
+`game/scenes/arena/prisma_b.tscn`.
 
 ## Recarga del Turbo (P1)
 
