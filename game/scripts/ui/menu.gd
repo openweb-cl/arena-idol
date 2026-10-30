@@ -56,8 +56,15 @@ func show_home() -> void:
 	left.add_child(play)
 	play.pressed.connect(start_match)
 	var choose := ArenaStyle.button("ELEGIR ÍDOLO")
-	left.add_child(choose)
+	var secondary := HBoxContainer.new()
+	left.add_child(secondary)
+	secondary.add_child(choose)
+	choose.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	choose.pressed.connect(show_selection)
+	var training := ArenaStyle.button("CAMPO DE TIRO")
+	secondary.add_child(training)
+	training.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	training.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://scenes/training/projectile_range.tscn"))
 	var graphics := ArenaStyle.button("GRÁFICOS: " + ("BAJO" if GraphicsSettings.low else "ALTO"))
 	left.add_child(graphics)
 	graphics.pressed.connect(func() -> void:

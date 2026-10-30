@@ -2,6 +2,7 @@ class_name IdolArena
 extends Node3D
 const PLAYER_SCENE := preload("res://scenes/actors/player.tscn")
 enum Phase { PLAYING, PAUSED, FINISHED }
+@export var training_mode := false
 @export var config: MatchConfig = preload("res://data/match.tres")
 var phase := Phase.PLAYING
 var rules: MatchRules
@@ -12,6 +13,12 @@ var hud: ArenaHUD
 var camera: ArenaCamera
 var light: DirectionalLight3D
 var aim_marker: MeshInstance3D
+var aim_guide: AimGuide
+var show_aim_guide := false
+var shot_events: Array[Dictionary] = []
+var shot_counts: Dictionary = {}
+var training_case := 0
+const TRAINING_CASES := ["CORTA / 3 m", "MEDIA / 7 m", "LARGA / 12 m", "COBERTURA", "FUERA DE ALCANCE / 14 m"]
 var projectiles: Array[CombatProjectile] = []
 var elapsed := 0.0
 var mouse_aim := false
@@ -26,8 +33,8 @@ func _ready() -> void:
 	GraphicsSettings.apply(get_viewport(), light)
 	camera = ArenaCamera.new()
 	add_child(camera)
-	human = spawn_player(GameSession.selected, 0, Vector3(-10, 0, 0))
-	var other := CharacterCatalog.AVAILABLE[1] if GameSession.selected.id == "turbo" else CharacterCatalog.AVAILABLE[0]
+	human = spawn_player(CharacterCatalog.AVAILABLE[0] if training_mode else GameSession.selected, 0, Vector3(-10, 0, 0))
+	var other := CharacterCatalog.AVAILABLE[1] if human.definition.id == "turbo" else CharacterCatalog.AVAILABLE[0]
 	bot = spawn_player(other, 1, Vector3(10, 0, 0))
 	rules.finished.connect(on_finished)
 	hud = ArenaHUD.new()
@@ -38,6 +45,12 @@ func _ready() -> void:
 	hud.message.text = "Usa la cobertura · %d eliminaciones para ganar" % config.target_eliminations
 	aim_marker = ArenaGeometry.ring(self, 0.25, ArenaStyle.GOLD)
 	aim_marker.visible = false
+	aim_guide = AimGuide.new()
+	add_child(aim_guide)
+	if training_mode:
+		show_aim_guide = true
+		hud.message.hide()
+		set_training_case(0)
 	get_viewport().gui_release_focus()
 
 func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaPlayer:
@@ -61,13 +74,21 @@ func _physics_process(delta: float) -> void:
 			projectiles.remove_at(index)
 	if phase == Phase.PLAYING:
 		elapsed += delta
-		rules.tick(delta)
+		if not training_mode:
+			rules.tick(delta)
 		if phase != Phase.PLAYING:
 			return
 		human.command.move = keyboard_direction()
 		if mouse_aim:
 			update_aim()
-		brain.update(bot, human, projectiles, delta)
+		if training_mode:
+			bot.command.clear_actions()
+			bot.command.move = Vector2.ZERO
+			bot.move_velocity = Vector3.ZERO
+			bot.push_velocity = Vector3.ZERO
+			bot.position = bot.spawn_point
+		else:
+			brain.update(bot, human, projectiles, delta)
 		for actor: ArenaPlayer in [human, bot]:
 			actor.position.x = clampf(actor.position.x, -12.5, 12.5)
 			actor.position.z = clampf(actor.position.z, -6.5, 6.5)
@@ -78,7 +99,18 @@ func _physics_process(delta: float) -> void:
 					apply_damage(rival, actor, actor.definition.ability.contact_damage, actor.dash_direction * 9)
 		if elapsed - last_message_at > 4:
 			hud.message.text = ""
+	aim_guide.visible = show_aim_guide and not human.knocked_out
+	if aim_guide.visible:
+		var direction := Vector3(human.command.aim.x, 0, human.command.aim.y) if human.command.aim.length() > 0.1 else human.facing
+		aim_guide.update_guide(human, direction.normalized())
 	hud.update_state(rules, human)
+	if training_mode:
+		hud.scoreboard.text = "CAMPO DE TIRO · REY INMÓVIL"
+		hud.diagnostics.visible = true
+		hud.diagnostics.text = "1 Corta · 2 Media · 3 Larga · 4 Cobertura · 5 Fuera de alcance
+%s | Rey: %d PV | F2: guía %s
+Impactos %d · Cobertura %d · Alcance %d
+%s" % [TRAINING_CASES[training_case], bot.health, "ON" if show_aim_guide else "OFF", shot_counts.get("impacto", 0), shot_counts.get("cobertura", 0), shot_counts.get("alcance", 0), shot_summary()]
 
 func keyboard_direction() -> Vector2:
 	var x := float(Input.is_physical_key_pressed(KEY_D) or Input.is_physical_key_pressed(KEY_RIGHT)) - float(Input.is_physical_key_pressed(KEY_A) or Input.is_physical_key_pressed(KEY_LEFT))
@@ -86,16 +118,14 @@ func keyboard_direction() -> Vector2:
 	return Vector2(x, y).limit_length()
 
 func update_aim() -> void:
-	var point := aim_position
-	var origin := camera.project_ray_origin(point)
-	var ray := camera.project_ray_normal(point)
-	var hit: Variant = Plane(Vector3.UP, 0).intersects_ray(origin, ray)
+	var hit: Variant = CombatAim.point(camera, aim_position, human)
 	if hit != null:
 		var at: Vector3 = hit
-		aim_marker.position = at + Vector3.UP * 0.03
+		aim_marker.position = at
 		aim_marker.visible = true
-		var aim := at - human.position
-		human.command.aim = Vector2(aim.x, aim.z).normalized()
+		var aim := CombatAim.direction(CombatAim.origin(human), at)
+		if not aim.is_zero_approx():
+			human.command.aim = Vector2(aim.x, aim.z)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -113,6 +143,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	match event.physical_keycode:
 		KEY_ESCAPE: toggle_pause()
 		KEY_F3: hud.show_metrics = not hud.show_metrics
+		KEY_F2: show_aim_guide = not show_aim_guide
+		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5:
+			if training_mode and phase == Phase.PLAYING:
+				set_training_case(event.physical_keycode - KEY_1)
 		KEY_SPACE:
 			if phase == Phase.PLAYING: human.command.shoot = true
 		KEY_E, KEY_SHIFT:
@@ -136,8 +170,9 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 		projectile.speed = actor.definition.projectile_speed * (1.45 if is_super else 1.0)
 		projectile.max_distance = actor.definition.attack_range * (1.3 if is_super else 1.0)
 		projectile.power = is_super
-		projectile.position = actor.position + Vector3.UP * 0.85
+		projectile.position = to_local(CombatAim.origin(actor))
 		projectile.hit.connect(apply_damage)
+		projectile.resolved.connect(on_projectile_resolved)
 		add_child(projectile)
 		projectiles.append(projectile)
 		spawn_effect(actor, "turbo_super" if is_super else "sprint", Color("62e7ff"))
@@ -174,7 +209,8 @@ func on_eliminated(actor: ArenaPlayer) -> void:
 		return
 	hud.message.text = "¡Eliminación rival!" if actor == bot else "Te han eliminado · Reaparecerás pronto"
 	last_message_at = elapsed
-	rules.score(1 - actor.team)
+	if not training_mode:
+		rules.score(1 - actor.team)
 
 func freeze_combat(freeze: bool) -> void:
 	human.active = not freeze
@@ -206,3 +242,46 @@ func on_finished() -> void:
 	bot.visual.celebration = rules.scores[1] > rules.scores[0]
 	hud.update_state(rules, human)
 	hud.show_overlay(rules.result(), "Eliminaciones: %d — %d\nBatalla de entrenamiento local" % rules.scores, false)
+
+func on_projectile_resolved(projectile: CombatProjectile, reason: String, at: Vector3) -> void:
+	shot_counts[reason] = shot_counts.get(reason, 0) + 1
+	shot_events.append({"reason": reason, "at": at, "distance": projectile.travelled, "age": projectile.age, "team": projectile.source.team})
+	if shot_events.size() > 20:
+		shot_events.pop_front()
+	if training_mode or show_aim_guide:
+		var feedback := ShotFeedback.new()
+		feedback.text = reason.to_upper()
+		feedback.color = Color("35c78a") if reason == "impacto" else (Color("ffb357") if reason == "cobertura" else Color("bd9aff"))
+		feedback.position = to_local(at)
+		add_child(feedback)
+
+func shot_summary() -> String:
+	if shot_events.is_empty():
+		return "Apunta al torso y dispara. El Rey no se mueve ni ataca."
+	var event: Dictionary = shot_events.back()
+	return "Último: %s · %.2f m · %.2f s" % [event.reason.to_upper(), event.distance, event.age]
+
+func set_training_case(index: int) -> void:
+	training_case = clampi(index, 0, TRAINING_CASES.size() - 1)
+	for projectile in projectiles:
+		if is_instance_valid(projectile):
+			projectile.queue_free()
+	projectiles.clear()
+	for feedback in get_children():
+		if feedback is ShotFeedback:
+			feedback.queue_free()
+	human.spawn_point = Vector3(-10, 0, -2)
+	bot.spawn_point = Vector3([-7, -3, 2, 3, 2][training_case], 0, -2)
+	if training_case == 3:
+		human.spawn_point = Vector3(-3, 0, 0)
+		bot.spawn_point = Vector3(3, 0, 0)
+	elif training_case == 4:
+		human.spawn_point = Vector3(-12, 0, -2)
+	human.reset_at_spawn()
+	bot.reset_at_spawn()
+	bot.invulnerable = 0
+	human.facing = CombatAim.direction(human.global_position, bot.global_position)
+	human.command.aim = Vector2(human.facing.x, human.facing.z)
+	mouse_aim = false
+	hud.message.text = "Prueba %s · 1–5 cambian ejercicio · F2 alterna guía" % TRAINING_CASES[training_case]
+	last_message_at = elapsed

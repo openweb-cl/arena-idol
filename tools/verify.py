@@ -45,12 +45,17 @@ def main():
         log = run("reglas y física", "--fixed-fps", "60", "--script", "res://tests/run_tests.gd")
         if "0 fallos" not in log or "RESULTADO:" not in log:
             sys.exit("La suite no confirmó ejecución y finalización")
+        shots = run("proyectiles y apuntado", "--fixed-fps", "60", "--script", "res://tests/test_projectiles.gd")
+        if "PROYECTILES:" not in shots or "0 fallos" not in shots:
+            sys.exit("La suite de proyectiles no confirmó finalización")
+        run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")
         if args.pack:
             pack = str(Path(work) / "arena.pck")
             run("exportación PCK", "--export-pack", "Linux", pack)
             run("PCK menú", "--main-pack", pack, "--quit-after", "10")
+            run("PCK campo de tiro", "--main-pack", pack, "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
             run("PCK arena", "--main-pack", pack, "res://scenes/arena/arena.tscn", "--quit-after", "30")
     print("Verificación completada. No acredita GPU/Android ni calidad comercial.")
 

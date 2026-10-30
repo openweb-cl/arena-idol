@@ -11,6 +11,7 @@ var overlay_title: Label
 var overlay_detail: Label
 var resume: Button
 var metrics: Label
+var diagnostics: Label
 var show_metrics := false
 
 func _ready() -> void:
@@ -38,7 +39,7 @@ func _ready() -> void:
 	status = ArenaStyle.label("", 20)
 	status.position = Vector2(40, 624)
 	root.add_child(status)
-	var hints := ArenaStyle.label("WASD  MOVER   /   RATÓN  APUNTAR\nCLIC / ESPACIO  ATACAR   /   E / SHIFT  HABILIDAD\nQ  SÚPER   /   F3  MÉTRICAS", 16, ArenaStyle.MUTED)
+	var hints := ArenaStyle.label("WASD  MOVER   /   RATÓN  APUNTAR\nCLIC / ESPACIO  ATACAR   /   E / SHIFT  HABILIDAD\nQ  SÚPER   /   F2  GUÍA   /   F3  MÉTRICAS", 16, ArenaStyle.MUTED)
 	hints.position = Vector2(720, 622)
 	root.add_child(hints)
 	var placeholder := ArenaStyle.label("DEMO LOCAL 1 vs BOT · ARTE PROVISIONAL · Sin objetivos deportivos", 15, ArenaStyle.MUTED)
@@ -52,6 +53,11 @@ func _ready() -> void:
 	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
 	metrics.position = Vector2(40, 120)
 	root.add_child(metrics)
+	diagnostics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
+	diagnostics.position = Vector2(40, 90)
+	diagnostics.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	diagnostics.hide()
+	root.add_child(diagnostics)
 	overlay = PanelContainer.new()
 	overlay.position = Vector2(360, 180)
 	overlay.custom_minimum_size = Vector2(560, 360)
