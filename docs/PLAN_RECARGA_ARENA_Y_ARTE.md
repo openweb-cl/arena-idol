@@ -8,7 +8,7 @@ pruebas automatizadas y playtest humano. No se declara equilibrio aprobado.
 - [x] Rama de P1 creada desde main actualizado con las dependencias #3/#4 conservadas.
 - [x] Recarga del Turbo implementada; referencia sin recarga y HUD disponibles.
 - [x] Pruebas de P1 y revisión de capturas completadas (152 comprobaciones; PROGRESO_P1_P2.md).
-- [ ] PR de P1 publicado.
+- [x] PR de P1 publicado: #5 (sin fusionar).
 - [ ] Dos mapas A/B con geometría y navegación compartidas.
 - [ ] Pruebas de P2 y revisión de capturas completadas.
 - [ ] PR de P2 publicado.
