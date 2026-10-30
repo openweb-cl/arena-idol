@@ -14,3 +14,7 @@
 # Sistemas
 .DS_Store
 Thumbs.db
+# Exportaciones y fuentes locales de arte
+builds/
+*.blend1
+*.blend2

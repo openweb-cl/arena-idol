@@ -1,30 +1,80 @@
-# Arquitectura técnica v0.1
-## Motor
-Godot 4.7.2 estable, GDScript y pipeline 2D. La imagen generada es referencia de estilo; priorizar sombras, luces y sprites para look 2.5D sin exigir 3D complejo. Evitar dependencias de pago al inicio.
+# Arquitectura vigente — combate arcade 3D
 
-## Carpetas futuras del juego
+Godot 4 estable, GDScript, 3D real; cámara superior inclinada. La corrección más
+reciente de combate prevalece sobre v0.4 y sobre la primera propuesta 2D. No es
+simulación de fútbol. Primera demo: entrenamiento de Batalla de Ídolos 1 humano
+contra bot; equipos 3v3 y red son hitos posteriores.
+
+## Toolchain y render
+
+Validación con Godot 4.6.3 estable instalado en cloud; no suponer instalado 4.7.2
+que aparece en documentos antiguos. Mobile por defecto; arranque alternativo
+`--rendering-method gl_compatibility` para equipos sin Vulkan. Perfiles BAJO/ALTO:
+escala 3D, sombras y VFX; cambiar backend exige reinicio/exportación. Sin GI ni SSR.
+Meta 60 FPS Android no medida hasta prueba en hardware. Véase `ANDROID.md`.
+
+## Estructura común
+
 ```
 game/
-  project.godot
-  scenes/{boot,menu,arena,actors,ball,ui}/
-  scripts/{core,actors,combat,ball,modes,net}/
-  assets/{sprites,sfx,music,fonts,tiles}/
-  data/{characters,maps,balance}/
-  tests/
+  project.godot                 # raíz exclusiva exportable, landscape, física 60 Hz
+  scenes/menu/main.tscn         # menú/selección con SubViewport de retrato 3D
+  scenes/arena/arena.tscn        # composición de partido, MatchConfig exportado
+  scenes/actors/player.tscn     # CharacterBody3D; presentación intercambiable
+  scripts/core/                # catálogo, Resources, sesión, PlayerCommand
+  scripts/actors/              # movimiento, vida, habilidades, adaptador visual
+  scripts/combat/              # proyectiles y resolución de ataques
+  scripts/modes/               # reglas de eliminaciones, arena, bot, cobertura
+  scripts/ui/                  # controles/presentación sin autoridad de daño
+  scripts/vfx/                 # efectos provisionales desacoplados
+  data/characters/*.tres       # estadísticas + modelo GLB opcional
+  data/abilities/*.tres        # duración, fuerza, cooldown y color provisional
+  data/match.tres              # duración, objetivo, respawn
+  assets/models/               # destino de GLB de Claude (pendiente)
+  tests/                      # pruebas de reglas e integración headless
 ```
-Se crean estas carpetas al iniciar la implementación en Godot; el paquete actual es preproducción, no proyecto Godot ejecutable.
 
-## Orden de subsistemas
-1 input -> movimiento -> cámara -> colisión -> balón -> arco/gol -> HUD -> bot -> habilidades -> menús -> telemetría -> red -> matchmaking.
+## Responsabilidades y flujo
 
-## Multijugador
-Fase local offline (un jugador + bots); después prototipo online 1v1 con servidor autoritativo. El salto a 3v3 requiere reconciliación, interpolación, validación de goles, desconexiones, emparejamiento y pruebas de latencia desde regiones chilenas. **GitHub Pages no aloja servidores de partidas.**
+Teclado/ratón o bot → `PlayerCommand` → `ArenaPlayer` (movimiento/acciones) →
+resolución de combate → vida/eliminación → `MatchRules` → HUD. La visual recibe
+velocidad/estado/eventos, nunca decide daño. XZ es terreno, Y altura, unidades
+métricas. Física a 60 Hz, aceleración/frenado, dirección de apuntado independiente,
+colisión con obstáculos. Capas 1 terreno, 2 actores. Los proyectiles excluyen emisor.
 
-## Backend
-No instalar backend hasta tener vertical slice. Para cuentas/clasificación evaluar Supabase Free únicamente después de revisar límites y políticas vigentes. No alojar claves con permisos de servidor dentro del cliente. Puntuación solo la firma el servidor.
+`CharacterDefinition` exporta velocidad, aceleración, frenado, giro, vida, ataque,
+alcance, cadencia, empuje, parámetros de súper y habilidad; además PackedScene
+opcional y corrección de escala/rotación visual. No contiene referencias internas.
+`AbilityDefinition` configura Turbo Sprint y Embestida Real. Los Resources son la
+interfaz del propietario en el inspector, no requieren editar scripts para balance.
+Catálogo de 16 plazas, solo dos disponibles.
 
-## Entornos
-PC Windows como estación de desarrollo; export Android para pruebas táctiles; web como demo secundaria previa validación de soporte y rendimiento. CI con GitHub Actions solo cuando proyecto exportable.
+`MatchRules` es la autoridad única del reloj/marcador/cierre. Cada eliminación
+válida concede un punto al equipo contrario. Demo: 180 s o 5 eliminaciones,
+respawn 4 s, empate por tiempo posible. Pausa detiene reloj, proyectiles y respawn;
+revancha reconstruye estado. Balón de Gloria será un módulo de objetivos futuro;
+ninguna lógica de balón/porterías condiciona combate base.
 
-## Privacidad y seguridad
-Nombre público distinto al dato real, sin geolocalización precisa, chat cerrado al principio, bloquear/reportar cuando exista interacción social; protección especial a menores. Logs minimizados y política privacidad.
+## Frontera artística
+
+`CharacterVisual` acepta `model_scene` GLB/wrapper y clips `idle/run/kick/hit/
+celebrate`. En ausencia de modelo usa **geometría provisional de entrenamiento**
+con animación procedural; no son GLB finales ni arte comercial. Fuentes Blender,
+rig y clips serán responsabilidad de Claude Code según `CONTRATO_ARTE_3D.md`.
+Escenario y VFX actuales también provisionales. La UI es funcional, pendiente de
+producción artística. `COORDINACION_AGENTES.md` evita ediciones simultáneas.
+
+## Preparación competitiva
+
+Comandos separados de presentación y estado; autoridad única local. No hay sockets,
+servidores, cuentas, ranking ni persistencia de resultados. Para red: servidor
+valida movimiento, daño y score; comandos secuenciados, snapshots, predicción y
+reconciliación. `CharacterBody3D` no garantiza determinismo entre máquinas.
+Primero combate local y equipos; después ensayo autoritativo 1v1 antes de 3v3.
+No usar sincronización de transforms como solución final ni confiar score al cliente.
+
+## Seguridad y coste
+
+Solo `game/` es raíz exportable, excluye referencias privadas en `data/` y `design/`
+de raíz. Sin servicios comerciales ni backend en este hito, sin recursos externos
+copiados. Modelos actuales propios/provisionales. No subir claves ni keystores.

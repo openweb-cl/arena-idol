@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/rey.tres" id="2"]
+[resource]
+script = ExtResource("1")
+id = "rey"
+display_name = "El Rey"
+number = 23
+role = "TANQUE"
+description = "Domina el combate cercano.\nEmbestida Real: avance corto con escudo.\nMás resistencia, menor velocidad."
+color = Color(1, 0.64, 0.26, 1)
+speed = 6.0
+max_health = 6200
+attack_damage = 1100
+ability = ExtResource("2")
+attack_type = "Melee"
+attack_range = 2.7
+attack_interval = 0.65
+attack_push = 6.0
+super_damage = 1900
+super_radius = 4.5

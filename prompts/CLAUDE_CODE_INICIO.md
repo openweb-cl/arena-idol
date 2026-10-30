@@ -1,9 +1,19 @@
-# Instrucción maestra para Claude Code
+# Inicio de Claude Code — producción artística 3D
 
-Actúa como lead game developer de Arena de Ídolos. Lee **antes de programar** `README.md`, `docs/DECISIONES_Y_ALCANCE.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/GDD.md`, `docs/MECANICAS.md`, `docs/ARQUITECTURA.md`, `docs/DIRECCION_VISUAL_UI.md`, `docs/ROADMAP.md` y `legal/LICENCIAS_Y_DERECHOS.md`.
+Lee completamente `CLAUDE.md`, `docs/DECISIONES_Y_ALCANCE.md`, `docs/GDD.md`,
+`docs/MECANICAS.md`, `docs/ARQUITECTURA.md`, `docs/ROSTER_CANONICO_V0_4.md`,
+`docs/ESTILO_3D.md`, `docs/CONTRATO_ARTE_3D.md`, `docs/COORDINACION_AGENTES.md` y los
+textos legales. La corrección vigente prioriza **combate arcade 3D**, no fútbol
+tradicional. Batalla de Ídolos primero; balón como objetivo solo en un modo futuro.
 
-Implementa primero un vertical slice de Godot 4 2D/GDScript dentro de `game/`: arena simétrica, personaje genérico original, movimiento WASD y joystick táctil, balón con posesión y física controlable, tiro/pase, dos arcos con detector de gol, HUD cronómetro/marcador, bot básico, capacidad de iniciar/reiniciar partida y una habilidad de desplazamiento con enfriamiento. No agregues símbolos, nombres de futbolistas, escudos, camisetas ni parecido facial protegidos al runtime. Usa placeholders propios/CC0 y documenta sus licencias.
+Crea `claude/art-pipeline` desde main actualizado una vez disponible la fundación
+aprobada. No edites simultáneamente scripts técnicos o UI compartida con Codex.
+Primero propone un hito de arte y lista archivos tomados. Produce recursos originales
+Blender/GLB para Turbo #11 y Rey #23; cumple escala, frente, sockets y clips del
+contrato. Conserva fuentes, documenta licencia/estado y no presentes placeholders
+como arte final. No importar mockups, rostros reales, escudos o kits protegidos.
 
-Criterios de terminado: abrir `game/project.godot` en Godot, iniciar partida de 3 minutos, controlar personaje, marcar gol, obtener marcador correcto, bot intenta disputar el balón, reiniciar sin error, sin dependencias comerciales, instrucciones reproducibles en README. Separar gameplay, datos, UI y red; escribir pruebas posibles y checklist manual. Mantener backlog en issues markdown, sin declarar multijugador funcionando cuando no existe.
-
-Primero inspecciona repo y explica el primer conjunto de cambios, luego implementa y valida cuanto puedas localmente. Si Godot no está instalado, no inventes test exitoso: deja comandos y pasos exactos para ejecutarlos.
+Integra mediante model_scene, sin cambiar físicas o daño. Verifica selección,
+arena y cinco clips en build, ambos perfiles gráficos y presupuesto de render.
+Comunica límites reales; no afirmar Android/60 FPS/calidad comercial sin prueba.
+Herramientas gratuitas; commits por hitos, PR y revisión, nunca merge automático.

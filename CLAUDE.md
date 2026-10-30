@@ -1,5 +1,42 @@
-# Contexto persistente de Claude Code — Arena de Ídolos
+# Claude Code — Arena de Ídolos
 
-**LEER PRIMERO** `docs/DECISIONES_Y_ALCANCE.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/DIRECCION_VISUAL_UI.md`, `prompts/CLAUDE_CODE_INICIO.md`. Los documentos más nuevos prevalecen sobre los anteriores. Idioma principal: español. Proyecto en preproducción, NO demo funcional.
+## Leer primero y prioridad
 
-Reglas: no copiar Brawl Stars; no incorporar al build nombres/rostros/escudos de clubes ni futbolistas sin permisos, no afirmar que cambiar el nombre elimina el riesgo; no inventar pruebas exitosas; primero gameplay divertido local, luego red; control de cambios claro; presupuesto mínimo. Diseño pensado para Android de gama media/baja. No subir claves, keystore ni credenciales.
+Leer `docs/DECISIONES_Y_ALCANCE.md`, `docs/GDD.md`, `docs/MECANICAS.md`,
+`docs/ARQUITECTURA.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/ESTILO_3D.md`,
+`docs/CONTRATO_ARTE_3D.md`, `docs/COORDINACION_AGENTES.md` y documentos legales.
+La corrección más reciente manda: **combate arcade 3D, no simulador de fútbol**.
+Batalla de Ídolos es prioridad; balón y goles no son requisito del primer modo.
+Plantel canónico v0.4 de 16 se conserva; Turbo #11 y Rey #23 son los iniciales.
+
+## Responsabilidad y coordinación
+
+Claude Code: herramientas de producción artística, Blender/GLB, modelos,
+animaciones, materiales, VFX y apoyo UI. Codex: arquitectura y gameplay,
+movimiento/física, combate, IA, futura red y optimización. No editar archivos
+simultáneamente. Antes de tocar scripts técnicos o UI compartida, acordar un
+handoff en el issue/PR. Propiedad detallada en COORDINACION_AGENTES.
+
+Nunca trabajar en main. Actualizar main remoto y crear rama `claude/<hito>`.
+Hitos pequeños, commits, pruebas y PR a main; no fusionar sin aprobación explícita.
+No rebase, reset o force-push sobre ramas ajenas. Cada tarea cloud ya está aislada;
+no crear worktrees salvo petición del propietario.
+
+## Reglas permanentes
+
+Godot 4 estable/GDScript/3D real, cámara superior inclinada, Android primero.
+Blender gratuito, GLB exportado explícitamente; Godot no debe necesitar Blender
+para abrir el proyecto. Materiales escalables Mobile/Compatibility, objetivo 60
+FPS sujeto a hardware real. Parámetros en Resources; cumplir contrato de escala,
+pivote, frente, clips y sockets. Placeholder marcado como tal, nunca arte final.
+
+UI y comunicación en español. Modelos, código, recursos, escenarios y poderes
+originales. No copiar recursos de Brawl Stars. No incorporar nombres/rostros/
+escudos/kits de clubes ni personas reales sin permisos; cambiar nombre no elimina
+riesgos. Referencias internas y mockups no se importan al build. Nombres actuales
+son provisionales, no autorización comercial. Mantener manifest de assets/licencias.
+
+Herramientas gratuitas, sin servicios de pago ni backend antes del hito aprobado.
+No subir secretos, credenciales o keystores. No declarar pruebas, calidad comercial,
+60 FPS, Android o multijugador sin evidencia. Reportar versión y comandos reales,
+capturas de build, costes de render e incidencias; conservar límites explícitos.

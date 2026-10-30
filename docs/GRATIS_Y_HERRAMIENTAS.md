@@ -2,7 +2,7 @@
 
 | Necesidad | Opción inicial | ¿Gratis? / advertencia |
 |---|---|---|
-| Motor | Godot 4.7.2, https://godotengine.org | Código abierto, gratis |
+| Motor | Godot 4 estable (validación 4.6.3), https://godotengine.org | Código abierto, gratis |
 | Código y tareas | GitHub Free, https://github.com | Plan gratuito con límites |
 | IDE | VS Code o editor Godot | Gratis |
 | Pixel/sprites | Krita, LibreSprite | Gratis / revisar licencias |

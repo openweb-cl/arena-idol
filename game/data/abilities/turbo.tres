@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AbilityDefinition" load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/core/ability_definition.gd" id="1"]
+[resource]
+script = ExtResource("1")
+display_name = "Turbo Sprint"
+cooldown = 4.5
+duration = 0.3
+speed_multiplier = 2.7
+effect_color = Color(0.1, 0.85, 1, 1)
