@@ -57,6 +57,9 @@ no tapar proyectiles ni indicadores de vida, ni sumar luces por efecto. Audio qu
 
 ## Estado y aceptación
 
+Turbo #11 tiene una **muestra V1 provisional** en Blender/GLB (rig, cinco clips y
+métricas en `docs/arte/TURBO_V1.md`), pendiente de revisión del propietario. Rey sigue con placeholder.
+
 Geometría procedural, escenario y animaciones del primer hito: **provisionales de mecánicas**.
 Ninguna figura de entrenamiento se presenta como resultado artístico final.
 Antes de calidad comercial: revisión de silueta por artista, rig y clips finales,

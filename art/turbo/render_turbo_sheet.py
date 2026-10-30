@@ -2,12 +2,13 @@
 
 Renderiza vistas de giro y una pose por clip con Cycles en CPU (sin GPU) desde
 art/turbo/turbo.blend y compone una lámina PNG. Uso:
-    python art/turbo/render_turbo_sheet.py [carpeta_salida]
+    python art/turbo/render_turbo_sheet.py [carpeta_salida]   # por defecto, temporal
 Requiere bpy 5.2 (o Blender 5.2 --background --python) y Pillow para componer.
 Las imágenes son renders de Blender, no capturas del juego.
 """
 import math
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -15,7 +16,7 @@ import bpy
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT = Path(sys.argv[-1]) if len(sys.argv) > 1 and not sys.argv[-1].endswith(".py") else ROOT / "docs" / "captures" / "turbo-v1"
+OUT = Path(sys.argv[-1]) if len(sys.argv) > 1 and not sys.argv[-1].endswith(".py") else Path(tempfile.gettempdir()) / "turbo-v1-renders"
 SAMPLES = 24
 SIZE = (420, 560)
 
@@ -127,8 +128,8 @@ def compose(views, poses):
         color = tuple(int(hex_color[j:j + 2], 16) for j in (0, 2, 4))
         draw.rectangle((x, y, x + 50, y + 50), fill=color, outline=(255, 255, 255))
         draw.text((x + 58, y + 10), f"{label}\n#{hex_color}", fill=(230, 240, 255))
-    sheet.save(OUT / "lamina_turbo_v1.png")
-    print("SHEET", OUT / "lamina_turbo_v1.png")
+    sheet.save(OUT / "lamina_turbo_v1.jpg", quality=88)
+    print("SHEET", OUT / "lamina_turbo_v1.jpg")
 
 
 if __name__ == "__main__":
