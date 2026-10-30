@@ -16,7 +16,8 @@ El modo completo Batalla de Ídolos 3v3 es un hito posterior.
 
 **Arte provisional:** personajes, arena, VFX y animaciones son recursos originales
 de entrenamiento, no modelos finales ni calidad comercial verificada. No se han
-validado 60 FPS en Android, export APK, táctil, GLB de artista ni multijugador.
+validado 60 FPS en Android, export APK, táctil ni multijugador. Turbo y Rey usan
+muestras GLB de Claude; Príncipe #20 y Pitbull #17 tienen arte, todavía sin gameplay.
 No se importan imágenes de `design/`, escudos o rostros al juego.
 
 ## Ejecutar en tu computador (Windows, Linux o macOS)
@@ -24,21 +25,23 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
 1. Instala **Godot 4.7.2 estable, edición estándar** (GDScript, no requiere .NET),
    desde [Godot](https://godotengine.org/download/). Esta corrección se validó con 4.7.2; la fundación anterior se probó con 4.6.3. No necesita Blender,
    plugins, Python, cuentas ni servicios de pago para jugar.
-2. Descarga la rama del PR o clona y cambia a ella:
+2. Descarga la rama del PR o clona el repositorio. Para esta revisión visual:
 
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/arena-cover-variants
+   git switch codex/visual-handoff
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
    y abre el editor. Espera la importación inicial. Pulsa **F6** solo si quieres
    probar una escena específica; para el juego completo pulsa **F5**.
-4. Elige ídolo y pulsa JUGAR. Si Vulkan no funciona, cambia el renderizador en la
-   esquina superior derecha a **Compatibility**, acepta el reinicio y pulsa F5.
+4. Elige ídolo y pulsa JUGAR. **Windows arranca en Compatibility** para evitar la
+   pantalla negra reportada con Mobile/Vulkan; **Android conserva Mobile**. Linux
+   y macOS conservan Mobile. Es una configuración por plataforma en `project.godot`.
    El menú permite perfiles ALTO/BAJO (sombras/VFX/escala 3D); ese selector no cambia
-   el backend. Para volver a Mobile se debe reiniciar el editor/exportación.
+   el backend. Los detalles y la validación pendiente en tu PC están en
+   [handoff visual](docs/arte/VISUAL_HANDOFF.md).
 
 Por terminal, desde la raíz (sustituye `godot` por la ruta de tu ejecutable):
 
@@ -46,6 +49,8 @@ Por terminal, desde la raíz (sustituye `godot` por la ruta de tu ejecutable):
 godot --path game
 # Alternativa sin Vulkan:
 godot --path game --rendering-method gl_compatibility
+# Prueba explícita de Mobile (también en Windows; requiere Vulkan funcional):
+godot --path game --rendering-method mobile
 ```
 
 ### Controles
