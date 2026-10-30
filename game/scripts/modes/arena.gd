@@ -3,6 +3,7 @@ extends Node3D
 const PLAYER_SCENE := preload("res://scenes/actors/player.tscn")
 enum Phase { PLAYING, PAUSED, FINISHED }
 @export var training_mode := false
+@export var laboratory_unlimited_ammo := false
 @export var auto_target_enabled := true
 @export var config: MatchConfig = preload("res://data/match.tres")
 var phase := Phase.PLAYING
@@ -30,6 +31,11 @@ var elapsed := 0.0
 var mouse_aim := false
 var aim_position := Vector2.ZERO
 var impacts := 0
+var basic_attacks: Array[int] = [0, 0]
+var super_attacks: Array[int] = [0, 0]
+var damage_events: Array[int] = [0, 0]
+var close_seconds: Array[float] = [0, 0]
+var report_path := ""
 var last_message_at := 0.0
 
 func _ready() -> void:
@@ -75,6 +81,7 @@ func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaP
 	var actor: ArenaPlayer = PLAYER_SCENE.instantiate()
 	actor.definition = def
 	actor.team = team
+	actor.unlimited_ammo = laboratory_unlimited_ammo or not GameSession.reload_enabled
 	actor.respawn_duration = config.respawn_seconds
 	actor.spawn_point = point
 	actor.position = point
@@ -83,6 +90,7 @@ func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaP
 	actor.action_requested.connect(on_action)
 	actor.ability_started.connect(on_ability)
 	actor.eliminated.connect(on_eliminated)
+	actor.attack_accepted.connect(on_attack_accepted)
 	actors.append(actor)
 	return actor
 
@@ -118,6 +126,11 @@ func _physics_process(delta: float) -> void:
 			bot.position = bot.spawn_point
 		else:
 			brain.update(bot, human, projectiles, delta)
+		if not human.knocked_out and not bot.knocked_out:
+			for actor: ArenaPlayer in [human, bot]:
+				var rival := bot if actor == human else human
+				if actor.definition.attack_type == "Melee" and actor.position.distance_to(rival.position) <= actor.definition.attack_range and brain.line_clear(actor, rival):
+					close_seconds[actor.team] += delta
 		for actor: ArenaPlayer in [human, bot]:
 			actor.position.x = clampf(actor.position.x, -12.5, 12.5)
 			actor.position.z = clampf(actor.position.z, -6.5, 6.5)
@@ -146,7 +159,7 @@ func _physics_process(delta: float) -> void:
 	if training_mode:
 		hud.scoreboard.text = "CAMPO DE TIRO · REY INMÓVIL"
 		hud.diagnostics.visible = true
-		hud.diagnostics.text = "1 Corta · 2 Media · 3 Larga · 4 Cobertura · 5 Fuera de alcance
+		hud.diagnostics.text = "1 Corta · 2 Media · 3 Larga · 4 Cobertura · 5 Fuera de alcance · L: munición libre
 %s | Rey: %d PV | F2: guía %s
 Impactos %d · Cobertura %d · Alcance %d
 %s" % [TRAINING_CASES[training_case], bot.health, "ON" if show_aim_guide else "OFF", shot_counts.get("impacto", 0), shot_counts.get("cobertura", 0), shot_counts.get("alcance", 0), shot_summary()]
@@ -191,6 +204,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_ESCAPE: toggle_pause()
 		KEY_F3: hud.show_metrics = not hud.show_metrics
 		KEY_F2: show_aim_guide = not show_aim_guide
+		KEY_L:
+			if training_mode and phase == Phase.PLAYING:
+				laboratory_unlimited_ammo = not laboratory_unlimited_ammo
+				for actor in actors:
+					actor.ammo.unlimited = laboratory_unlimited_ammo or not GameSession.reload_enabled
+					actor.ammo.reset()
 		KEY_T:
 			auto_target_enabled = not auto_target_enabled
 			auto_target = null
@@ -245,6 +264,7 @@ func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: V
 		return
 	if target.take_damage(damage, push):
 		impacts += 1
+		damage_events[source.team] += 1
 		source.super_charge = minf(100, source.super_charge + source.definition.charge_per_hit)
 		spawn_effect(target, "hit", Color("ffbb85"))
 
@@ -302,6 +322,7 @@ func on_finished() -> void:
 	human.visual.celebration = rules.scores[0] > rules.scores[1]
 	bot.visual.celebration = rules.scores[1] > rules.scores[0]
 	hud.update_state(rules, human)
+	call_deferred("save_report")
 	hud.show_overlay(rules.result(), "Eliminaciones: %d — %d\nBatalla de entrenamiento local" % rules.scores, false)
 
 func on_projectile_resolved(projectile: CombatProjectile, reason: String, at: Vector3) -> void:
@@ -346,3 +367,19 @@ func set_training_case(index: int) -> void:
 	mouse_aim = false
 	hud.message.text = "Prueba %s · 1–5 cambian ejercicio · F2 alterna guía" % TRAINING_CASES[training_case]
 	last_message_at = elapsed
+
+func on_attack_accepted(actor: ArenaPlayer, kind: String) -> void:
+	if kind == "shot":
+		basic_attacks[actor.team] += 1
+	else:
+		super_attacks[actor.team] += 1
+
+func report_data() -> Dictionary:
+	var participants: Array[Dictionary] = []
+	for actor: ArenaPlayer in [human, bot]:
+		participants.append({"character": actor.definition.id, "team": actor.team, "controller": "human" if actor == human else "bot", "limited_ammo": actor.ammo.limited(), "capacity": actor.ammo.capacity(), "seconds_per_charge": actor.ammo.interval(), "basic_attacks": basic_attacks[actor.team], "super_attacks": super_attacks[actor.team], "damage_events": damage_events[actor.team], "empty_seconds": actor.ammo.empty_seconds, "empty_periods": actor.ammo.empty_periods, "melee_opportunity_seconds": close_seconds[actor.team]})
+	return {"schema": 1, "configuration": "reload-p1-v1" if GameSession.reload_enabled else "reference-pr3", "map": "prisma-a", "engine": Engine.get_version_info().string, "aim_mode": "auto" if auto_target_enabled else "manual", "scores": rules.scores.duplicate(), "elapsed_seconds": elapsed, "participants": participants}
+
+func save_report() -> void:
+	if not training_mode and report_path.is_empty():
+		report_path = MatchReport.save(report_data())

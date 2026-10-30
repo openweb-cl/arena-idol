@@ -29,7 +29,7 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/auto-target
+   git switch codex/turbo-reload
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
@@ -69,6 +69,20 @@ dirección de movimiento. La selección no dispara sola ni convierte tiros en
 proyectiles teledirigidos. [Controles y evidencia](docs/APUNTADO_AUTOMATICO.md).
 La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
 protección. Teclado/ratón primero; táctil queda pendiente.
+
+## Recarga del Turbo (P1)
+
+Turbo dispone de **3 cargas** y recupera **1 cada 1,5 s**. Básico consume una;
+súper y sprint son independientes. HUD muestra segmentos y progreso. El bot Turbo
+respeta la misma regla y Rey no usa munición. Valores de ensayo, no balance final.
+
+En el menú **REGLAS: RECARGA** permite alternar a **REFERENCIA SIN RECARGA** para
+comparar con el comportamiento anterior. La opción aplica a ambos personajes al
+iniciar la partida. Campo de tiro: **L** alterna munición libre de laboratorio.
+Parámetros en `res://data/ammo/turbo.tres`.
+
+Resultados de partidas normales se guardan localmente en `user://playtests/`.
+[Seguimiento P1/P2 y evidencia](docs/PROGRESO_P1_P2.md).
 
 ## Campo de tiro y apuntado corregido
 

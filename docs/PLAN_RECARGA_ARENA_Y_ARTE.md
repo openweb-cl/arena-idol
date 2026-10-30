@@ -1,6 +1,23 @@
 # Próxima iteración: recarga, cobertura, arte y plantel
 
-Estado: **plan propuesto**, sin implementación ni cambios de balance en este PR.
+Estado: **ejecución autorizada de P1 y P2**. Se distinguen implementación técnica,
+pruebas automatizadas y playtest humano. No se declara equilibrio aprobado.
+
+## Seguimiento de ejecución
+
+- [x] Rama de P1 creada desde main actualizado con las dependencias #3/#4 conservadas.
+- [x] Recarga del Turbo implementada; referencia sin recarga y HUD disponibles.
+- [x] Pruebas de P1 y revisión de capturas completadas (152 comprobaciones; PROGRESO_P1_P2.md).
+- [x] PR de P1 publicado: #5 (sin fusionar).
+- [ ] Dos mapas A/B con geometría y navegación compartidas.
+- [ ] Pruebas de P2 y revisión de capturas completadas.
+- [ ] PR de P2 publicado.
+- [ ] Serie de playtest del propietario con ambos héroes y ambos mapas.
+- [ ] V1/V2 refresh visual y personajes siguientes (no iniciados en esta entrega).
+
+P2 se prepara como variante experimental solicitada por el propietario, después de
+validar técnicamente P1 en A. La comparación humana de recarga seguirá pendiente;
+no se considerará B aprobada por pruebas de bot.
 Sustenta el combate arcade 3D aprobado: Godot 4/GDScript, cámara inclinada,
 Android como objetivo, herramientas gratuitas, recursos e identidad originales.
 No es simulación deportiva; Batalla de Ídolos es el primer modo. La selección AUTO

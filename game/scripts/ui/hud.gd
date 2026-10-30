@@ -13,6 +13,9 @@ var resume: Button
 var metrics: Label
 var diagnostics: Label
 var assist_status: Label
+var ammo_title: Label
+var ammo_cells: HBoxContainer
+var ammo_progress: ProgressBar
 var show_metrics := false
 
 func _ready() -> void:
@@ -54,6 +57,20 @@ func _ready() -> void:
 	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
 	metrics.position = Vector2(40, 120)
 	root.add_child(metrics)
+	var ammo_panel := VBoxContainer.new()
+	ammo_panel.position = Vector2(40, 536)
+	ammo_panel.size.x = 300
+	ammo_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(ammo_panel)
+	ammo_title = ArenaStyle.label("", 16, ArenaStyle.GOLD)
+	ammo_panel.add_child(ammo_title)
+	ammo_cells = HBoxContainer.new()
+	ammo_panel.add_child(ammo_cells)
+	ammo_progress = ProgressBar.new()
+	ammo_progress.custom_minimum_size = Vector2(270, 6)
+	ammo_progress.show_percentage = false
+	ammo_progress.max_value = 1.0
+	ammo_panel.add_child(ammo_progress)
 	assist_status = ArenaStyle.label("", 16, ArenaStyle.GOLD)
 	assist_status.position = Vector2(40, 595)
 	assist_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -87,6 +104,25 @@ func _ready() -> void:
 	overlay.hide()
 
 func update_state(rules: MatchRules, player: ArenaPlayer) -> void:
+	var limited := player.ammo.limited()
+	var count := player.ammo.capacity() if limited else 0
+	while ammo_cells.get_child_count() > count:
+		var cell := ammo_cells.get_child(ammo_cells.get_child_count() - 1)
+		ammo_cells.remove_child(cell)
+		cell.queue_free()
+	while ammo_cells.get_child_count() < count:
+		var cell := ColorRect.new()
+		cell.custom_minimum_size = Vector2(32, 8)
+		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ammo_cells.add_child(cell)
+	for i in count:
+		(ammo_cells.get_child(i) as ColorRect).color = ArenaStyle.GOLD if i < player.ammo.charges else ArenaStyle.PANEL
+	ammo_cells.visible = limited
+	ammo_progress.visible = limited
+	ammo_progress.value = player.ammo.progress()
+	ammo_title.text = "CARGAS %d/%d" % [player.ammo.charges, count] if limited else ("MUNICIÓN DE REFERENCIA: SIN LÍMITE" if player.definition.ammo != null else "COMBATE CERCANO · SIN CARGAS")
+	if limited and player.ammo.charges < count:
+		ammo_title.text += " · %s %.1f s" % ["RECARGANDO" if player.ammo.charges == 0 else "+1 EN", player.ammo.remaining]
 	var seconds := ceili(rules.remaining)
 	scoreboard.text = "TÚ  %d   —   %d  BOT      %d:%02d" % [rules.scores[0], rules.scores[1], seconds / 60, seconds % 60]
 	var ability_text := "LISTA" if player.cooldown <= 0 else "%.1f s" % player.cooldown
