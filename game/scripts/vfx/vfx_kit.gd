@@ -16,6 +16,10 @@ const HIT_CORE := Color("fff8ec")
 const HIT_EDGE := Color("ff8a3d")
 const COVER := Color("ffb357")
 const SHIELD := Color(0.75, 0.92, 1.0, 0.35)
+const PRINCIPE_RED := Color("d92332")
+const PRINCIPE_LIGHT := Color("ffe9e6")
+const PRINCIPE_BLUE := Color("1a37a8")
+const PRINCIPE_ZONE := Color("1b2b63")
 
 static var _materials: Dictionary = {}
 static var _overlays: Dictionary = {}
@@ -80,6 +84,19 @@ static func sphere(parent: Node3D, at: Vector3, radius: float, color: Color, seg
 		shape.height = radius * 2
 		shape.radial_segments = segments
 		shape.rings = maxi(4, segments / 2)
+		_meshes[key] = shape
+	return _node(parent, _meshes[key], at, color)
+
+static func disk(parent: Node3D, at: Vector3, radius: float, color: Color, segments := 32) -> MeshInstance3D:
+	## Disco plano opaco sobre el suelo (zonas de efecto, sin transparencia).
+	var key := "disk%.3f/%d" % [radius, segments]
+	if not _meshes.has(key):
+		var shape := CylinderMesh.new()
+		shape.top_radius = radius
+		shape.bottom_radius = radius
+		shape.height = 0.01
+		shape.radial_segments = segments
+		shape.rings = 1
 		_meshes[key] = shape
 	return _node(parent, _meshes[key], at, color)
 

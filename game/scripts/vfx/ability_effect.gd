@@ -5,6 +5,9 @@ extends Node3D
 ## Posición en los pies del actor; -Z local es su frente. Duración 0,2–0,7 s.
 ## Tipos: shot, turbo_sprint, turbo_super, melee, rey_charge, rey_super, hit,
 ## shield, impact_cover, elimination. Alias heredados: sprint, charge.
+## Príncipe (preparados para su gameplay): principe_shot, principe_buff,
+## principe_field_warning, principe_field. Los dos campos se colocan en el centro
+## del área (no en el actor) y usan `radius` y `duration` de gameplay.
 var color := Color.CYAN
 var kind := "sprint"
 var age := 0.0
@@ -12,6 +15,7 @@ var life := 0.5
 var quality := true
 var follow: Node3D  ## opcional: el efecto acompaña al actor (sprint, embestida)
 var radius := 4.5  ## alcance real de la súper radial, para que la onda lo muestre
+var duration := 0.0  ## si > 0 sustituye la vida por defecto (tiempos que dicta gameplay)
 var parts: Array[Node3D] = []
 var bolts: Node3D
 var bolt_timer := 0.0
@@ -19,11 +23,12 @@ var bolt_timer := 0.0
 const LIVES := {
 	"shot": 0.2, "turbo_sprint": 0.45, "turbo_super": 0.5, "melee": 0.3, "rey_charge": 0.4,
 	"rey_super": 0.65, "hit": 0.3, "shield": 0.35, "impact_cover": 0.25, "elimination": 0.7,
+	"principe_shot": 0.2, "principe_buff": 0.8, "principe_field_warning": 0.6, "principe_field": 3.0,
 }
 
 func _ready() -> void:
 	kind = {"sprint": "turbo_sprint", "charge": "rey_charge"}.get(kind, kind)
-	life = LIVES.get(kind, 0.5)
+	life = duration if duration > 0.0 else LIVES.get(kind, 0.5)
 	match kind:
 		"shot": _build_shot()
 		"turbo_sprint": _build_sprint()
@@ -35,6 +40,10 @@ func _ready() -> void:
 		"shield": _build_shield()
 		"impact_cover": _build_cover()
 		"elimination": _build_elimination()
+		"principe_shot": _build_principe_shot()
+		"principe_buff": _build_principe_buff()
+		"principe_field_warning": _build_field_warning()
+		"principe_field": _build_field()
 		_:
 			parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.6, 0.07, color))
 
@@ -142,6 +151,86 @@ func _build_elimination() -> void:
 	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.9, 0.12, color))
 	VFXKit.sparks(self, Vector3(0, 1.0, 0), amount(20), color, 6.0, 0.6, Vector3.UP, 60, -9, 0.1)
 
+# --- Príncipe #20 ------------------------------------------------------------
+func _build_principe_shot() -> void:
+	# Pulso Certero: destello rojo y claro, estrecho y recto (precisión).
+	var muzzle := Vector3(0, 1.05, -0.5)
+	parts.append(VFXKit.star(self, muzzle, 0.6, 0.05, VFXKit.PRINCIPE_RED))
+	parts.append(VFXKit.sphere(self, muzzle, 0.1, VFXKit.PRINCIPE_LIGHT, 8))
+	for p in parts:
+		VFXKit.on_top(p)
+	VFXKit.sparks(self, muzzle, amount(6), VFXKit.PRINCIPE_RED, 6.0, 0.18, Vector3.FORWARD, 10, 0)
+
+func _build_principe_buff() -> void:
+	# Impulso Táctico: anillo y chevrones que suben, más texto (no solo color).
+	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.75, 0.07, VFXKit.PRINCIPE_RED))
+	var chevrons := Node3D.new()
+	add_child(chevrons)
+	for column in [-0.62, 0.62]:
+		for k in 3:
+			for s in [-1, 1]:
+				var arm := VFXKit.box(chevrons, Vector3(column + s * 0.1, 0.5 + k * 0.4, 0), Vector3(0.24, 0.07, 0.07), VFXKit.PRINCIPE_RED if k % 2 == 0 else VFXKit.PRINCIPE_LIGHT)
+				arm.rotation.z = s * deg_to_rad(-35)
+	parts.append(chevrons)
+	var label := Label3D.new()
+	label.text = "PODER +20 %"
+	label.font_size = 40
+	label.outline_size = 10
+	label.pixel_size = 0.008
+	label.modulate = VFXKit.PRINCIPE_LIGHT
+	label.outline_modulate = VFXKit.PRINCIPE_RED.darkened(0.3)
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.no_depth_test = true
+	label.position = Vector3(0, 2.3, 0)
+	add_child(label)
+	parts.append(label)
+
+func _build_field_warning() -> void:
+	# Aviso de Campo de Dominio: contorno fijo del radio real, anillo que se cierra
+	# como cuenta atrás, marcador central y flechas hacia adentro.
+	parts.append(VFXKit.ring(self, Vector3(0, 0.03, 0), radius, 0.1, VFXKit.PRINCIPE_RED))
+	parts.append(VFXKit.ring(self, Vector3(0, 0.035, 0), radius, 0.06, VFXKit.PRINCIPE_LIGHT))
+	var marker := Node3D.new()
+	add_child(marker)
+	for r in [45.0, -45.0]:
+		var bar := VFXKit.box(marker, Vector3(0, 0.04, 0), Vector3(0.7, 0.03, 0.1), VFXKit.PRINCIPE_RED)
+		bar.rotation_degrees.y = r
+	parts.append(marker)
+	for i in 6:
+		var ang := TAU * i / 6.0
+		var holder := Node3D.new()
+		holder.position = Vector3(cos(ang), 0.04, sin(ang)) * (radius - 0.35)
+		holder.rotation.y = -ang
+		add_child(holder)
+		for s in [-1, 1]:
+			var arm := VFXKit.box(holder, Vector3(0, 0, s * 0.1), Vector3(0.28, 0.03, 0.06), VFXKit.PRINCIPE_LIGHT)
+			arm.rotation.y = s * deg_to_rad(40)
+
+func _build_field() -> void:
+	# Campo de Dominio activo: pulso inicial hasta el radio y zona lenta opaca a ras
+	# de suelo con marcas de lentitud que giran despacio.
+	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), radius, 0.18, VFXKit.PRINCIPE_LIGHT))
+	var zone := Node3D.new()
+	add_child(zone)
+	VFXKit.disk(zone, Vector3(0, 0.02, 0), radius, VFXKit.PRINCIPE_ZONE)
+	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius, 0.09, VFXKit.PRINCIPE_RED)
+	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius * 0.6, 0.04, VFXKit.PRINCIPE_BLUE)
+	parts.append(zone)
+	var slow := Node3D.new()
+	add_child(slow)
+	for i in (6 if quality else 3):
+		var ang := TAU * i / (6.0 if quality else 3.0)
+		var glyph := Node3D.new()
+		glyph.position = Vector3(cos(ang), 0.045, sin(ang)) * radius * 0.78
+		glyph.rotation.y = -ang + PI / 2
+		slow.add_child(glyph)
+		for k in 2:
+			for s in [-1, 1]:
+				var arm := VFXKit.box(glyph, Vector3(s * 0.11, 0, k * 0.22), Vector3(0.26, 0.02, 0.07), VFXKit.PRINCIPE_LIGHT)
+				arm.rotation.y = s * deg_to_rad(35)
+	parts.append(slow)
+	VFXKit.sparks(self, Vector3(0, 0.15, 0), amount(16), VFXKit.PRINCIPE_RED, 5.0, 0.4, Vector3.UP, 85, -8)
+
 func _spawn_static(variant: String) -> void:
 	## Parte que se queda en el lugar de inicio aunque el efecto siga al actor.
 	var holder := get_parent() as Node3D
@@ -164,11 +253,11 @@ func _process(delta: float) -> void:
 	age += delta
 	var t := clampf(age / life, 0, 1)
 	var fade := VFXKit.fade(t)
-	if is_instance_valid(follow) and kind in ["turbo_sprint", "rey_charge"]:
+	if is_instance_valid(follow) and kind in ["turbo_sprint", "rey_charge", "principe_buff"]:
 		position = follow.position
 		rotation.y = atan2(-follow.facing.x, -follow.facing.z) if "facing" in follow else rotation.y
 	match kind:
-		"shot", "hit", "impact_cover":
+		"shot", "hit", "impact_cover", "principe_shot":
 			for p in parts:
 				p.scale = Vector3.ONE * (0.4 + VFXKit.ease_out(t * 2.5)) * maxf(0.001, fade)
 				p.rotation.z += delta * 6
@@ -203,6 +292,22 @@ func _process(delta: float) -> void:
 		"elimination":
 			parts[0].scale = Vector3(maxf(0.001, fade), 1.0 + t, maxf(0.001, fade))
 			parts[1].scale = Vector3.ONE * (1 + t * 1.5) * maxf(0.001, fade)
+		"principe_buff":
+			parts[0].scale = Vector3.ONE * (1 + t * 0.6) * fade
+			parts[1].position.y = t * 0.6
+			parts[1].scale = Vector3.ONE * fade
+			parts[2].position.y = 2.3 + t * 0.3
+			parts[2].scale = Vector3.ONE * VFXKit.fade(maxf(0, t - 0.6) * 2.5)
+		"principe_field_warning":
+			parts[1].scale = Vector3(maxf(0.001, 1.0 - t), 1, maxf(0.001, 1.0 - t))
+			parts[0].scale = Vector3(1, 1 + 0.5 * sin(age * 30.0), 1)
+		"principe_field":
+			var pulse := clampf(age / 0.3, 0, 1)
+			parts[0].scale = Vector3(maxf(0.001, VFXKit.ease_out(pulse)), 1, maxf(0.001, VFXKit.ease_out(pulse))) * (1.0 if age < 0.35 else 0.001)
+			var end_fade := VFXKit.fade(maxf(0, t - 0.85) / 0.15)
+			parts[1].scale = Vector3(1, end_fade, 1)
+			parts[2].rotation.y += delta * 0.4
+			parts[2].scale = Vector3.ONE * end_fade
 		_:
 			for p in parts:
 				p.scale = Vector3.ONE * (1 + t * 1.5)
