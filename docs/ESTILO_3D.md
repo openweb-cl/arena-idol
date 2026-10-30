@@ -10,11 +10,13 @@ sin patrocinadores, escudos ni rasgos de personas reales. Las imágenes de
 ## Personajes
 
 Meta: caricatura de 3,5–4 cabezas, manos/botas grandes y torso legible desde cámara.
-Turbo: silueta estrecha con aletas laterales y líneas de velocidad; cian/índigo,
-dorsal 11. Rey: hombros anchos, silueta de bloque protector, ámbar/violeta, dorsal
-23. Cascos y visores abstractos en los placeholders; diseñar rostros originales
-solo tras exploración de artista. Evitar peinados, tatuajes, kits o poses
-reconocibles de futbolistas. El dorsal es un elemento legible, no un logo.
+Turbo: silueta estrecha con aletas laterales y líneas de velocidad; azul con
+detalles rojos, pelo blanco y tatuajes de diseño propio, dorsal 11. Rey: hombros
+anchos, silueta de bloque protector, blanco y negro con oro y violeta (corona y capa),
+dorsal 23. Visores abstractos; diseñar rostros originales solo tras exploración de
+artista. No copiar rostros, tatuajes, escudos, kits ni poses de futbolistas reales
+(decisión de paleta del propietario del 2026-10-30 en `docs/arte/HEROES.md`). El dorsal
+es un elemento legible, no un logo.
 
 ## Materiales y presupuesto inicial (objetivos)
 
@@ -57,8 +59,11 @@ no tapar proyectiles ni indicadores de vida, ni sumar luces por efecto. Audio qu
 
 ## Estado y aceptación
 
-Turbo #11 tiene una **muestra V1 provisional** en Blender/GLB (rig, cinco clips y
-métricas en `docs/arte/TURBO_V1.md`), pendiente de revisión del propietario. Rey sigue con placeholder.
+Turbo #11 (V1.1) y Rey/King #23 (V0) tienen **muestras provisionales** en Blender/GLB
+(rig, cinco clips y métricas en `docs/arte/HEROES.md`), pendientes de revisión del propietario.
+Decisión del propietario (2026-10-30): Turbo en azul con detalles rojos, pelo blanco
+y tatuajes visibles; Rey en blanco y negro con corona dorada y capa violeta. Los
+tatuajes son diseños propios; sigue prohibido copiar tatuajes, rostros, escudos o kits reales.
 
 Geometría procedural, escenario y animaciones del primer hito: **provisionales de mecánicas**.
 Ninguna figura de entrenamiento se presenta como resultado artístico final.

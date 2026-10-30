@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
 [ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
 [ext_resource type="Resource" path="res://data/abilities/rey.tres" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/rey/rey.glb" id="3"]
 [resource]
 script = ExtResource("1")
 id = "rey"
@@ -19,3 +20,4 @@ attack_interval = 0.65
 attack_push = 6.0
 super_damage = 1900
 super_radius = 4.5
+model_scene = ExtResource("3")
