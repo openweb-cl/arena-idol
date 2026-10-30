@@ -24,6 +24,10 @@
   materiales, VFX y apoyo UI. No editar simultáneamente los mismos archivos;
   acordar handoff antes de cruzar propiedad. No actuar como si Claude hubiera
   revisado o producido algo sin su participación real.
-- Rama de esta entrega: `codex/game-foundation`, desde `origin/main` actualizado.
+- Rama de fundación: `codex/game-foundation`; corrección de apuntado: `codex/fix-projectile-aim`, desde `origin/main` actualizado.
   Exponer parámetros en Resources editables desde inspector, sin valores mágicos
   que obliguen al propietario a programar para balancear.
+
+- Regresión de apuntado: ejecutar también `game/tests/test_projectiles.gd`. Cursor
+  al torso y espacio vacío comparten altura con proyectil; no ocultar fallos con
+  cambios de daño/vida. Evidencia vigente en docs/APUNTADO_Y_PROYECTILES.md.

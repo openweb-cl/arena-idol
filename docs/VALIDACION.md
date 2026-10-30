@@ -1,6 +1,11 @@
-# Evidencia de validación — fundación de combate 3D
+# Evidencia de validación — combate 3D
 
-## Resultado actual
+Actualización de apuntado en Godot 4.7.2: **50 + 41 verificaciones aprobadas**,
+campo de tiro, exportación PCK y capturas de resultados físicos. Ver
+[APUNTADO_Y_PROYECTILES.md](APUNTADO_Y_PROYECTILES.md) para evidencia vigente.
+El informe siguiente conserva el contexto histórico de la fundación.
+
+## Validación de la fundación (anterior a la corrección de apuntado)
 
 Godot **4.6.3.stable.official.7d41c59c4**, Linux x86_64. Rama de implementación
 `codex/game-foundation`, basada en `dea890d` de main. Sin cambios directos en main.

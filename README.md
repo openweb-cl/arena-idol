@@ -21,16 +21,15 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
 
 ## Ejecutar en tu computador (Windows, Linux o macOS)
 
-1. Instala **Godot 4.6.3 estable, edición estándar** (GDScript, no requiere .NET),
-   desde [Godot](https://godotengine.org/download/). Esta es la versión probada;
-   4.7.2 en documentos antiguos no es requisito validado. No necesita Blender,
+1. Instala **Godot 4.7.2 estable, edición estándar** (GDScript, no requiere .NET),
+   desde [Godot](https://godotengine.org/download/). Esta corrección se validó con 4.7.2; la fundación anterior se probó con 4.6.3. No necesita Blender,
    plugins, Python, cuentas ni servicios de pago para jugar.
 2. Descarga la rama del PR o clona y cambia a ella:
 
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/game-foundation
+   git switch codex/fix-projectile-aim
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
@@ -59,12 +58,23 @@ godot --path game --rendering-method gl_compatibility
 | E / Shift | Turbo Sprint o Embestida Real |
 | Q / clic derecho | Súper con 100% de carga (se carga con impactos) |
 | Esc | Pausa / continuar |
+| F2 | Alternar línea de apuntado y alcance básico |
 | F3 | FPS y contadores locales de render, no benchmark Android |
 | Botones de resultado | Revancha o regreso al menú |
 
 Sin movimiento previo del ratón, se apunta en la última dirección de movimiento.
 La pérdida de foco pausa el combate. El eliminado reaparece a los 4 s con 1 s de
 protección. Teclado/ratón primero; táctil queda pendiente.
+
+## Campo de tiro y apuntado corregido
+
+En el menú elige **CAMPO DE TIRO**. Turbo dispara al Rey inmóvil y sin ataques.
+Teclas **1/2/3**: 3/7/12 metros; **4**: cobertura; **5**: fuera de alcance (14 m).
+Apunta al torso y haz clic. El panel muestra impactos, bloqueos y expiraciones.
+**F2** alterna línea de apuntado e indicador de alcance, también en combate normal.
+No se cambiaron daño, vida, alcance ni evasión del bot.
+
+[Explicación, regresión, instrucciones y capturas](docs/APUNTADO_Y_PROYECTILES.md).
 
 ## Ajustar valores sin programar
 
@@ -94,7 +104,7 @@ motor devuelva código cero y prueba exportación/arranque de PCK:
 
 ```sh
 python tools/verify.py --pack
-# Windows: python tools/verify.py --godot "C:/ruta/Godot_v4.6.3-stable_win64.exe" --pack
+# Windows: python tools/verify.py --godot "C:/ruta/Godot_v4.7.2-stable_win64.exe" --pack
 ```
 
 La suite ejerce reglas, escenas y física de combate; el tiempo fijo acelera

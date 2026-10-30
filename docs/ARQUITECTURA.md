@@ -7,8 +7,8 @@ contra bot; equipos 3v3 y red son hitos posteriores.
 
 ## Toolchain y render
 
-Validación con Godot 4.6.3 estable instalado en cloud; no suponer instalado 4.7.2
-que aparece en documentos antiguos. Mobile por defecto; arranque alternativo
+Fundación validada con Godot 4.6.3; corrección de apuntado y campo de tiro
+validados con Godot 4.7.2 estable oficial. Mobile por defecto; arranque alternativo
 `--rendering-method gl_compatibility` para equipos sin Vulkan. Perfiles BAJO/ALTO:
 escala 3D, sombras y VFX; cambiar backend exige reinicio/exportación. Sin GI ni SSR.
 Meta 60 FPS Android no medida hasta prueba en hardware. Véase `ANDROID.md`.
@@ -78,3 +78,12 @@ No usar sincronización de transforms como solución final ni confiar score al c
 Solo `game/` es raíz exportable, excluye referencias privadas en `data/` y `design/`
 de raíz. Sin servicios comerciales ni backend en este hito, sin recursos externos
 copiados. Modelos actuales propios/provisionales. No subir claves ni keystores.
+
+## Apuntado y diagnóstico
+
+CombatAim comparte el plano Y=0,85 entre ratón y origen del disparo. Cursor sobre
+collider de actor apunta a su centro; espacio vacío se proyecta al mismo plano.
+CombatProjectile limita distancia, barre contra terreno/actores y emite resolución
+para diagnóstico sin cambiar la autoridad de daño. Campo de tiro sin IA en
+`scenes/training/projectile_range.tscn`; guía opcional F2. Detalles y evidencia
+en APUNTADO_Y_PROYECTILES.md. Misma física/datos para humano y bot.
