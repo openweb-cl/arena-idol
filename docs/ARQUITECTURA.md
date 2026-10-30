@@ -52,8 +52,15 @@ Catálogo de 16 plazas, solo dos disponibles.
 `MatchRules` es la autoridad única del reloj/marcador/cierre. Cada eliminación
 válida concede un punto al equipo contrario. Demo: 180 s o 5 eliminaciones,
 respawn 4 s, empate por tiempo posible. Pausa detiene reloj, proyectiles y respawn;
-revancha reconstruye estado. Balón de Gloria será un módulo de objetivos futuro;
-ninguna lógica de balón/porterías condiciona combate base.
+revancha reconstruye estado. Los modos futuros son módulos de objetivos de combate;
+sin lógica de goles, porterías, posesión ni pases. Balón de Gloria requiere una
+redefinición de combate antes de planificar implementación.
+
+Extensión de roles (diseño): todos conservan el comando de ataque básico. Mejoras
+de poder, efectos de zona y desplazamientos se resuelven en gameplay, con filtros
+de equipo y colisiones; arte/UI solo los representan. Modificar cobertura exige
+mantener física y navegación coherentes. La ficha del Príncipe sigue pendiente de
+aprobación; ni esos efectos nuevos ni terreno dinámico están implementados.
 
 ## Frontera artística
 

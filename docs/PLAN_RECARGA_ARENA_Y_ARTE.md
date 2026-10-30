@@ -1,27 +1,40 @@
 # Próxima iteración: recarga, cobertura, arte y plantel
 
-Estado: **ejecución autorizada de P1 y P2**. Se distinguen implementación técnica,
-pruebas automatizadas y playtest humano. No se declara equilibrio aprobado.
+Estado: **P1/P2 fusionados, muestras GLB integradas y C1 en diseño**. Se distinguen
+implementación técnica, pruebas automatizadas y playtest humano. La aprobación
+inicial del propietario no equivale a certificar equilibrio general.
 
 ## Seguimiento de ejecución
 
 - [x] Rama de P1 creada desde main actualizado con las dependencias #3/#4 conservadas.
 - [x] Recarga del Turbo implementada; referencia sin recarga y HUD disponibles.
 - [x] Pruebas de P1 y revisión de capturas completadas (152 comprobaciones; PROGRESO_P1_P2.md).
-- [x] PR de P1 publicado: #5 (sin fusionar).
+- [x] PR de P1 publicado y fusionado por el propietario: #5.
 - [x] Dos mapas A/B implementados con geometría y navegación compartidas.
 - [x] Pruebas de P2 y revisión de capturas completadas (40 de mapas; 192 comprobaciones totales).
-- [x] PR de P2 publicado: #6 (sin fusionar; incluye P1).
+- [x] PR de P2 publicado y fusionado por el propietario: #6.
+- [x] Prueba inicial del propietario: ambas arenas bien y recarga percibida como justa.
 - [ ] Serie de playtest del propietario con ambos héroes y ambos mapas.
-- [ ] V1/V2 refresh visual y personajes siguientes (no iniciados en esta entrega).
+- [x] Muestras Blender/GLB de Turbo, Rey, Príncipe #20 y Pitbull #17: PR #8 fusionado.
+- [ ] Completar V1/V2: revisión artística, VFX/audio, arena y HUD; hay muestras, no arte final.
+- [x] Ficha C1 del Príncipe #20 redactada: [PRINCIPE_KIT.md](PRINCIPE_KIT.md).
+- [ ] Aprobación del propietario antes de programar `codex/principe-gameplay`.
+- [ ] Probar al Príncipe antes de empezar el gameplay del Pitbull #17.
 
-P2 se prepara como variante experimental solicitada por el propietario, después de
-validar técnicamente P1 en A. La comparación humana de recarga seguirá pendiente;
-no se considerará B aprobada por pruebas de bot.
+P2 conserva A y ofrece B como variante; el propietario ya probó ambas y la recarga.
+Sigue pendiente la serie comparativa con marcadores y duración. Las pruebas de bot
+no sustituyen esa evidencia.
 Sustenta el combate arcade 3D aprobado: Godot 4/GDScript, cámara inclinada,
 Android como objetivo, herramientas gratuitas, recursos e identidad originales.
 No es simulación deportiva; Batalla de Ídolos es el primer modo. La selección AUTO
 apunta y el propietario inicia el disparo, según la elección vigente.
+
+**Aclaración más reciente del propietario (30 octubre 2026):** todos tienen
+ataques básicos ofensivos, incluidos asistentes/apoyos. Los roles se diferencian
+por daño, resistencia, movilidad, mejoras de poder, protección y control de
+zonas/desplazamientos en la arena. Especiales y súpers pueden cambiar posiciones
+o sectores del mapa. Sin goles, porterías, posesión ni pases; los nombres
+deportivos del roster histórico no fijan mecánicas. Cada kit sigue sujeto a revisión.
 
 ## Punto de partida y dependencia
 
@@ -29,13 +42,11 @@ En el playtest del propietario, Turbo ganó 5–0 bajo control humano y el bot T
 venció 5–3 al Rey humano. Son observaciones iniciales que justifican experimentar;
 no certifican por sí solas equilibrio ni tasas de victoria generales.
 
-La versión jugable más reciente está en `codex/auto-target`, PR #3. Main todavía
-contiene solo documentación; #1 (fundación), #2 (apuntado) y #3 (selección AUTO)
-siguen pendientes de revisión. Ninguno se fusiona automáticamente. Este plan nace
-en una rama desde main y añade solo este documento, sin copiar los PR de código.
-Las implementaciones usarán como base el main actualizado que contenga las
-funcionalidades aprobadas. Si esas revisiones siguen pendientes, declarar la
-dependencia conservando historial y mostrar el diff específico de cada hito.
+La versión jugable está en `main`: fundación, apuntado/AUTO, recarga, A/B y muestras
+GLB, con PR #8 de Claude integrado. El PR #9 (`codex/visual-handoff`) propone los
+ajustes de Windows, azul de Turbo, etiquetas y selección; se revisa por separado.
+Las ramas nuevas parten de main actualizado y ningún PR se fusiona automáticamente.
+`codex/principe-kit` solo contiene diseño; todavía no hay gameplay del Príncipe.
 
 ## Secuencia y reparto
 
@@ -46,7 +57,7 @@ dependencia conservando historial y mostrar el diff específico de cada hito.
 | P2 | Dos variantes de arena comparables y navegables | Codex | P1 probado en mapa actual |
 | V1 | Primera muestra artística 3D completa de Turbo | Claude Code | Contrato de arte de fundación |
 | V2 | Rey, arena y HUD con estilo consistente | Claude Code + integración Codex | V1 revisado; geometría de P2 acordada |
-| C1 | Tercer héroe: El Príncipe, estratega | Codex + Claude Code | Primer ajuste Turbo/Rey evaluado |
+| C1 | Tercer héroe: El Príncipe #20, estratega | Codex + Claude Code | Ficha aprobada antes de programar |
 | P3 | Pruebas Android y presupuesto de render real | Codex + Claude Code | V2; adaptador táctil |
 | C2 | Expansión gradual a 6 y luego 16 | Ambos | Cada héroe anterior probado |
 
@@ -154,7 +165,8 @@ Responsable: Claude Code. Codex mantiene gameplay y la integración técnica.
 1. Revisar las referencias de `design/` para energía, siluetas, color y jerarquía;
    no importarlas como recursos ni replicar identidades reales.
 2. Definir una lámina breve: proporciones, paleta, materiales, cámara y escala.
-   Turbo: ágil/cian; Rey: ancho/ámbar-violeta. Mantener dorsales 11 y 23.
+   Turbo: ágil/azul con rojo; Rey: ancho/blanco-negro, oro y violeta. Mantener
+   dorsales 11 y 23; decisión posterior en `arte/HEROES.md`.
 3. Crear primero **un Turbo original en Blender**, exportar GLB y conservar fuente.
    Revisar escala y silueta en la cámara de juego antes de producir todo el plantel.
 4. Incorporar rig y clips del contrato: idle, run, kick (ataque), hit y celebrate;
@@ -194,13 +206,16 @@ character_visual o scripts/VFX simultáneamente: acordar responsable y entrega.
 
 Se conserva el plantel v0.4. Nombres e identidad comercial continúan provisionales.
 
-**Tercero propuesto: El Príncipe (UCH-02), estratega.** Amplía el triángulo de roles:
+**Tercero propuesto: El Príncipe #20 (UCH-02), estratega.** Amplía el triángulo de roles:
 Turbo movilidad/distancia, Rey presión/cercanía y Príncipe precisión/control. Antes
 de programarlo, definir una ficha de combate (ataque/activa/súper/debilidad) que
-adapte su concepto al modo actual sin hacer obligatorio un balón deportivo.
-La ficha deberá mantener su identidad canónica y no introducir de golpe visión,
-curación, aliados u otros subsistemas inexistentes. Es propuesta de diseño, no
-un kit nuevo ya aprobado ni implementado.
+defina combate, apoyo y control de la arena. [PRINCIPE_KIT.md](PRINCIPE_KIT.md)
+propone Pulso Certero (básico de daño), Impulso Táctico (mejora temporal de poder)
+y Campo de Dominio (pulso que desplaza enemigos y zona lenta temporal). La ficha
+está pendiente de aprobación; no hay pases ni objetivos deportivos. Su GLB
+ya existe en `res://assets/models/principe/principe.glb`, para usar por `model_scene`.
+El dorsal #20 y el #17 del Pitbull fueron decididos por el propietario en el hito
+artístico de Claude. El Pitbull sigue solo como arte hasta probar al Príncipe.
 
 Proceso por héroe:
 
@@ -245,7 +260,7 @@ Resources y adaptador visual requiere handoff explícito por archivo. Commits
 pequeños, pruebas relevantes y PR independientes; nunca desarrollar en main o
 fusionar PR sin aprobación. Sin servicios de pago ni recursos protegidos copiados.
 
-**Primer paquete recomendado:** P0 + P1 en código y V1 en arte, en paralelo y con
-archivos separados. P2 espera la primera comparación de recarga; C1 puede iniciar
-su ficha cuando esté registrado ese resultado. Este documento por sí solo no
-implementa, ejecuta ni valida ninguna de esas funciones futuras.
+**Paquete actual:** revisar el handoff visual #9 y la ficha C1 en PR independientes.
+Tras la aprobación de la ficha, implementar `codex/principe-gameplay`, probarlo y
+recién evaluar Pitbull #17. Este documento por sí solo no implementa ni valida
+esas funciones futuras.

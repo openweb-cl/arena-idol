@@ -6,8 +6,16 @@ Leer `docs/DECISIONES_Y_ALCANCE.md`, `docs/GDD.md`, `docs/MECANICAS.md`,
 `docs/ARQUITECTURA.md`, `docs/ROSTER_CANONICO_V0_4.md`, `docs/ESTILO_3D.md`,
 `docs/CONTRATO_ARTE_3D.md`, `docs/COORDINACION_AGENTES.md` y documentos legales.
 La corrección más reciente manda: **combate arcade 3D, no simulador de fútbol**.
-Batalla de Ídolos es prioridad; balón y goles no son requisito del primer modo.
+Batalla de Ídolos es prioridad; sin goles, porterías, posesión ni pases. Los
+proyectiles pueden tener forma de balón, pero causan daño en combate.
 Plantel canónico v0.4 de 16 se conserva; Turbo #11 y Rey #23 son los iniciales.
+
+Aclaración del propietario (30 octubre 2026): todos los héroes atacan con un básico,
+incluso los asistentes/apoyos. Diferenciar daño, resistencia, movilidad, mejoras
+de poder, protección y control de zonas/desplazamientos. Los especiales pueden
+ayudar aliados o alterar la arena. Mostrarlo en VFX y animación sin introducir
+lógica de daño en el arte. El clip `kick` es una animación de ataque; no implica
+una mecánica de pase. Los nombres deportivos del roster histórico no fijan kits.
 
 ## Responsabilidad y coordinación
 
