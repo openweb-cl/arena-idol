@@ -1,7 +1,7 @@
 """El Pitbull — generador reproducible del modelo, rig y clips (muestra V0).
 
-MUESTRA PROVISIONAL: solo arte. Sin gameplay ni ficha aprobada (Codex) y sin
-dorsal hasta que el propietario lo decida. No es arte final.
+MUESTRA PROVISIONAL: solo arte. Sin gameplay ni ficha aprobada (Codex).
+Dorsal 17 decidido por el propietario el 2026-10-30. No es arte final.
 Diseño original del defensor: compacto y bajo, de centro de gravedad bajo, camiseta
 blanca con franja celeste horizontal al centro, collar con tachas (sello propio),
 vendas blancas en las muñecas, guardia defensiva y visor ámbar de marca personal.
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
-from hero_kit import P, Vector, build_hero, celebrate_keys, hit_keys, make_bones, mirror, run_pose  # noqa: E402
+from hero_kit import P, Vector, build_hero, celebrate_keys, hit_keys, make_bones, mirror, number, run_pose  # noqa: E402
 
 PALETTE = {
     "M_Pitbull_Blanco": ("f4f5f2", 0.80, 0.0, None),   # camiseta, vendas, medias
@@ -64,6 +64,9 @@ def build_mesh(b):
     b.box(W, "chest", (0, 0, 1.15), (0.52, 0.32, 0.27), bevel=0.09, segments=2, taper_top=1.14, taper_depth=0.95)
     b.box(C, "chest", (0, 0, 1.075), (0.555, 0.33, 0.1), bevel=0.03, segments=2)
     b.box(C, "chest", (0, 0, 1.31), (0.2, 0.25, 0.02), smooth=False)
+    # Dorsal 17 (decisión del propietario): pequeño en el pecho, grande en la espalda.
+    number(b, M, "chest", "17", (-0.13, 0.172, 1.2), 0.075, "front")
+    number(b, M, "chest", "17", (0.0, -0.178, 1.12), 0.2, "back")
     # Cuello ancho con collar de tachas (sello del Pitbull).
     b.limb(S, "chest", (0, 0, 1.27), (0, 0, 1.4), 0.105, 0.1, segments=10)
     b.limb(K, "chest", (0, 0, 1.3), (0, 0, 1.36), 0.122, 0.118, segments=14)

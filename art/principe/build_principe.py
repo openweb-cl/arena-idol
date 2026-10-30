@@ -1,7 +1,7 @@
 """El Príncipe — generador reproducible del modelo, rig y clips (muestra V0).
 
-MUESTRA PROVISIONAL: solo arte. Sin gameplay ni ficha aprobada (C1, Codex) y sin
-dorsal hasta que el propietario lo decida. No es arte final.
+MUESTRA PROVISIONAL: solo arte. Sin gameplay ni ficha aprobada (C1, Codex).
+Dorsal 20 decidido por el propietario el 2026-10-30. No es arte final.
 Diseño original del estratega: azul con detalles rojos (mismo equipo que Turbo),
 silueta esbelta y elegante, banda real roja cruzada, una charretera roja y visor
 táctico oscuro con lente roja de precisión. Peinado oscuro peinado hacia un lado.
@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
-from hero_kit import P, Vector, build_hero, hit_keys, make_bones, mirror, run_pose, stance  # noqa: E402
+from hero_kit import P, Vector, build_hero, hit_keys, make_bones, number, run_pose, stance  # noqa: E402
 
 PALETTE = {
     "M_Principe_Azul": ("1a37a8", 0.70, 0.0, None),    # camiseta, short, medias
@@ -64,9 +64,11 @@ def build_mesh(b):
     # Torso esbelto azul y banda real roja cruzada (hombro derecho → cadera izquierda).
     b.box(A, "spine", (0, 0, 0.99), (0.36, 0.25, 0.27), bevel=0.06, segments=2, taper_top=1.06)
     b.box(A, "chest", (0, 0, 1.2), (0.4, 0.27, 0.24), bevel=0.08, segments=2, taper_top=1.15, taper_depth=0.95)
-    for y in (0.137, -0.137):
-        b.box(R, "chest", (0.0, y, 1.12), (0.07, 0.014, 0.5), smooth=False, rot=(0, -38 if y > 0 else 38, 0))
+    b.box(R, "chest", (0.0, 0.137, 1.12), (0.07, 0.014, 0.5), smooth=False, rot=(0, -38, 0))
     b.box(W, "chest", (0.0, 0.14, 1.13), (0.035, 0.012, 0.035), smooth=False, rot=(0, 45, 0))
+    # Dorsal 20 (decisión del propietario): pequeño en el pecho, grande en la espalda.
+    number(b, W, "chest", "20", (-0.1, 0.142, 1.24), 0.075, "front")
+    number(b, W, "chest", "20", (0.0, -0.142, 1.15), 0.19, "back")
     # Cuello alto de camiseta.
     b.limb(S, "chest", (0, 0, 1.3), (0, 0, 1.4), 0.07, 0.065, segments=8)
     b.limb(R, "chest", (0, 0, 1.3), (0, 0, 1.37), 0.105, 0.085, segments=12)

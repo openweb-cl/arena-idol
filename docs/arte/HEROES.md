@@ -11,7 +11,7 @@ dirección pedida por el propietario el 2026-10-30.
   tatuajes visibles, a pedido del propietario.
 - **Rey/King V0** (este hito): primera forma en blanco y negro con sello propio.
 - **Príncipe V0 y Pitbull V0** (este hito): **solo arte**, a pedido del propietario.
-  No tienen `.tres`, gameplay, ficha de combate aprobada ni dorsal, y no aparecen en
+  No tienen `.tres`, gameplay ni ficha de combate aprobada, y no aparecen en
   la selección: eso es C1/C2 (Codex y propietario). Sus GLB quedan listos para enlazar
   mediante `model_scene` cuando exista la ficha.
 
@@ -49,8 +49,7 @@ la UI y es de Codex).
 4. Crear desde ya al **Príncipe** (azul con detalles rojos) y al **Pitbull** (blanco
    con franja celeste al centro). El roster canónico cita referentes reales para
    ambos; aquí solo hay siluetas y trajes originales, sin rostros, escudos ni kits.
-   **Dorsales pendientes:** el plan prohíbe aprobar dorsales nuevos por inferencia,
-   así que las camisetas no llevan número hasta que el propietario lo decida.
+5. Dorsales decididos por el propietario: **Príncipe 20** y **Pitbull 17**.
 
 ## Turbo #11 — V1.1
 
@@ -99,10 +98,11 @@ la UI y es de Codex).
 
 ## Príncipe — V0 (solo arte)
 
-- **Rol de referencia:** estratega (precisión). Silueta esbelta y elegante, ≈1,91 m.
+- **Rol de referencia:** estratega (precisión). Silueta esbelta y elegante, ≈1,91 m. **Dorsal 20.**
 - **Equipación:** azul (`#1a37a8`) con detalles rojos. Banda real roja cruzada del
   hombro derecho a la cadera, charretera roja con flecos blancos en el hombro
-  izquierdo, cuello alto rojo, medias con doble ribete y talones rojos.
+  izquierdo, cuello alto rojo, medias con doble ribete y talones rojos. El 20 va en
+  blanco, pequeño en el pecho y grande en la espalda; la banda cruzada solo va adelante.
 - **Rostro:** abstracto. Visor táctico oscuro con **lente roja** en el ojo derecho
   (lectura de precisión) y peinado oscuro barrido hacia un lado. Sin barba.
 - **Clips:** `kick` es un pase con el interior del pie; `celebrate` es una
@@ -113,10 +113,11 @@ la UI y es de Codex).
 ## Pitbull — V0 (solo arte)
 
 - **Rol de referencia:** defensor (tackle corto, marca). Compacto y bajo (1,88 m
-  con pelo), centro de gravedad bajo y guardia defensiva en `idle`.
+  con pelo), centro de gravedad bajo y guardia defensiva en `idle`. **Dorsal 17.**
 - **Equipación:** camiseta blanca con **franja celeste horizontal al centro**
   (`#5ec8f2`), short y botas azul marino, medias blancas con ribete celeste y
-  vendas blancas en las muñecas.
+  vendas blancas en las muñecas. El 17 va en azul marino, pequeño en el pecho y
+  grande en la espalda, sobre la franja.
 - **Sello propio:** collar oscuro con diez tachas plateadas. Pelo rapado oscuro,
   ceño marcado y visor ámbar. Sin tatuajes ni rasgos de una persona real.
 - **Clips:** `kick` es un **tackle corto** (estocada baja con barrido); `celebrate`
@@ -138,13 +139,13 @@ la UI y es de Codex).
 
 | Métrica | Turbo V1.1 | Rey V0 | Príncipe V0 | Pitbull V0 | Presupuesto |
 |---|---|---|---|---|---|
-| Triángulos | 5.378 | 4.634 | 3.914 | 3.732 | ≤ 8.000 |
+| Triángulos | 5.378 | 4.634 | 4.166 | 3.852 | ≤ 8.000 |
 | Materiales | 6 | 6 | 6 | 7 | ≤ 8 |
 | Huesos / clips | 17 / 5 | 17 / 5 | 17 / 5 | 17 / 5 | — |
 | Altura | 2,09 m | 2,00 m | 1,91 m | 1,88 m | ≈ 2 m (±0,15) |
-| GLB | 335.944 B | 235.132 B | 195.384 B | 196.600 B | — |
-| `.blend` | 199.905 B | 187.996 B | 179.129 B | 177.929 B | — |
-| Lámina (Cycles CPU, 4 hilos) | 32,8 s | 32,2 s | 34,6 s | 35,6 s | — |
+| GLB | 335.944 B | 235.132 B | 219.080 B | 207.884 B | — |
+| `.blend` | 199.905 B | 187.996 B | 182.349 B | 179.427 B | — |
+| Lámina (Cycles CPU, 4 hilos) | 32,8 s | 32,2 s | 34,7 s | 36,7 s | — |
 
 El Pitbull medía 1,84 m en la primera versión y no pasaba la regla de altura del
 contrato; se ajustó el modelo (cabeza y pelo) en lugar de relajar la verificación.
@@ -194,7 +195,7 @@ xvfb-run -a -s "-screen 0 1280x720x24" godot --path game --audio-driver Dummy \
 python3 tools/verify.py --godot godot --pack
 ```
 
-Resultados del contrato (aprobadas/fallos): **Turbo 40/0, Rey 40/0, Príncipe 40/0 y Pitbull 40/0**. Los dos últimos se prueban con una definición temporal porque no tienen `.tres`. `verify.py
+Resultados del contrato (aprobadas/fallos): **Turbo 40/0, Rey 40/0, Príncipe 39/0 y Pitbull 40/0**. Los dos últimos se prueban con una definición temporal porque no tienen `.tres` (una comprobación menos); el Pitbull suma una por su séptimo material. `verify.py
 --pack` pasa completo con las 192 comprobaciones de Codex, la exportación PCK y el
 arranque de las escenas.
 
@@ -217,6 +218,6 @@ OneDrive; se recomienda clonarlo fuera de carpetas sincronizadas.
 4. No producido: VFX y audio nuevos, outline o toon, AnimationTree, rostros detallados
    y pruebas en GPU real o Android.
 5. Príncipe y Pitbull: falta la ficha de combate, el `.tres`, el gameplay y la
-   activación en la selección (Codex), además del dorsal (propietario).
+   activación en la selección (Codex). Al crear sus `.tres`, usar `number` 20 y 17.
 6. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
    pasar a pesos suaves.

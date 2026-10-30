@@ -4,8 +4,8 @@
 |---|---|---|---|
 | Turbo #11 — `models/turbo/turbo.glb` | Original, Claude Code, 2026-10-30. Generado con `art/turbo/build_turbo.py` + `art/lib/hero_kit.py` (Blender 5.2.3/bpy, GPL; el resultado es obra propia). Fuente `art/turbo/turbo.blend`. Tatuajes de diseño propio | **Muestra V1.1 provisional**, pendiente de revisión; no es arte final | Iteración tras la revisión (docs/arte/HEROES.md) |
 | Rey/King #23 — `models/rey/rey.glb` | Original, Claude Code, 2026-10-30. `art/rey/build_rey.py` + kit común. Fuente `art/rey/rey.blend` | **Muestra V0 provisional**, primera forma | Iteración tras la revisión |
-| Príncipe — `models/principe/principe.glb` | Original, Claude Code, 2026-10-30. `art/principe/build_principe.py` + kit común. Fuente `.blend` en `art/principe/` | **Muestra V0 solo arte**; sin `.tres` ni gameplay, sin dorsal | Ficha C1 (Codex) |
-| Pitbull — `models/pitbull/pitbull.glb` | Original, Claude Code, 2026-10-30. `art/pitbull/build_pitbull.py` + kit común. Fuente `.blend` en `art/pitbull/` | **Muestra V0 solo arte**; sin `.tres` ni gameplay, sin dorsal | Ficha C2 (Codex) |
+| Príncipe — `models/principe/principe.glb` | Original, Claude Code, 2026-10-30. `art/principe/build_principe.py` + kit común. Fuente `.blend` en `art/principe/` | **Muestra V0 solo arte**, dorsal 20; sin `.tres` ni gameplay | Ficha C1 (Codex) |
+| Pitbull — `models/pitbull/pitbull.glb` | Original, Claude Code, 2026-10-30. `art/pitbull/build_pitbull.py` + kit común. Fuente `.blend` en `art/pitbull/` | **Muestra V0 solo arte**, dorsal 17; sin `.tres` ni gameplay | Ficha C2 (Codex) |
 | Clips idle/run/kick/hit/celebrate de los cuatro | Keyframes originales en los generadores; bucles en los `.glb.import` | Provisionales | Ajuste tras playtest |
 | Materiales `M_Turbo_*`, `M_Rey_*`, `M_Principe_*`, `M_Pitbull_*` (6 + 6 + 6 + 7) | Colores planos originales dentro de cada GLB, sin texturas | Provisionales | — |
 | Arena Prisma | Geometría original en `pitch.gd` | Graybox 3D provisional | Escena artística con colisiones compatibles |
