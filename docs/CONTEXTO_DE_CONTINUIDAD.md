@@ -33,8 +33,9 @@ es una instantánea, no un contador vivo. No fusionarlos ni forzar ramas ajenas.
 1. Leer [biblioteca del plantel](plantel/README.md), [guía visual](plantel/VISUAL.md)
    y [referencias aportadas](../design/referencias/propietario_2026-10-31/README.md).
 2. Revisar la carpeta [Turbo](../design/personajes/turbo/README.md): referencia,
-   modelo actual y exploraciones están separados. Producir una lámina V2 con
-   frente/perfil/espalda/expresiones; documentar lo conservado y lo cambiado.
+   modelo actual y exploraciones están separados. Ya hay una primera propuesta V2
+   con frente/perfil/espalda/expresiones; revisarla con el propietario antes de
+   modelar y registrar lo conservado y lo cambiado.
 3. Con aprobación de esa muestra, refinar modelo/rig/clips; revisar en Godot con
    evidencia de selección y arena antes de extender el patrón al resto.
 4. Mantener UI/gameplay en ramas separadas y acordar propiedad de archivos.

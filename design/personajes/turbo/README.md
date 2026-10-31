@@ -43,3 +43,7 @@ igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
 
 **Próxima muestra:** Turbo V2 como patrón del plantel.
 [Exploración, sin aprobación individual](../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png).
+
+## Primera propuesta V2 disponible
+
+[Ver lámina Turbo V2 — propuesta 01](bocetos/turbo-v2-propuesta-01.png). Pendiente de revisión del propietario; no es un GLB ni diseño aprobado.

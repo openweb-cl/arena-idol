@@ -113,6 +113,26 @@ Comparar siempre con la referencia, registrar diferencias y pedir revisión de
 esa muestra concreta antes del modelo refinado. No generar caras distintas para
 cada pantalla.
 '''
+        if hero.get('v2_proposal'):
+            proposal = hero['v2_proposal']
+            result[page] += '\n## Primera propuesta V2 disponible\n\n' + link(page, proposal, 'Ver lámina Turbo V2 — propuesta 01') + '. Pendiente de revisión del propietario; no es un GLB ni diseño aprobado.\n'
+            result[bp] = f'''# Bocetos — {hero['name']}
+
+{link(bp, proposal, 'V2 — propuesta 01: frente, perfil, espalda, combate y expresiones')}.
+
+**Pendiente de revisión del propietario.** Lámina generada, no modelo 3D,
+captura de Godot ni diseño aprobado para producción. Conserva azul/rojo,
+pelo blanco, dorsal 11 y tatuajes geométricos propios; explora cara humana
+expresiva, volúmenes orgánicos y botas deportivas.
+
+Antes de Blender, revisar cara/proporción con el propietario y reconciliar
+costuras, posición de tatuajes y longitudes entre vistas. Los códigos de paleta
+impresos por el generador no cambian los valores aprobados de los Resources.
+
+La anterior {link(bp, concept_path, 'exploración de cuatro héroes')} sigue
+archivada como propuesta de paso, no diseño aprobado. Registrar correcciones y
+crear propuesta 02 si corresponde; no sobrescribir esta imagen.
+'''
         mp = folder / 'modelado/README.md'
         source = f'art/{ident}/{ident}.blend'
         model_text = (f"Fuente actual: {link(mp, source, 'Blender')}. Export actual: {link(mp, runtime_model, 'GLB provisional')}.\n\n{link(mp, f'docs/captures/heroes-v1-1/lamina_{ident}.jpg', 'Lámina de la muestra existente')} (render Blender, no captura de gameplay)." if model else f"Todavía no hay Blender ni GLB de este héroe. Ruta futura: `{hero['planned_model_path']}`; no crear un archivo vacío para simular entrega.")

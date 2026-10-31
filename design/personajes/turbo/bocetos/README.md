@@ -1,10 +1,16 @@
 # Bocetos — El Turbo
 
-[Exploración reciente](../../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png) — superior izquierdo.
-Estado: **exploración pendiente; no diseño V2 ni arte final aprobado**.
+[V2 — propuesta 01: frente, perfil, espalda, combate y expresiones](turbo-v2-propuesta-01.png).
 
-Para V2 producir frente, perfil, espalda, rostro y una pose de combate, con la
-misma identidad en todas las vistas. Primero aprobar Turbo V2 como patrón.
-Comparar siempre con la referencia, registrar diferencias y pedir revisión de
-esa muestra concreta antes del modelo refinado. No generar caras distintas para
-cada pantalla.
+**Pendiente de revisión del propietario.** Lámina generada, no modelo 3D,
+captura de Godot ni diseño aprobado para producción. Conserva azul/rojo,
+pelo blanco, dorsal 11 y tatuajes geométricos propios; explora cara humana
+expresiva, volúmenes orgánicos y botas deportivas.
+
+Antes de Blender, revisar cara/proporción con el propietario y reconciliar
+costuras, posición de tatuajes y longitudes entre vistas. Los códigos de paleta
+impresos por el generador no cambian los valores aprobados de los Resources.
+
+La anterior [exploración de cuatro héroes](../../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png) sigue
+archivada como propuesta de paso, no diseño aprobado. Registrar correcciones y
+crear propuesta 02 si corresponde; no sobrescribir esta imagen.

@@ -27,7 +27,11 @@ No todos parten con V0/V1: doce solo tienen referencia. No fabricar un historial
 para llenar etapas. Las versiones internas existentes (Turbo V1.1, Rey V0) se
 conservan en el historial; esta tabla agrupa estados, no renombra sus archivos.
 
-## Próximo hito concreto: Turbo V2
+## Próximo hito concreto: revisar Turbo V2
+
+Ya existe una [primera propuesta de lámina V2](../../design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png),
+pendiente de revisión. No está aprobada para modelado. Revisar cara, proporciones
+y consistencia de tatuajes/costuras antes de darla por cerrada.
 
 1. Poner lado a lado la tarjeta original, el modelo actual y la propuesta V2.
 2. Conservar azul/rojo, pelo blanco, dorsal 11 y tatuajes geométricos propios,
