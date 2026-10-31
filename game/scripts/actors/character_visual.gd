@@ -82,6 +82,9 @@ func _process(delta: float) -> void:
 		var clip := "celebrate" if celebration else ("run" if speed_ratio > 0.08 else "idle")
 		if action_time <= 0 and animation_player.has_animation(clip) and animation_player.current_animation != clip:
 			animation_player.play(clip, 0.12)
+		# La zancada sigue a la velocidad real para que los pies no patinen sobre el suelo.
+		var running := animation_player.current_animation == "run"
+		animation_player.speed_scale = clampf(speed_ratio * definition.speed / definition.run_clip_speed, 0.8, 2.2) if running else 1.0
 		return
 	if model == null or limbs.size() != 4:
 		return

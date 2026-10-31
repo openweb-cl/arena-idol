@@ -111,6 +111,14 @@
         "date_utc": "2026-10-31",
         "scope": "Referencia visual Turbo V2: conservar identidad al modelar. No aprobación de un GLB inexistente ni calidad comercial.",
         "asset": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png"
+      },
+      "v3_model": {
+        "glb": "game/assets/models/turbo/turbo.glb",
+        "builder": "art/turbo/build_turbo.py",
+        "atlas": "art/turbo/paint_turbo_atlas.py",
+        "sheet": "docs/captures/turbo-v3/lamina_turbo.jpg",
+        "captures": "docs/captures/turbo-v3/",
+        "state": "provisional_pending_owner_review"
       }
     },
     {

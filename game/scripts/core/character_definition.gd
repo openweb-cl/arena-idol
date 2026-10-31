@@ -29,3 +29,5 @@ extends Resource
 @export var model_scene: PackedScene
 @export var model_scale: Vector3 = Vector3.ONE
 @export var model_rotation_degrees: Vector3 = Vector3.ZERO
+## m/s que avanzan los pies en el clip `run` a escala 1; ajusta su velocidad para no patinar.
+@export_range(1, 10, 0.1) var run_clip_speed: float = 3.3

@@ -260,6 +260,20 @@ rendimiento o calidad comercial. La imagen se conserva intacta y la decisión
 se registra en [historial.json](../historial.json). Reconciliar costuras y tatuajes
 entre vistas durante la preparación técnica, respetando la identidad aceptada.
 '''
+        v3 = next(h for h in data['heroes'] if h['id'] == 'turbo').get('v3_model')
+        if v3:
+            result[page] = result[page].replace(
+                '| V3 — modelo refinado | Siguiente: Blender, GLB, rig y clips usando la referencia V2 aceptada. |',
+                f"| V3 — modelo refinado | {link(page, v3['glb'], 'GLB V3 provisional')} desde la referencia V2: rostro, pelo, pesos suaves y atlas. "
+                f"{link(page, v3['sheet'], 'Lámina')} y {link(page, v3['captures'], 'capturas Godot')}. Pendiente de revisión del propietario. |").replace(
+                '**Próxima muestra:** Turbo V3: traducir la referencia V2 aceptada a Blender/GLB.',
+                '**Estado:** Turbo V3 producido; falta la revisión del propietario en el juego. Después: candidato final o V3.1 según observaciones.')
+            mp = turbo_folder / 'modelado/README.md'
+            old = f"Fuente actual: {link(mp, 'art/turbo/turbo.blend', 'Blender')}. Export actual: {link(mp, v3['glb'], 'GLB provisional')}."
+            new = (f"Fuente actual (V3): {link(mp, v3['builder'], 'generador')}, {link(mp, v3['atlas'], 'atlas')} y {link(mp, 'art/turbo/turbo.blend', 'Blender')}. "
+                   f"Export actual: {link(mp, v3['glb'], 'GLB V3 provisional')}. Detalle técnico en {link(mp, 'docs/arte/HEROES.md', 'HEROES.md')}.")
+            assert old in result[mp]
+            result[mp] = result[mp].replace(old, new)
     index = ROOT / 'docs/plantel/README.md'
     result[index] = '''# Plantel — biblioteca de diseño y evolución
 

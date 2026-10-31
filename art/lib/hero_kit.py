@@ -196,6 +196,186 @@ class Builder:
             self.box(mat, bone, None, (seg.length + width * 0.6, 0.006, width), smooth=False, matrix=m)
 
 
+# --- V3: cuerpo continuo con pesos suaves y atlas de textura -----------------
+def tube_fractions(rings):
+    """Fracción de longitud (0..1) de cada anillo dentro del tramo etiquetado "uv".
+
+    Comparte el cálculo entre el mallado y el pintado del atlas, para que los
+    detalles pintados caigan a la altura prevista del modelo.
+    """
+    pts = [Vector(r[0]) for r in rings]
+    acc = [0.0]
+    for i in range(1, len(pts)):
+        acc.append(acc[-1] + (pts[i] - pts[i - 1]).length)
+    uv_segs = [i for i in range(len(rings) - 1) if rings[i][3] == "uv"]
+    if not uv_segs:
+        return [0.0] * len(rings)
+    a, b = acc[uv_segs[0]], acc[uv_segs[-1] + 1]
+    return [(s - a) / max(b - a, 1e-6) for s in acc]
+
+
+class AtlasBuilder(Builder):
+    """Un único material con atlas: cada pieza usa una muestra de color o una región.
+
+    `swatches`: {nombre: (x, y)} centro en píxeles; `size`: lado del atlas.
+    Los primitivos heredados aceptan el nombre de muestra donde antes iba el material.
+    """
+
+    def __init__(self, size, swatches, bone_names):
+        super().__init__([], bone_names)
+        self.size = size
+        self.swatches = swatches
+        self.uv = self.bm.loops.layers.uv.verify()
+
+    def px(self, x, y):
+        return (x / self.size, 1.0 - y / self.size)
+
+    def swatch_uv(self, name):
+        return self.px(*self.swatches[name])
+
+    def add(self, coords, faces, face_uvs, weights, smooth=True):
+        """Añade vértices con pesos {hueso: w} y caras con UV por esquina."""
+        verts = [self.bm.verts.new(c) for c in coords]
+        for v, w in zip(verts, weights):
+            total = sum(w.values())
+            for bone, value in w.items():
+                if value > 0:
+                    v[self.deform][self.bone_names.index(bone)] = value / total
+        for idx, uvs in zip(faces, face_uvs):
+            f = self.bm.faces.new([verts[i] for i in idx])
+            f.material_index = 0
+            f.smooth = smooth
+            for loop, uv in zip(f.loops, uvs):
+                loop[self.uv].uv = uv
+        return verts
+
+    def merge(self, tmp, mat, bone, smooth):
+        tmp.verts.index_update()
+        uv = self.swatch_uv(mat)
+        faces = [[v.index for v in f.verts] for f in tmp.faces]
+        self.add([v.co.copy() for v in tmp.verts], faces, [[uv] * len(f) for f in faces],
+                 [{bone: 1.0}] * len(tmp.verts), smooth)
+        tmp.free()
+
+    def tube(self, rings, segments=12, region=None, cap_start=None, cap_end=None, smooth=True):
+        """Tubo elíptico por anillos ordenados de arriba abajo.
+
+        Anillo: (centro, rx, ry, etiqueta, {hueso: peso}). La etiqueta del anillo i
+        pinta el tramo i→i+1: nombre de muestra o "uv" (desenvuelto cilíndrico en
+        `region` = (x0, y0, x1, y1)). Ángulo 0 = +X (derecha del personaje), 90° = frente.
+        """
+        pts = [Vector(r[0]) for r in rings]
+        frac = tube_fractions(rings)
+        coords, weights = [], []
+        for i, (c, rx, ry, _tag, w) in enumerate(rings):
+            t = (pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)]).normalized()
+            fwd = Vector((0, 1, 0)) - t * t.y
+            fwd = fwd.normalized() if fwd.length > 1e-4 else Vector((0, 0, 1))
+            side = t.cross(fwd).normalized()
+            for j in range(segments):
+                a = 2 * math.pi * j / segments
+                coords.append(pts[i] + side * math.cos(a) * rx + fwd * math.sin(a) * ry)
+                weights.append(w)
+        faces, uvs = [], []
+        for i in range(len(rings) - 1):
+            tag = rings[i][3]
+            for j in range(segments):
+                k = (j + 1) % segments
+                faces.append([i * segments + j, (i + 1) * segments + j, (i + 1) * segments + k, i * segments + k])
+                if tag == "uv":
+                    x0, y0, x1, y1 = region
+                    def at(u, f):
+                        return self.px(x0 + u * (x1 - x0), y0 + min(max(f, 0.0), 1.0) * (y1 - y0))
+                    u0, u1 = j / segments, (j + 1) / segments
+                    uvs.append([at(u0, frac[i]), at(u0, frac[i + 1]), at(u1, frac[i + 1]), at(u1, frac[i])])
+                else:
+                    uvs.append([self.swatch_uv(tag)] * 4)
+        last = len(rings) - 1
+        for ring, name in ((0, cap_start), (last, cap_end)):
+            if name:
+                idx = [ring * segments + j for j in range(segments)]
+                faces.append(idx if ring else idx[::-1])
+                uvs.append([self.swatch_uv(name)] * segments)
+        self.add(coords, faces, uvs, weights, smooth)
+
+    def horn(self, mat, bone, base, direction, length, radius, bend=(0, 0, 0), rings=6, segments=6, flat=1.0):
+        """Mechón/púa curva que se afila hasta la punta (pelo caricaturesco)."""
+        base, d, bend = Vector(base), Vector(direction).normalized(), Vector(bend)
+        spec = []
+        for i in range(rings + 1):
+            t = i / rings
+            c = base + d * length * t + bend * length * t * t
+            r = max(radius * (1 - t) ** 0.85, 0.003)
+            spec.append((c, r, r * flat, mat, {bone: 1.0}))
+        self.tube(spec, segments=segments, cap_start=mat, cap_end=mat, smooth=True)
+
+    def textured_ellipsoid(self, bone, center, radii, region, fallback, u=24, v=16, deform=None, front=0.25):
+        """Elipsoide con proyección frontal en `region` (cara) y muestra lisa detrás.
+
+        La imagen se lee como vista de frente: su izquierda es la derecha (+X) del personaje.
+        """
+        tmp = bmesh.new()
+        bmesh.ops.create_uvsphere(tmp, u_segments=u, v_segments=v, radius=1.0)
+        cx, cy, cz = center
+        rx, ry, rz = radii
+        for vert in tmp.verts:
+            p = Vector((vert.co.x * rx, vert.co.y * ry, vert.co.z * rz))
+            if deform:
+                p = deform(p)
+            vert.co = p + Vector(center)
+        tmp.verts.index_update()
+        x0, y0, x1, y1 = region
+        faces, uvs = [], []
+        flat = self.swatch_uv(fallback)
+        for f in tmp.faces:
+            faces.append([vv.index for vv in f.verts])
+            mid = f.calc_center_median() - Vector(center)
+            if mid.y / ry > front:
+                uvs.append([self.px(x0 + (0.5 - (vv.co.x - cx) / (2 * rx)) * (x1 - x0),
+                                    y0 + (0.5 - (vv.co.z - cz) / (2 * rz)) * (y1 - y0)) for vv in f.verts])
+            else:
+                uvs.append([flat] * len(f.verts))
+        self.add([vv.co.copy() for vv in tmp.verts], faces, uvs, [{bone: 1.0}] * len(tmp.verts))
+        tmp.free()
+
+    def mark(self):
+        self.bm.verts.ensure_lookup_table()
+        return len(self.bm.verts)
+
+    def scale_since(self, mark, pivot, factor):
+        """Escala desde `pivot` lo añadido tras `mark` (p. ej. cabeza más caricaturesca)."""
+        self.bm.verts.ensure_lookup_table()
+        pivot = Vector(pivot)
+        for v in self.bm.verts[mark:]:
+            v.co = pivot + (v.co - pivot) * factor
+
+    def partial_sphere(self, mat, bone, center, radii, keep, u=20, v=12):
+        """Elipsoide del que solo quedan las caras cuyo centro cumple `keep(p)` (p. ej. casquete de pelo)."""
+        tmp = bmesh.new()
+        bmesh.ops.create_uvsphere(tmp, u_segments=u, v_segments=v, radius=1.0)
+        bmesh.ops.transform(tmp, matrix=Matrix.Translation(center) @ Matrix.Diagonal((*radii, 1)), verts=tmp.verts)
+        doomed = [f for f in tmp.faces if not keep(f.calc_center_median())]
+        bmesh.ops.delete(tmp, geom=doomed, context="FACES")
+        self.merge(tmp, mat, bone, smooth=True)
+
+
+def make_atlas_material(name, png_path, rough=0.8):
+    """Material único con el atlas empaquetado en el GLB (sRGB, opaco)."""
+    img = bpy.data.images.load(str(png_path))
+    img.pack()
+    mat = bpy.data.materials.new(name)
+    mat.use_nodes = True
+    nodes, links = mat.node_tree.nodes, mat.node_tree.links
+    bsdf = nodes["Principled BSDF"]
+    tex = nodes.new("ShaderNodeTexImage")
+    tex.image = img
+    tex.interpolation = "Linear"
+    links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Roughness"].default_value = rough
+    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat
+
+
 # --- Dígitos geométricos propios (sin fuentes tipográficas) -----------------
 SEGMENTS = {  # a arriba, b arriba-der, c abajo-der, d abajo, e abajo-izq, f arriba-izq, g centro
     "0": "abcdef", "2": "abged", "3": "abgcd", "4": "fgbc", "5": "afgcd",
@@ -315,12 +495,13 @@ def stance(breath=0.0, arm_out=14, leg_out=4, lean=-4):
     ))
 
 
-def run_pose(f, lean=-16, arm_swing=1.0, arm_out=14, bob=0.05):
-    """Ciclo de 16 cuadros; pierna L adelantada en f=0."""
+def run_pose(f, lean=-16, arm_swing=1.0, arm_out=14, bob=0.05, stride=1.0):
+    """Ciclo de 16 cuadros; pierna L adelantada en f=0. `stride` amplía el giro de muslos."""
     legs = {0: (45, -15, 10), 4: (5, -25, 0), 8: (-35, -30, -30), 12: (20, -105, -10), 16: (45, -15, 10)}
     arms = {0: -40, 4: 0, 8: 50, 12: 0, 16: -40}
     l_thigh, l_shin, l_foot = legs[f]
     r_thigh, r_shin, r_foot = legs[(f + 8) % 16]
+    l_thigh, r_thigh = l_thigh * stride, r_thigh * stride
     up = bob if f % 8 == 4 else 0.0
     twist = 6 if f in (0, 16) else (-6 if f == 8 else 0)
     return P(
@@ -377,8 +558,12 @@ def build_actions(arm, clips):
     set_pose(arm, {})
 
 
-def build_hero(hero_id, palette, bones, build_mesh, clips, sockets):
-    """Genera art/<id>/<id>.blend y game/assets/models/<id>/<id>.glb."""
+def build_hero(hero_id, palette, bones, build_mesh, clips, sockets, atlas=None):
+    """Genera art/<id>/<id>.blend y game/assets/models/<id>/<id>.glb.
+
+    Con `atlas` = (png, tamaño, muestras) se usa un único material texturizado y
+    AtlasBuilder; `palette` es entonces {nombre_material: rugosidad}.
+    """
     blend = ROOT / "art" / hero_id / f"{hero_id}.blend"
     glb = ROOT / "game" / "assets" / "models" / hero_id / f"{hero_id}.glb"
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -386,7 +571,12 @@ def build_hero(hero_id, palette, bones, build_mesh, clips, sockets):
     scene.render.fps = FPS
     scene.unit_settings.system = "METRIC"
     scene.unit_settings.scale_length = 1.0
-    mats = make_materials(palette)
+    if atlas:
+        png, size, swatches = atlas
+        (mat_name, rough), = palette.items()
+        mats = [make_atlas_material(mat_name, png, rough)]
+    else:
+        mats = make_materials(palette)
     bone_names = [b[0] for b in bones]
     arm = build_armature(bones)
     me = bpy.data.meshes.new(f"{hero_id.capitalize()}_Mesh")
@@ -396,7 +586,7 @@ def build_hero(hero_id, palette, bones, build_mesh, clips, sockets):
         body.vertex_groups.new(name=name)
     for mat in mats:
         me.materials.append(mat)
-    builder = Builder(palette.keys(), bone_names)
+    builder = AtlasBuilder(size, swatches, bone_names) if atlas else Builder(palette.keys(), bone_names)
     build_mesh(builder)
     bmesh.ops.recalc_face_normals(builder.bm, faces=builder.bm.faces)
     builder.bm.to_mesh(me)

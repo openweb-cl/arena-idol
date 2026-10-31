@@ -18,3 +18,5 @@ Thumbs.db
 builds/
 *.blend1
 *.blend2
+# Entorno local de Blender (bpy)
+.venv-bpy/
