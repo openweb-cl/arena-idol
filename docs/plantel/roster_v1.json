@@ -557,7 +557,7 @@
       "animation": "Tackle bajo del kick existente como golpe normal; guardia firme, carrera corta y celebración de salto.",
       "model_path": "res://assets/models/pitbull/pitbull.glb",
       "planned_model_path": "res://assets/models/pitbull/pitbull.glb",
-      "gameplay_status": "proposal_not_implemented",
+      "gameplay_status": "implemented",
       "art_status": "existing_provisional_glb_plus_concept",
       "kit_reference": null,
       "visual_style": "footballer_caricature_arena_combat",
@@ -570,7 +570,17 @@
         "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
       },
       "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
-      "reference_status": "style_selected_individual_final_pending"
+      "reference_status": "style_selected_individual_final_pending",
+      "v3_model": {
+        "glb": "game/assets/models/pitbull/pitbull.glb",
+        "builder": "art/pitbull/build_pitbull.py",
+        "atlas": "art/lib/hero_v3.py",
+        "sheet": "docs/captures/pitbull-v3/lamina_pitbull.jpg",
+        "captures": "docs/captures/pitbull-v3/",
+        "state": "provisional_pending_owner_review",
+        "summary": "con el patrón visual de Turbo V3: compacto, banda celeste, short marino, barba y vendas.",
+        "state_text": "Pitbull V3 jugable (pedido del propietario el 31 octubre 2026, valores de su ficha); falta la revisión en partida."
+      }
     },
     {
       "canonical_id": "SWA-01",

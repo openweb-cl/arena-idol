@@ -38,6 +38,8 @@ var pending_kind := ""
 var shot_direction := Vector3.RIGHT
 var shot_multiplier := 1.0
 var super_target: Variant = null  ## centro elegido para una súper de zona (Vector3) o null
+var shield_time := 0.0
+var shield_hp := 0
 
 func _ready() -> void:
 	health = definition.max_health
@@ -76,6 +78,9 @@ func _physics_process(delta: float) -> void:
 	if power_time <= 0:
 		power_multiplier = 1.0
 	channel_time = maxf(0, channel_time - delta)
+	shield_time = maxf(0, shield_time - delta)
+	if shield_time <= 0:
+		shield_hp = 0
 	if knocked_out:
 		respawn_time -= delta
 		if respawn_time <= 0:
@@ -105,6 +110,8 @@ func _physics_process(delta: float) -> void:
 		facing = direction.normalized()
 	# Zonas y preparación reducen la velocidad propia, también la del sprint/embestida.
 	var speed := definition.speed * (1.0 - slow) * (0.5 if channel_time > 0 else 1.0)
+	if shield_hp > 0:
+		speed *= definition.ability.speed_multiplier
 	var target := direction * speed
 	if dash_time > 0:
 		dash_time = maxf(0, dash_time - delta)
@@ -122,6 +129,8 @@ func _physics_process(delta: float) -> void:
 		health_label.text += "\n" + ("RECARGANDO" if ammo.charges == 0 else "%d/%d CARGAS" % [ammo.charges, ammo.capacity()])
 	if power_time > 0:
 		health_label.text += "\nPODER +%d %% · %.1f s" % [roundi((power_multiplier - 1.0) * 100), power_time]
+	if shield_hp > 0:
+		health_label.text += "\nESCUDO %d" % shield_hp
 	if slow > 0:
 		health_label.text += "\nLENTO −%d %%" % roundi(slow * 100)
 
@@ -166,6 +175,11 @@ func ability() -> bool:
 			power_time = definition.ability.duration
 		ability_started.emit(self)
 		return true
+	if definition.ability.kind == "Shield":
+		shield_time = definition.ability.duration
+		shield_hp = definition.ability.shield_hp
+		ability_started.emit(self)
+		return true
 	dash_time = definition.ability.duration
 	dash_direction = facing
 	if definition.attack_type == "Ranged" and command.move.length() > 0.1:
@@ -178,6 +192,13 @@ func ability() -> bool:
 func take_damage(amount: int, push: Vector3 = Vector3.ZERO) -> bool:
 	if knocked_out or invulnerable > 0:
 		return false
+	# El escudo finito absorbe primero; un impacto absorbido entero no empuja.
+	if shield_hp > 0:
+		var absorbed := mini(shield_hp, amount)
+		shield_hp -= absorbed
+		amount -= absorbed
+		if amount == 0:
+			return true
 	health = maxi(0, health - amount)
 	push_velocity = push
 	visual.trigger("hit")
@@ -211,6 +232,8 @@ func reset_at_spawn() -> void:
 	windup_time = 0
 	pending_kind = ""
 	super_target = null
+	shield_time = 0
+	shield_hp = 0
 	cooldown = 0
 	attack_cooldown = 0
 	facing = Vector3.RIGHT if team == 0 else Vector3.LEFT

@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=4 format=3]
+[ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/pitbull.tres" id="2"]
+[ext_resource type="PackedScene" path="res://assets/models/pitbull/pitbull.glb" id="3"]
+[resource]
+script = ExtResource("1")
+id = "pitbull"
+display_name = "El Pitbull"
+number = 17
+role = "DEFENSOR"
+description = "Contención cuerpo a cuerpo.\nGuardia de Hierro: escudo de 1000 durante 2 s.\nSúper: Zona de Contención frena y empuja."
+color = Color(0.37, 0.78, 0.95, 1)
+speed = 5.8
+acceleration = 38.0
+braking = 48.0
+turn_speed = 14.0
+max_health = 6400
+attack_damage = 900
+attack_type = "Melee"
+attack_interval = 0.62
+attack_range = 2.2
+attack_push = 3.0
+super_damage = 800
+super_radius = 3.0
+charge_per_hit = 25.0
+ability = ExtResource("2")
+super_kind = "Field"
+super_reach = 0.0
+field_warning = 0.45
+field_duration = 4.0
+field_slow = 0.2
+field_push = 6.0
+model_scene = ExtResource("3")
+run_clip_speed = 3.1
+field_effect = "pitbull_field"

@@ -30,7 +30,8 @@ extends Resource
 @export_group("Súper")
 ## Auto: proyectil potente (Ranged) u onda alrededor (Melee). Field: campo de zona colocado.
 @export_enum("Auto", "Field") var super_kind: String = "Auto"
-@export_range(1, 15, 0.5) var super_reach: float = 8.0
+## 0 = el campo se coloca donde está el propio héroe.
+@export_range(0, 15, 0.5) var super_reach: float = 8.0
 @export_range(0.1, 2.0, 0.05) var field_warning: float = 0.6
 @export_range(0.5, 8.0, 0.1) var field_duration: float = 3.0
 @export_range(0.0, 0.9, 0.05) var field_slow: float = 0.25
@@ -43,3 +44,5 @@ extends Resource
 @export_range(1, 10, 0.1) var run_clip_speed: float = 3.3
 ## Efecto visual del básico (AbilityEffect.kind); no cambia daño ni trayectoria.
 @export var shot_effect: String = "shot"
+## Prefijo de los efectos del campo de zona: <prefijo>_warning y <prefijo>.
+@export var field_effect: String = "principe_field"

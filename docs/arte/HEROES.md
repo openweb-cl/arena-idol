@@ -139,6 +139,23 @@ demás héroes no cambian: `build_hero` sin `atlas` funciona igual que antes.
 | `M_Rey_Piel` | `#a8724f` | Piel |
 | `M_Rey_Brillo` | `#ffc94d` emisivo | Visor |
 
+## Pitbull #17 — V3 jugable (provisional)
+
+Defensor compacto con el cuerpo V3 común: pecho ×1,15, brazos ×1,25, piernas ×1,15,
+hombros ×1,1. Camiseta blanca con banda celeste propia al pecho (filos marinos),
+dorsal 17 marino, short marino con franja celeste, medias blancas, pelo corto oscuro
+con cresta baja, sombra de barba pintada, cejas fruncidas con mirada firme pero
+simpática, tatuaje geométrico propio en el antebrazo y vendas blancas. Guardia baja y
+abierta, zancada ×0,95 (`run_clip_speed = 3,1`). Medido: **5.066 triángulos, 1 material
+(atlas 1024), 17 huesos, 5 clips, 2,00 m**; contrato **35/0**.
+[Lámina](../captures/pitbull-v3/lamina_pitbull.jpg) y [capturas de juego](../captures/pitbull-v3/).
+
+VFX nuevos: `pitbull_guard` (burbuja celeste que lo acompaña mientras dura el escudo) y
+`pitbull_field_warning`/`pitbull_field` (los campos del Príncipe con paleta celeste y
+marina; `CharacterDefinition.field_effect` elige el prefijo). El short del cuerpo común
+sigue a la cintura y a la columna para no atravesar la camiseta al inclinarse (también
+corrige a Turbo y al Príncipe).
+
 ## Príncipe #20 — V3 jugable (provisional)
 
 Mismo cuerpo V3 que Turbo (`art/lib/hero_v3.py`), con identidad propia: silueta más

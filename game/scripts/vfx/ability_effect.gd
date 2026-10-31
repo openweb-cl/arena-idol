@@ -8,6 +8,8 @@ extends Node3D
 ## Príncipe (preparados para su gameplay): principe_shot, principe_buff,
 ## principe_field_warning, principe_field. Los dos campos se colocan en el centro
 ## del área (no en el actor) y usan `radius` y `duration` de gameplay.
+## Pitbull: pitbull_guard (escudo que lo acompaña) y pitbull_field_warning /
+## pitbull_field (mismos campos con paleta celeste y marino).
 var color := Color.CYAN
 var kind := "sprint"
 var age := 0.0
@@ -19,15 +21,27 @@ var duration := 0.0  ## si > 0 sustituye la vida por defecto (tiempos que dicta 
 var parts: Array[Node3D] = []
 var bolts: Node3D
 var bolt_timer := 0.0
+## Paleta de los campos de zona: Príncipe por defecto, Pitbull celeste y marino.
+var edge := VFXKit.PRINCIPE_RED
+var light := VFXKit.PRINCIPE_LIGHT
+var inner := VFXKit.PRINCIPE_BLUE
+var zone_color := VFXKit.PRINCIPE_ZONE
 
 const LIVES := {
 	"shot": 0.2, "turbo_sprint": 0.45, "turbo_super": 0.5, "melee": 0.3, "rey_charge": 0.4,
 	"rey_super": 0.65, "hit": 0.3, "shield": 0.35, "impact_cover": 0.25, "elimination": 0.7,
 	"principe_shot": 0.2, "principe_buff": 0.8, "principe_field_warning": 0.6, "principe_field": 3.0,
+	"pitbull_guard": 2.0,
 }
 
 func _ready() -> void:
 	kind = {"sprint": "turbo_sprint", "charge": "rey_charge"}.get(kind, kind)
+	if kind.begins_with("pitbull_field"):
+		edge = VFXKit.PITBULL_SKY
+		light = VFXKit.PITBULL_LIGHT
+		inner = VFXKit.PITBULL_NAVY
+		zone_color = VFXKit.PITBULL_ZONE
+		kind = kind.replace("pitbull_field", "principe_field")
 	life = duration if duration > 0.0 else LIVES.get(kind, 0.5)
 	match kind:
 		"shot": _build_shot()
@@ -44,6 +58,7 @@ func _ready() -> void:
 		"principe_buff": _build_principe_buff()
 		"principe_field_warning": _build_field_warning()
 		"principe_field": _build_field()
+		"pitbull_guard": _build_guard()
 		_:
 			parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.6, 0.07, color))
 
@@ -188,12 +203,12 @@ func _build_principe_buff() -> void:
 func _build_field_warning() -> void:
 	# Aviso de Campo de Dominio: contorno fijo del radio real, anillo que se cierra
 	# como cuenta atrás, marcador central y flechas hacia adentro.
-	parts.append(VFXKit.ring(self, Vector3(0, 0.03, 0), radius, 0.1, VFXKit.PRINCIPE_RED))
-	parts.append(VFXKit.ring(self, Vector3(0, 0.035, 0), radius, 0.06, VFXKit.PRINCIPE_LIGHT))
+	parts.append(VFXKit.ring(self, Vector3(0, 0.03, 0), radius, 0.1, edge))
+	parts.append(VFXKit.ring(self, Vector3(0, 0.035, 0), radius, 0.06, light))
 	var marker := Node3D.new()
 	add_child(marker)
 	for r in [45.0, -45.0]:
-		var bar := VFXKit.box(marker, Vector3(0, 0.04, 0), Vector3(0.7, 0.03, 0.1), VFXKit.PRINCIPE_RED)
+		var bar := VFXKit.box(marker, Vector3(0, 0.04, 0), Vector3(0.7, 0.03, 0.1), edge)
 		bar.rotation_degrees.y = r
 	parts.append(marker)
 	for i in 6:
@@ -203,18 +218,18 @@ func _build_field_warning() -> void:
 		holder.rotation.y = -ang
 		add_child(holder)
 		for s in [-1, 1]:
-			var arm := VFXKit.box(holder, Vector3(0, 0, s * 0.1), Vector3(0.28, 0.03, 0.06), VFXKit.PRINCIPE_LIGHT)
+			var arm := VFXKit.box(holder, Vector3(0, 0, s * 0.1), Vector3(0.28, 0.03, 0.06), light)
 			arm.rotation.y = s * deg_to_rad(40)
 
 func _build_field() -> void:
 	# Campo de Dominio activo: pulso inicial hasta el radio y zona lenta opaca a ras
 	# de suelo con marcas de lentitud que giran despacio.
-	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), radius, 0.18, VFXKit.PRINCIPE_LIGHT))
+	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), radius, 0.18, light))
 	var zone := Node3D.new()
 	add_child(zone)
-	VFXKit.disk(zone, Vector3(0, 0.02, 0), radius, VFXKit.PRINCIPE_ZONE)
-	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius, 0.09, VFXKit.PRINCIPE_RED)
-	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius * 0.6, 0.04, VFXKit.PRINCIPE_BLUE)
+	VFXKit.disk(zone, Vector3(0, 0.02, 0), radius, zone_color)
+	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius, 0.09, edge)
+	VFXKit.ring(zone, Vector3(0, 0.03, 0), radius * 0.6, 0.04, inner)
 	parts.append(zone)
 	var slow := Node3D.new()
 	add_child(slow)
@@ -226,10 +241,16 @@ func _build_field() -> void:
 		slow.add_child(glyph)
 		for k in 2:
 			for s in [-1, 1]:
-				var arm := VFXKit.box(glyph, Vector3(s * 0.11, 0, k * 0.22), Vector3(0.26, 0.02, 0.07), VFXKit.PRINCIPE_LIGHT)
+				var arm := VFXKit.box(glyph, Vector3(s * 0.11, 0, k * 0.22), Vector3(0.26, 0.02, 0.07), light)
 				arm.rotation.y = s * deg_to_rad(35)
 	parts.append(slow)
-	VFXKit.sparks(self, Vector3(0, 0.15, 0), amount(16), VFXKit.PRINCIPE_RED, 5.0, 0.4, Vector3.UP, 85, -8)
+	VFXKit.sparks(self, Vector3(0, 0.15, 0), amount(16), edge, 5.0, 0.4, Vector3.UP, 85, -8)
+
+func _build_guard() -> void:
+	# Guardia de Hierro: burbuja celeste que acompaña al Pitbull mientras dura el escudo.
+	parts.append(VFXKit.sphere(self, Vector3(0, 0.95, 0), 0.95, VFXKit.SHIELD, 12))
+	parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.95, 0.08, VFXKit.PITBULL_SKY))
+	parts.append(VFXKit.ring(self, Vector3(0, 1.9, 0), 0.45, 0.05, VFXKit.PITBULL_LIGHT))
 
 func _spawn_static(variant: String) -> void:
 	## Parte que se queda en el lugar de inicio aunque el efecto siga al actor.
@@ -255,7 +276,7 @@ func _process(delta: float) -> void:
 	age += delta
 	var t := clampf(age / life, 0, 1)
 	var fade := VFXKit.fade(t)
-	if is_instance_valid(follow) and kind in ["turbo_sprint", "rey_charge", "principe_buff"]:
+	if is_instance_valid(follow) and kind in ["turbo_sprint", "rey_charge", "principe_buff", "pitbull_guard"]:
 		position = follow.position
 		rotation.y = atan2(-follow.facing.x, -follow.facing.z) if "facing" in follow else rotation.y
 	match kind:
@@ -300,6 +321,11 @@ func _process(delta: float) -> void:
 			parts[1].scale = Vector3.ONE * fade
 			parts[2].position.y = 2.3 + t * 0.3
 			parts[2].scale = Vector3.ONE * VFXKit.fade(maxf(0, t - 0.6) * 2.5)
+		"pitbull_guard":
+			var beat := 1.0 + 0.04 * sin(age * 12.0)
+			var end := VFXKit.fade(maxf(0, t - 0.85) / 0.15)
+			for p in parts:
+				p.scale = Vector3.ONE * beat * maxf(0.001, end)
 		"principe_field_warning":
 			parts[1].scale = Vector3(maxf(0.001, 1.0 - t), 1, maxf(0.001, 1.0 - t))
 			parts[0].scale = Vector3(1, 1 + 0.5 * sin(age * 30.0), 1)

@@ -278,10 +278,10 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 	if phase != Phase.PLAYING:
 		return
 	var is_super := kind == "super"
+	if is_super and actor.definition.super_kind == "Field":
+		place_field(actor, actor.super_target)
+		return
 	if actor.definition.attack_type == "Ranged":
-		if is_super and actor.definition.super_kind == "Field":
-			place_field(actor, actor.super_target)
-			return
 		var projectile := CombatProjectile.new()
 		projectile.source = actor
 		# Daño y dirección capturados al aceptar el ataque (mejora de poder, anticipación).
@@ -320,12 +320,17 @@ func on_ability(actor: ArenaPlayer) -> void:
 	if actor.definition.ability.kind == "Power":
 		spawn_effect(actor, "principe_buff", actor.definition.ability.effect_color)
 		return
+	if actor.definition.ability.kind == "Shield":
+		spawn_effect(actor, "pitbull_guard", actor.definition.ability.effect_color, actor.definition.ability.duration)
+		return
 	spawn_effect(actor, "turbo_sprint" if actor.definition.attack_type == "Ranged" else "rey_charge", actor.definition.ability.effect_color)
 
 ## Centro de la súper de zona del humano: AUTO usa el rival visible a su alcance;
 ## MANUAL, el punto del cursor si está dentro del alcance y con línea de visión.
 func field_target(actor: ArenaPlayer) -> Variant:
 	var reach := actor.definition.super_reach
+	if reach <= 0.01:  # campo centrado en el propio héroe
+		return Vector3(actor.position.x, 0, actor.position.z)
 	if not auto_target_enabled and mouse_aim and aim_marker.visible:
 		var point := Vector3(aim_marker.position.x, 0, aim_marker.position.z)
 		return point if field_point_valid(actor, point) else null
@@ -352,7 +357,7 @@ func place_field(actor: ArenaPlayer, center: Variant) -> void:
 	field.setup(actor, center)
 	add_child(field)
 	fields.append(field)
-	field.effects.append(spawn_field_effect(field, "principe_field_warning", field.warning))
+	field.effects.append(spawn_field_effect(field, field.effect_kind + "_warning", field.warning))
 
 func spawn_field_effect(field: ZoneField, kind: String, life: float) -> AbilityEffect:
 	var effect := AbilityEffect.new()
@@ -376,7 +381,7 @@ func update_fields(delta: float) -> void:
 		var was_triggered := field.triggered
 		field.tick(delta, actors, apply_field_damage)
 		if field.triggered and not was_triggered:
-			field.effects.append(spawn_field_effect(field, "principe_field", field.duration))
+			field.effects.append(spawn_field_effect(field, field.effect_kind, field.duration))
 		if field.finished():
 			fields.remove_at(index)
 			field.queue_free()
@@ -386,10 +391,11 @@ func update_fields(delta: float) -> void:
 			if is_instance_valid(actor):
 				actor.slow = maxf(actor.slow, field.slow_for(actor))
 
-func spawn_effect(actor: ArenaPlayer, kind: String, color: Color) -> void:
+func spawn_effect(actor: ArenaPlayer, kind: String, color: Color, life: float = 0.0) -> void:
 	var effect := AbilityEffect.new()
 	effect.kind = kind
 	effect.color = color
+	effect.duration = life
 	effect.quality = not GraphicsSettings.low
 	effect.position = actor.position
 	effect.rotation.y = atan2(-actor.facing.x, -actor.facing.z)

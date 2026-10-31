@@ -1,5 +1,10 @@
 # Evidencia de validación — combate 3D
 
+Pitbull jugable (31 octubre 2026, PC del propietario, Windows 11, Godot 4.7.2):
+**325 comprobaciones aprobadas**, 0 fallos (las 293 anteriores + 32 del Pitbull).
+Contrato de arte: Pitbull 35/0, Príncipe 35/0, Turbo 35/0, Rey 40/0. Capturas en
+[docs/captures/pitbull-v3/](captures/pitbull-v3/). Sin playtest de balance ni teléfono.
+
 Príncipe jugable (31 octubre 2026, PC del propietario, Windows 11, Godot 4.7.2):
 **293 comprobaciones aprobadas**, 0 fallos (50 reglas + 41 proyectiles + 31 AUTO +
 30 munición + 40 mapas + 51 táctil + 50 Príncipe), con `tools/verify.py` sin `--pack`.

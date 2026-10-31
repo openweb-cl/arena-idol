@@ -245,7 +245,8 @@ func run() -> void:
 	check(menu.rival_text() == "RIVAL: EL REY", "rival por defecto sin cambios (Turbo contra Rey)")
 	menu.cycle_rival()
 	check(GameSession.selected_rival.id == "principe" and menu.rival_text().contains("PRÍNCIPE"), "el botón de rival recorre los héroes jugables")
-	menu.cycle_rival()
+	for i in CharacterCatalog.AVAILABLE.size() - 2:
+		menu.cycle_rival()
 	check(GameSession.selected_rival.id == "rey", "el ciclo vuelve al primero")
 	GameSession.selected_rival = null
 	menu.queue_free()

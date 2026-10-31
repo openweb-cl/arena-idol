@@ -1,13 +1,16 @@
 extends SceneTree
-## Capturas reales del Príncipe #20 jugable: selección, menú con rival, mejora de
-## poder, aviso y pulso del Campo de Dominio. No acredita rendimiento Android. Uso:
-## godot --path game --audio-driver Dummy --script ../art/lib/capture_principe.gd -- --output=/ruta
-var output := "/tmp/principe-capturas"
+## Capturas reales de un héroe jugable con habilidad y súper de zona: menú con
+## rival, selección, habilidad activa, aviso, pulso y campo. No acredita Android. Uso:
+## godot --path game --audio-driver Dummy --script ../art/lib/capture_kit.gd -- --hero=principe --output=/ruta
+var output := "/tmp/kit-capturas"
+var hero := "principe"
 
 func _initialize() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--output="):
 			output = arg.trim_prefix("--output=")
+		if arg.begins_with("--hero="):
+			hero = arg.trim_prefix("--hero=")
 	DirAccess.make_dir_recursive_absolute(output)
 	call_deferred("run")
 
@@ -34,18 +37,18 @@ func crop(name: String, camera: Camera3D, at: Vector3, size: Vector2i) -> void:
 	print("CAPTURE ", name, " ", part.get_size())
 
 func run() -> void:
-	var principe: CharacterDefinition = load("res://data/characters/principe.tres")
+	var own: CharacterDefinition = load("res://data/characters/%s.tres" % hero)
 	var turbo: CharacterDefinition = load("res://data/characters/turbo.tres")
-	GameSession.selected = principe
+	GameSession.selected = own
 	GameSession.selected_rival = turbo
 	GameSession.selected_arena = GameSession.ARENAS[0]
 	var menu: Control = load("res://scenes/menu/main.tscn").instantiate()
 	root.add_child(menu)
 	await frames(10)
-	capture("01-menu-principe-rival")
+	capture("01-menu-%s-rival" % hero)
 	menu.show_selection()
 	await frames(10)
-	capture("02-seleccion-principe")
+	capture("02-seleccion-%s" % hero)
 	menu.queue_free()
 	await frames(2)
 
@@ -67,27 +70,30 @@ func run() -> void:
 	me.ability()
 	await frames(14)
 	arena.hud.update_state(arena.rules, me)
-	capture("03-arena-impulso-tactico")
-	crop("03-arena-impulso-tactico-zoom", arena.camera, me.global_position + Vector3(0, 1.4, 0), Vector2i(300, 240))
+	capture("03-arena-habilidad")
+	crop("03-arena-habilidad-zoom", arena.camera, me.global_position + Vector3(0, 1.4, 0), Vector2i(300, 240))
 	me.super_charge = 100
-	me.super_target = Vector3(rival.position.x, 0, rival.position.z)
+	if own.super_reach <= 0.01:  # zona centrada en el propio héroe: acercarlo al rival
+		me.position = rival.position + Vector3(-1.8, 0, 0)
+		await frames(2)
+	me.super_target = arena.field_target(me) if own.super_reach <= 0.01 else Vector3(rival.position.x, 0, rival.position.z)
 	me.act("super")
 	for i in 6:
 		arena.update_fields(1.0 / 60)
 		await frames(1)
 	capture("04-campo-aviso")
-	crop("04-campo-aviso-zoom", arena.camera, Vector3(rival.position.x, 0.5, rival.position.z), Vector2i(420, 300))
+	crop("04-campo-aviso-zoom", arena.camera, Vector3(rival.position.x, 0.5, rival.position.z), Vector2i(460, 320))
 	for i in 32:
 		arena.update_fields(1.0 / 60)
 	await frames(2)
 	capture("05-campo-pulso")
-	crop("05-campo-pulso-zoom", arena.camera, Vector3(2.6, 0.5, 5.2), Vector2i(420, 300))
+	crop("05-campo-pulso-zoom", arena.camera, Vector3(rival.position.x, 0.5, rival.position.z), Vector2i(460, 320))
 	for i in 40:
 		arena.update_fields(1.0 / 60)
 		await frames(1)
 	arena.hud.update_state(arena.rules, me)
 	capture("06-campo-lento")
-	print("PRINCIPE_CAPTURE rival_health=%d slow=%.2f" % [rival.health, rival.slow])
+	print("KIT_CAPTURE %s rival_health=%d slow=%.2f" % [hero, rival.health, rival.slow])
 	arena.queue_free()
 	await frames(2)
 	GameSession.selected_rival = null

@@ -7,7 +7,7 @@ var preview_light: DirectionalLight3D
 var match_settings: MatchConfig = preload("res://data/match.tres")
 var cards: Dictionary = {}  ## id de héroe → botón de su tarjeta en la selección
 var portrait_frame: StyleBoxFlat
-const IN_DEVELOPMENT := {3: "EL PITBULL  #17"}  ## arte listo, sin gameplay
+const IN_DEVELOPMENT := {}  ## héroes con arte listo y sin gameplay
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

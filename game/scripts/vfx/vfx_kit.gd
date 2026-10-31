@@ -20,6 +20,10 @@ const PRINCIPE_RED := Color("d92332")
 const PRINCIPE_LIGHT := Color("ffe9e6")
 const PRINCIPE_BLUE := Color("1a37a8")
 const PRINCIPE_ZONE := Color("1b2b63")
+const PITBULL_SKY := Color("5ec8f2")
+const PITBULL_LIGHT := Color("e9f8ff")
+const PITBULL_NAVY := Color("1d2f6f")
+const PITBULL_ZONE := Color("15304f")
 
 static var _materials: Dictionary = {}
 static var _overlays: Dictionary = {}

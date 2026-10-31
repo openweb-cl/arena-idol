@@ -1,125 +1,83 @@
-"""El Pitbull — generador reproducible del modelo, rig y clips (muestra V0).
+"""El Pitbull #17 — generador reproducible del modelo, rig y clips (V3 provisional).
 
-MUESTRA PROVISIONAL: solo arte. Sin gameplay ni ficha aprobada (Codex).
-Dorsal 17 decidido por el propietario el 2026-10-30. No es arte final.
-Diseño original del defensor: compacto y bajo, de centro de gravedad bajo, camiseta
-blanca con franja celeste horizontal al centro, collar con tachas (sello propio),
-vendas blancas en las muñecas, guardia defensiva y visor ámbar de marca personal.
-Sin escudos, patrocinadores, logos ni rostro de personas reales.
+MODELO PROVISIONAL V3 con el patrón visual de Turbo V3. Pendiente de revisión del
+propietario; no es arte final. Diseño original del defensor: compacto y de piernas
+fuertes, camiseta blanca con banda celeste propia al pecho, short marino, medias
+blancas, pelo corto oscuro con cresta baja, sombra de barba, mirada firme pero
+simpática, tatuajes geométricos propios y vendas blancas en las muñecas.
+Sin cabeza de perro, guanteletes, armadura, escudos, logos ni rostros reales.
 
-Uso: python art/pitbull/build_pitbull.py
-Salidas: art/pitbull/pitbull.blend y game/assets/models/pitbull/pitbull.glb.
+Cuerpo, atlas y clips comunes en art/lib/hero_v3.py; aquí solo lo propio del Pitbull.
+
+Uso: python art/pitbull/build_pitbull.py   (bpy 5.2.3 + pillow)
+Salidas: art/pitbull/pitbull_atlas.png, art/pitbull/pitbull.blend y
+game/assets/models/pitbull/pitbull.glb.
 """
-import math
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
-from hero_kit import P, Vector, build_hero, celebrate_keys, hit_keys, make_bones, mirror, number, run_pose  # noqa: E402
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent / "lib"))
+import hero_v3  # noqa: E402
 
-PALETTE = {
-    "M_Pitbull_Blanco": ("f4f5f2", 0.80, 0.0, None),   # camiseta, vendas, medias
-    "M_Pitbull_Celeste": ("5ec8f2", 0.70, 0.0, None),  # franja central, ribetes
-    "M_Pitbull_Marino": ("1d2f6f", 0.70, 0.0, None),   # short, botas
-    "M_Pitbull_Piel": ("b9805c", 0.85, 0.0, None),     # piel
-    "M_Pitbull_Collar": ("23232a", 0.55, 0.0, None),   # collar, pelo, guantes, suelas
-    "M_Pitbull_Tacha": ("c9ced8", 0.35, 0.0, None),    # tachas del collar
-    "M_Pitbull_Visor": ("ffb03b", 0.40, 0.0, 1.3),     # visor ámbar (emisivo)
+HAIR = [  # pelo corto: cresta baja de mechones cortos hacia atrás y laterales rapados (casquete)
+    ((0.0, 0.12, 1.83), (0, 0.2, 1), 0.08, 0.05, (0, -0.3, 0), "pelo"),
+    ((0.0, 0.05, 1.86), (0, -0.2, 1), 0.09, 0.055, (0, -0.35, 0), "pelo_sombra"),
+    ((0.0, -0.03, 1.86), (0, -0.6, 0.8), 0.09, 0.055, (0, -0.2, 0), "pelo"),
+    ((0.0, -0.11, 1.82), (0, -0.9, 0.4), 0.08, 0.05, (0, 0, 0), "pelo_sombra"),
+    ((0.05, 0.08, 1.84), (0.3, 0, 1), 0.06, 0.04, (0, -0.3, 0), "pelo"),
+    ((-0.05, 0.08, 1.84), (-0.3, 0, 1), 0.06, 0.04, (0, -0.3, 0), "pelo"),
+]
+
+
+def shirt(c, reg, v, px_u):
+    """Banda celeste horizontal al pecho con filos marinos, por delante y por detrás."""
+    x0, y0, x1, y1 = reg
+    h = y1 - y0
+    top, bot = y0 + v(1.27) * h, y0 + v(1.12) * h
+    c.rect(x0, top - 5, x1, bot + 5, "short")
+    c.rect(x0, top, x1, bot, "detalle")
+
+
+def arm(c, reg, v):
+    """Tatuaje geométrico propio en el antebrazo y venda blanca en la muñeca."""
+    x0, y0, x1, y1 = reg
+    w_px = x1 - x0
+    top, bot = v(1.0), v(0.9)
+    for i in range(8):
+        a = x0 + w_px * i / 8
+        b = x0 + w_px * (i + 1) / 8
+        c.poly([(a, top), (b, top), ((a + b) / 2, bot)], "tinta")
+        c.poly([((a + b) / 2, top + 6), (b - 6, (top + bot) / 2), ((a + b) / 2, bot - 4), (a + 6, (top + bot) / 2)], "piel")
+    c.rect(x0, v(1.11), x1, v(1.095), "tinta")
+    wrap_top, wrap_bot = v(0.885), v(0.81)
+    c.rect(x0, wrap_top, x1, wrap_bot, "blanco")
+    for i in range(6):
+        y = wrap_top + (wrap_bot - wrap_top) * (i + 0.5) / 6
+        c.line([(x0, y - 3), (x1, y + 3)], "gris", 2)
+
+
+SPEC = {
+    "id": "pitbull",
+    "number": "17",
+    "colors": {"base": "#f4f4ef", "base_oscuro": "#d6dbe2", "acento": "#5ec8f2", "piel": "#c58658",
+               "piel_sombra": "#a06a43", "pelo": "#2a211c", "pelo_sombra": "#45372e", "short": "#1d2f6f",
+               "media": "#f4f4ef", "banda": "#5ec8f2", "puno": "#5ec8f2", "suela": "#1d2f6f",
+               "detalle": "#5ec8f2", "iris": "#4a2e1a", "iris_claro": "#6a4426"},
+    "collar": "short",
+    "number_color": "short",
+    "short_stripe": "acento",
+    "proportions": {"chest": 1.15, "waist": 1.1, "arm": 1.25, "leg": 1.15, "shoulder": 1.1, "head_scale": 1.1},
+    "face": {"brow": "fruncida", "mouth": "atento", "eye_scale": 0.88, "lid": 0.3, "jaw": 0.12, "stubble": True},
+    "hair": HAIR,
+    "hair_flat": 0.7,
+    "hair_cap": {"front_z": 1.75, "z": 1.64, "radii": (0.185, 0.185, 0.21), "nape": 1.5},
+    "shirt": shirt,
+    "arm": arm,
+    "stance": {"arm_out": 28, "crouch": 1.3},
+    # Zancada corta y potente; run_clip_speed = 3.1 m/s en pitbull.tres.
+    "run": {"lean": -10, "arm_out": 20, "bob": 0.05, "stride": 0.95},
 }
-W, C, M, S, K, T, G = PALETTE
-BONES = make_bones(shoulder_x=0.32, hip_x=0.15, arm_drop=0.05, hip_z=0.72, chest_top=1.32)
-
-
-def build_mesh(b):
-    for side, sx in (("L", -1), ("R", 1)):
-        x = 0.15 * sx
-        # Botas marino robustas.
-        b.box(M, f"foot.{side}", (x, 0.05, 0.085), (0.2, 0.36, 0.15), bevel=0.05, segments=3, taper_top=0.9, taper_depth=0.82)
-        b.box(K, f"foot.{side}", (x, 0.05, 0.018), (0.21, 0.37, 0.036), bevel=0.012, segments=1)
-        b.box(C, f"foot.{side}", (x + 0.1 * sx, 0.05, 0.09), (0.012, 0.2, 0.05), smooth=False)
-        # Medias blancas con ribete celeste; piernas cortas y gruesas.
-        b.limb(W, f"shin.{side}", (x, 0, 0.14), (x, 0, 0.43), 0.08, 0.092)
-        b.limb(C, f"shin.{side}", (x, 0, 0.39), (x, 0, 0.43), 0.095, 0.095)
-        b.sphere(S, f"shin.{side}", (x, 0.0, 0.47), (0.082, 0.082, 0.082), u=10, v=6)
-        b.limb(S, f"thigh.{side}", (x, 0, 0.49), (x, 0, 0.64), 0.095, 0.11)
-        # Brazos fuertes, manga blanca, vendas blancas y guantes oscuros.
-        sh = Vector((0.32 * sx, 0, 1.22))
-        el = Vector((0.38 * sx, 0, 0.97))
-        wr = Vector((0.41 * sx, 0, 0.76))
-        b.sphere(W, f"upper_arm.{side}", sh + Vector((0.01 * sx, 0, -0.03)), (0.115, 0.11, 0.105), u=10, v=6)
-        b.limb(W, f"upper_arm.{side}", sh, sh.lerp(el, 0.42), 0.104, 0.095)
-        b.limb(C, f"upper_arm.{side}", sh.lerp(el, 0.38), sh.lerp(el, 0.48), 0.098, 0.096)
-        b.limb(S, f"upper_arm.{side}", sh.lerp(el, 0.45), el, 0.075, 0.068, segments=8)
-        b.sphere(S, f"forearm.{side}", el, (0.07, 0.07, 0.07), u=8, v=6)
-        b.limb(S, f"forearm.{side}", el, wr, 0.068, 0.072, segments=8)
-        for t in (0.62, 0.76, 0.9):
-            b.limb(W, f"forearm.{side}", el.lerp(wr, t), el.lerp(wr, t + 0.12), 0.078, 0.08, segments=8)
-        b.sphere(K, f"hand.{side}", wr + Vector((0.01 * sx, 0.01, -0.075)), (0.1, 0.105, 0.11), u=10, v=7)
-    # Short marino con franja celeste.
-    b.box(M, "hips", (0, 0, 0.68), (0.44, 0.29, 0.2), bevel=0.06, segments=2, taper_top=1.02)
-    for sx in (-1, 1):
-        b.box(C, "hips", (0.218 * sx, 0, 0.66), (0.012, 0.08, 0.16), smooth=False)
-    # Torso compacto blanco con franja celeste horizontal al centro (adelante y atrás).
-    b.box(W, "spine", (0, 0, 0.9), (0.44, 0.31, 0.28), bevel=0.07, segments=2, taper_top=1.08)
-    b.box(W, "chest", (0, 0, 1.15), (0.52, 0.32, 0.27), bevel=0.09, segments=2, taper_top=1.14, taper_depth=0.95)
-    b.box(C, "chest", (0, 0, 1.075), (0.555, 0.33, 0.1), bevel=0.03, segments=2)
-    b.box(C, "chest", (0, 0, 1.31), (0.2, 0.25, 0.02), smooth=False)
-    # Dorsal 17 (decisión del propietario): pequeño en el pecho, grande en la espalda.
-    number(b, M, "chest", "17", (-0.13, 0.172, 1.2), 0.075, "front")
-    number(b, M, "chest", "17", (0.0, -0.178, 1.12), 0.2, "back")
-    # Cuello ancho con collar de tachas (sello del Pitbull).
-    b.limb(S, "chest", (0, 0, 1.27), (0, 0, 1.4), 0.105, 0.1, segments=10)
-    b.limb(K, "chest", (0, 0, 1.3), (0, 0, 1.36), 0.122, 0.118, segments=14)
-    for i in range(10):
-        ang = math.radians(i * 36)
-        base = Vector((math.cos(ang) * 0.12, math.sin(ang) * 0.12, 1.33))
-        b.spike(T, "chest", base, (math.cos(ang), math.sin(ang), 0), 0.018, 0.04, segments=4)
-    # Cabeza ancha, mandíbula fuerte, ceño y visor ámbar.
-    hc = Vector((0, 0.02, 1.6))
-    b.sphere(S, "head", hc, (0.27, 0.25, 0.25), u=18, v=12)
-    b.box(S, "head", hc + Vector((0, 0.04, -0.13)), (0.42, 0.3, 0.15), bevel=0.06, segments=2)
-    for sx in (-1, 1):
-        b.sphere(S, "head", hc + Vector((0.27 * sx, -0.01, -0.01)), (0.045, 0.06, 0.065), u=8, v=5)
-        b.box(K, "head", hc + Vector((0.08 * sx, 0.235, 0.065)), (0.13, 0.03, 0.035), bevel=0.01, segments=1, rot=(0, -14 * sx, 0))
-    b.sphere(S, "head", hc + Vector((0, 0.255, -0.05)), (0.05, 0.04, 0.04), u=8, v=5)
-    b.box(K, "head", hc + Vector((0, 0.25, -0.16)), (0.15, 0.02, 0.025), bevel=0.008, segments=1)
-    b.arc_band(G, "head", hc + Vector((0, 0, 0.0)), 0.262, 0.05, 30, 150, 0.02, segments=14, scale=(1.03, 1.0, 1))
-    # Pelo rapado oscuro.
-    b.sphere(K, "head", hc + Vector((0, -0.02, 0.07)), (0.265, 0.255, 0.21), u=16, v=8)
-
-
-def guard(breath=0.0):
-    """Guardia defensiva baja: rodillas flexionadas y puños arriba."""
-    return mirror(P(
-        hips=((0, 0, 0), (0, 0, -0.04 - 0.012 * breath)),
-        spine=(-10 + 3 * breath, 0, 0), chest=(-2 + 3 * breath, 0, 0), head=(8 - 3 * breath, 0, 0),
-        upper_arm_L=(28 + 4 * breath, 24, 0), forearm_L=(105, 0, 0),
-        thigh_L=(18, 8, 0), shin_L=(-30, 0, 0), foot_L=(12, 0, 0),
-    ))
-
-
-def clips():
-    neutral = guard(0)
-    return {
-        "idle": [(0, neutral), (24, guard(1)), (48, neutral)],
-        "run": [(f, run_pose(f, lean=-18, arm_swing=0.8, arm_out=22, bob=0.04)) for f in (0, 4, 8, 12, 16)],
-        # Tackle corto: estocada baja con pierna barrida; contacto en el cuadro 4.
-        "kick": [
-            (0, neutral),
-            (2, {**neutral, **P(hips=((0, 0, 0), (0, 0, -0.08)), spine=(-18, 0, 15), thigh_R=(-30, -10, 0), shin_R=(-50, 0, 0),
-                                thigh_L=(30, 8, 0), shin_L=(-45, 0, 0))}),
-            (4, {**neutral, **P(hips=((0, 0, 0), (0, 0, -0.16)), spine=(-28, 0, -12), head=(18, 0, 0),
-                                thigh_R=(75, -12, 0), shin_R=(-8, 0, 0), foot_R=(-20, 0, 0), thigh_L=(-15, 8, 0), shin_L=(-75, 0, 0),
-                                upper_arm_L=(-30, 50, 0), forearm_L=(40, 0, 0), upper_arm_R=(40, -45, 0), forearm_R=(40, 0, 0))}),
-            (6, {**neutral, **P(hips=((0, 0, 0), (0, 0, -0.14)), spine=(-24, 0, -8), thigh_R=(65, -10, 0), shin_R=(-15, 0, 0),
-                                thigh_L=(-10, 8, 0), shin_L=(-65, 0, 0), upper_arm_L=(-20, 45, 0), upper_arm_R=(30, -40, 0))}),
-            (12, neutral),
-        ],
-        "hit": hit_keys(neutral, arm_out=36),
-        "celebrate": celebrate_keys(jump=0.14, arm_up=110),
-    }
-
 
 if __name__ == "__main__":
-    build_hero("pitbull", PALETTE, BONES, build_mesh, clips(),
-               [("Muzzle", "chest", (0.0, 0.45, 1.0)), ("VFXOrigin", "chest", (0.0, 0.0, 1.05))])
+    hero_v3.build(SPEC, HERE)
