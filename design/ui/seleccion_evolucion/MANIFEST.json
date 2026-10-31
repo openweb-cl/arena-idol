@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "state": "EXPLORATION_PENDING_OWNER_REVIEW_NOT_RUNTIME",
+  "file": "seleccion-caricaturesca-propuesta.png",
+  "sha256": "963cb58721d01eb948a489893f1683689f6009586136f018f24655c7bb21ed2f",
+  "generator": "OpenAI image_gen.imagegen",
+  "source_references": [
+    "design/referencias/propietario_2026-10-31/05-composicion-seleccion.jpg",
+    "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg"
+  ],
+  "owner_feedback": "La nueva imagen vuelve a cambiar los personajes. Trabajar evolución y fijar Turbo V2 antes de modelar; no tratar como diseño aprobado.",
+  "runtime": false
+}

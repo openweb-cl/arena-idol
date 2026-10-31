@@ -32,3 +32,17 @@ pantalla pequeña requieren pruebas reales; no quedan aprobados por capturas PC.
 Adaptador táctil con movimiento y apuntado independientes, botones de habilidad/
 súper, safe areas y opciones de accesibilidad. Después equipos, salas y modos.
 Perfil, ranking y cosméticos solo cuando existan sistemas reales y gates aprobados.
+
+
+## Actualización del propietario — 31 octubre 2026 UTC
+
+Composición de la [última referencia aportada](../design/referencias/propietario_2026-10-31/05-composicion-seleccion.jpg):
+retratos a la izquierda, personaje destacado sobre escenario, nombre/rol y tres
+acciones, modo y JUGAR abajo a la derecha. Mantener personajes caricaturescos
+como las primeras imágenes, no el realismo de esa pantalla. No trasladar monedas,
+gemas, goles/pases ni retratos fuera del plantel.
+
+La [nueva exploración](../design/ui/seleccion_evolucion/README.md) no es UI
+implementada ni personaje aprobado. Primero fijar Turbo V2 y reutilizar esa
+identidad. En juego los pendientes siguen identificados y no seleccionables.
+[Etapas y revisión](plantel/VISUAL.md).

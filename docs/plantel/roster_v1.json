@@ -1,0 +1,1423 @@
+{
+  "schema_version": 1,
+  "state": "preproduction_proposals_not_runtime",
+  "local_date": "2026-10-30 America/Santiago",
+  "canonical_source": "../ROSTER_CANONICO_V0_4.md",
+  "owner_approved_numbers": {
+    "turbo": 11,
+    "rey": 23,
+    "principe": 20,
+    "pitbull": 17
+  },
+  "notes": [
+    "No se añaden personajes ni se cambian reglas del juego en esta entrega.",
+    "Solo Turbo/Rey tienen gameplay; cuatro GLB actuales son provisionales.",
+    "Los otros doce dorsales quedan sin definir; no inferirlos de personas reales.",
+    "Parámetros nuevos son hipótesis por revisar/probar, no balance certificado.",
+    "La ficha extensa del Príncipe prevalece sobre este resumen.",
+    "La prioridad actual es visual PC; teléfonos aplazados conservando preparación Android.",
+    "Corrección visual del propietario: futbolistas caricaturescos, no armaduras/fantasía ni animales antropomorfos.",
+    "Las cuatro primeras láminas fueron rechazadas y se archivan; no son fuentes de modelado.",
+    "Los bosquejos históricos orientan forma/ropa; sus goles, clubes y personajes fuera del roster no definen gameplay.",
+    "Referencias aportadas por el propietario el 31 octubre UTC: primeras tres para caricatura/energía/cámara; última para composición UI. Todos los 16 tienen ahora referencia individual localizada. No volver al realismo de las últimas dos imágenes."
+  ],
+  "heroes": [
+    {
+      "canonical_id": "UCH-01",
+      "id": "turbo",
+      "name": "El Turbo",
+      "number": 11,
+      "role": "Velocista / daño a distancia",
+      "health": 4000,
+      "speed": 7.8,
+      "palette": {
+        "base": "#1f3fbf",
+        "secondary": "#e0262f",
+        "light": "#f1f3f7",
+        "signal": "#ffe873"
+      },
+      "silhouette": "Futbolista caricaturesco ágil: camiseta azul con rojo, short, medias y botines grandes; pelo blanco y tatuajes geométricos propios. Sin armadura.",
+      "face": "Cara humana original con ojos grandes y gesto competitivo amable. El visor del GLB actual es provisional; explorar rostro sin imitar a una persona.",
+      "concept_sheet": "02-nucleo-deportivo.png",
+      "panel": "superior izquierdo",
+      "production_wave": 0,
+      "basic": {
+        "name": "Pelotazo eléctrico",
+        "summary": "Básico actual recto, físico y bloqueado por cobertura.",
+        "values": {
+          "damage_per_attack": 850,
+          "range_m": 13,
+          "interval_s": 0.42,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.5,
+          "projectile_speed_m_s": 19,
+          "projectile_radius_m": 0.16
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Turbo Sprint",
+        "summary": "Aceleración actual dirigida por movimiento o frente.",
+        "values": {
+          "cooldown_s": 4.5,
+          "duration_s": 0.3,
+          "speed_multiplier": 2.7
+        },
+        "details": [
+          "Sin daño de contacto ni inmunidad añadida. El collider conserva XZ."
+        ]
+      },
+      "super": {
+        "name": "Remate Relámpago",
+        "summary": "Proyectil eléctrico grande actual.",
+        "values": {
+          "damage": 2300,
+          "range_m": 16.9,
+          "speed_m_s": 27.55,
+          "radius_m": 0.32
+        },
+        "details": [
+          "Conservar reglas de carga del código vigente; no rebalancear desde una lámina."
+        ]
+      },
+      "counterplay": "Baja vida; castigar sus ventanas sin cargas y cubrirse de líneas rectas. No debilitar arbitrariamente al Rey.",
+      "bot": "Mantener distancia y esquivar con el mismo sprint, cargas y cadencia que el humano.",
+      "modules": [
+        "straight_projectile",
+        "dash",
+        "ammo"
+      ],
+      "animation": "Carrera con inclinación y cambios de dirección fluidos; ataque corto de pierna/brazo coherente con kick; celebrar con impulso y brazos abiertos.",
+      "model_path": "res://assets/models/turbo/turbo.glb",
+      "planned_model_path": "res://assets/models/turbo/turbo.glb",
+      "gameplay_status": "implemented",
+      "art_status": "existing_provisional_glb_plus_concept",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 1, columna 1",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "UCH-02",
+      "id": "principe",
+      "name": "El Príncipe",
+      "number": 20,
+      "role": "Estratega / precisión y apoyo",
+      "health": 4400,
+      "speed": 6.6,
+      "palette": {
+        "base": "#1a37a8",
+        "secondary": "#d92332",
+        "light": "#f1f3f7",
+        "signal": "#ff4d4d"
+      },
+      "silhouette": "Futbolista caricaturesco esbelto y erguido: camiseta azul/rojo, short y medias; conservar dorsal 20 y banda diagonal propia, sin traje de príncipe medieval.",
+      "face": "Cara humana propia, pelo oscuro lateral y gesto atento. La lente roja del GLB es un detalle provisional.",
+      "concept_sheet": "02-nucleo-deportivo.png",
+      "panel": "inferior izquierdo",
+      "production_wave": 1,
+      "basic": {
+        "name": "Pulso Certero",
+        "summary": "Proyectil preciso con anticipación de 0,12 s; no es un pase.",
+        "values": {
+          "damage_per_attack": 750,
+          "range_m": 12,
+          "interval_s": 0.6,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.6,
+          "projectile_speed_m_s": 22,
+          "projectile_radius_m": 0.12
+        },
+        "details": [
+          "Dirección fijada al aceptar; normalizar siempre el apuntado."
+        ]
+      },
+      "active": {
+        "name": "Impulso Táctico",
+        "summary": "Aumenta temporalmente daño básico propio; extensión a aliados al probar equipos.",
+        "values": {
+          "damage_bonus_pct": 20,
+          "duration_s": 3,
+          "cooldown_s": 8,
+          "future_ally_radius_m": 2.5
+        },
+        "details": [
+          "En 1v1 tiene utilidad sobre sí mismo. No acelera recarga ni mejora la súper."
+        ]
+      },
+      "super": {
+        "name": "Campo de Dominio",
+        "summary": "Anuncia una zona; pulso de daño/empuje y ralentización dentro del campo.",
+        "values": {
+          "damage_once": 900,
+          "cast_range_m": 8,
+          "radius_m": 3,
+          "warning_s": 0.6,
+          "duration_s": 3,
+          "slow_pct": 25,
+          "push_m_s": 10
+        },
+        "details": [
+          "No sigue al rival. Cobertura y protección cortan efectos; no mueve muros."
+        ]
+      },
+      "counterplay": "Menor presión sostenida y sin sprint. Salir del aviso, forzarle a recolocarse y acercarse entre coberturas.",
+      "bot": "Preparar poder con munición; colocar el campo sobre una posición visible, sin conocer entradas futuras.",
+      "modules": [
+        "straight_projectile",
+        "windup",
+        "damage_buff",
+        "zone",
+        "radial_push",
+        "slow"
+      ],
+      "animation": "Manos medidas y carrera controlada; ataque de precisión reinterpretando kick; reverencia de celebrate existente.",
+      "model_path": "res://assets/models/principe/principe.glb",
+      "planned_model_path": "res://assets/models/principe/principe.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "existing_provisional_glb_plus_concept",
+      "kit_reference": "../../PRINCIPE_KIT.md",
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 1, columna 2",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COL-01",
+      "id": "rey",
+      "name": "El Rey",
+      "number": 23,
+      "role": "Tanque / presión cercana",
+      "health": 6200,
+      "speed": 6.0,
+      "palette": {
+        "base": "#f2f2ef",
+        "secondary": "#18181c",
+        "light": "#f2b632",
+        "signal": "#5b2a86"
+      },
+      "silhouette": "Futbolista caricaturesco ancho y fuerte: camiseta blanca/negra, short, medias, botines y vendas. Corona/capa pequeña actuales son accesorios provisionales, no armadura.",
+      "face": "Rostro humano ficticio expresivo, mandíbula amplia; conservar diferencia respecto a Turbo sin copiar a un deportista.",
+      "concept_sheet": "02-nucleo-deportivo.png",
+      "panel": "superior derecho",
+      "production_wave": 0,
+      "basic": {
+        "name": "Golpe frontal",
+        "summary": "Básico melee actual, condicionado por alcance, orientación y cobertura.",
+        "values": {
+          "damage_per_attack": 1100,
+          "range_m": 2.7,
+          "interval_s": 0.65,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Embestida Real",
+        "summary": "Avance corto actual con protección y un contacto dañino.",
+        "values": {
+          "cooldown_s": 6,
+          "duration_s": 0.34,
+          "speed_multiplier": 2,
+          "shield_seconds": 0.7,
+          "contact_damage": 1100
+        },
+        "details": [
+          "Un contacto por activación; no ampliar daño o inmunidad desde el diseño visual."
+        ]
+      },
+      "super": {
+        "name": "Onda Real",
+        "summary": "Daño radial actual con empuje y onda violeta.",
+        "values": {
+          "damage": 1900,
+          "radius_m": 4.5
+        },
+        "details": [
+          "VFX no decide a quién daña. Conservar la línea de cobertura del código."
+        ]
+      },
+      "counterplay": "Alcance corto y menos velocidad. Cambiar de dirección, administrar distancia y aprovechar su cooldown.",
+      "bot": "Acercarse por cobertura, usar embestida para cerrar distancia, mismas reglas que el humano.",
+      "modules": [
+        "melee",
+        "dash",
+        "spawn_protection",
+        "radial_damage",
+        "push"
+      ],
+      "animation": "Carrera pesada ágil de lectura, gancho en kick, amortiguar golpes y celebración amplia sin root motion.",
+      "model_path": "res://assets/models/rey/rey.glb",
+      "planned_model_path": "res://assets/models/rey/rey.glb",
+      "gameplay_status": "implemented",
+      "art_status": "existing_provisional_glb_plus_concept",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 1, columna 3",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COL-02",
+      "id": "cacique",
+      "name": "El Cacique",
+      "number": null,
+      "role": "Guerrero / cobertura táctica",
+      "health": 5900,
+      "speed": 6.2,
+      "palette": {
+        "base": "#24272d",
+        "secondary": "#f4f2ed",
+        "light": "#d6aa42",
+        "signal": "#ffd48d"
+      },
+      "silhouette": "Futbolista caricaturesco robusto: camiseta oscura con zonas blancas originales, short y botines; silueta de hombros amplia, sin plumas, coraza o vestido ceremonial. El nombre y la lámina aportan el arquetipo; la propuesta deportiva evita reproducir emblemas o indumentaria ceremonial sin una revisión específica.",
+      "face": "Rostro humano original de liderazgo, pelo oscuro y cejas claras. Detalles culturales o de club no se infieren del nombre.",
+      "concept_sheet": null,
+      "panel": "fila 1, columna 4",
+      "production_wave": 4,
+      "basic": {
+        "name": "Choque Firme",
+        "summary": "Arco frontal corto; cada activación golpea una vez por rival.",
+        "values": {
+          "damage_per_attack": 1000,
+          "range_m": 2.5,
+          "interval_s": 0.75,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Guardia de Bronce",
+        "summary": "Escudo frontal que exige orientar el cuerpo; no permite atacar mientras bloquea.",
+        "values": {
+          "shield_hp": 1500,
+          "duration_s": 2,
+          "cooldown_s": 8,
+          "front_angle_deg": 120,
+          "move_multiplier": 0.6
+        },
+        "details": [
+          "Acabar o romper guardia devuelve ataques; no reembolsa cooldown. Flancos y espalda quedan expuestos."
+        ]
+      },
+      "super": {
+        "name": "Bastión Solar",
+        "summary": "Coloca cobertura corta temporal, afecta rutas y bloquea disparos de ambos equipos.",
+        "values": {
+          "cast_range_m": 6,
+          "length_m": 3,
+          "thickness_m": 0.4,
+          "duration_s": 4,
+          "health": 1800,
+          "warning_s": 0.6,
+          "damage": 0
+        },
+        "details": [
+          "Rechazar colocaciones sobre actores, muros, aparición o que eliminen todas las rutas. No consumir súper si es inválida. Actualizar física y navegación desde la misma entidad temporal."
+        ]
+      },
+      "counterplay": "Flanquear la guardia, rodear o romper el bastión. Su muro también corta sus disparos y desplazamientos.",
+      "bot": "Validar conectividad antes de colocar cobertura; jamás usar conocimiento oculto para encerrar al humano.",
+      "modules": [
+        "melee",
+        "directional_guard",
+        "temporary_cover",
+        "dynamic_navigation"
+      ],
+      "animation": "Guardia plantada con brazo extendido; impacto de puño, colocación de bastión con golpe al suelo; no rig de plumas o adornos pequeños.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/cacique/cacique.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 1, columna 4",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "CAT-01",
+      "id": "caballero_cruzado",
+      "name": "Caballero Cruzado",
+      "number": null,
+      "role": "Asaltante / precisión de impacto",
+      "health": 4800,
+      "speed": 6.8,
+      "palette": {
+        "base": "#f3f2ec",
+        "secondary": "#2d61b5",
+        "light": "#a8dcff",
+        "signal": "#c4f4ff"
+      },
+      "silhouette": "Futbolista caricaturesco atlético de la tarjeta histórica: camiseta blanca con detalles azules propios, short azul, medias y botines. Nunca caballero con casco, espada o armadura.",
+      "face": "Rostro humano juvenil adulto, pelo castaño ondulado y ojos grandes. Se estudia el bosquejo, no la identidad de un futbolista.",
+      "concept_sheet": "01-referencias-recuperadas.png",
+      "panel": "superior izquierdo",
+      "production_wave": 2,
+      "basic": {
+        "name": "Disparo Cruzado",
+        "summary": "Pulso de combate desde el golpeo del personaje; vestuario deportivo, sin espada.",
+        "values": {
+          "damage_per_attack": 1000,
+          "range_m": 8.5,
+          "interval_s": 0.7,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.8,
+          "projectile_speed_m_s": 20,
+          "projectile_radius_m": 0.16
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Salto del Alba",
+        "summary": "Desplazamiento corto con salto solo visual; el collider sigue en XZ.",
+        "values": {
+          "distance_m": 3,
+          "duration_s": 0.25,
+          "cooldown_s": 6.5
+        },
+        "details": [
+          "No atraviesa cobertura ni concede inmunidad. Debe detenerse con colisión barrida."
+        ]
+      },
+      "super": {
+        "name": "Impacto Cruzado",
+        "summary": "Proyectil estrecho de impacto fuerte con preparación visible.",
+        "values": {
+          "damage": 1800,
+          "range_m": 10,
+          "speed_m_s": 25,
+          "radius_m": 0.22,
+          "warning_s": 0.55,
+          "push_m_s": 5
+        },
+        "details": [
+          "Dirección fija, primer rival o cobertura. Sin penetración ni autoimpacto."
+        ]
+      },
+      "counterplay": "Esquivar lateralmente la preparación y castigarlo tras gastar el salto. No igualar al tanque en vida.",
+      "bot": "Cerrar hasta distancia media usando el salto como colocación, sin saltarse muros.",
+      "modules": [
+        "straight_projectile",
+        "dash",
+        "windup"
+      ],
+      "animation": "Salto visual corto con rodillas y aterrizaje; ataque de pierna en kick, postura noble pero flexible.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/caballero_cruzado/caballero_cruzado.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 2, columna 1",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "CAT-02",
+      "id": "pitbull",
+      "name": "El Pitbull",
+      "number": 17,
+      "role": "Defensor / contención",
+      "health": 6400,
+      "speed": 5.8,
+      "palette": {
+        "base": "#f4f4ef",
+        "secondary": "#5ec8f2",
+        "light": "#1d2f6f",
+        "signal": "#ffb03b"
+      },
+      "silhouette": "Futbolista caricaturesco compacto de piernas fuertes: camiseta blanca con banda celeste propia, short marino, medias y botines; vendas. Sin guanteletes o armadura.",
+      "face": "Cara humana ficticia de determinación simpática, pelo corto; no cabeza de perro ni parecido a jugador real.",
+      "concept_sheet": "02-nucleo-deportivo.png",
+      "panel": "inferior derecho",
+      "production_wave": 1,
+      "basic": {
+        "name": "Impacto Corto",
+        "summary": "Golpe defensivo corto, sin desplazamiento automático del actor.",
+        "values": {
+          "damage_per_attack": 900,
+          "range_m": 2.2,
+          "interval_s": 0.62,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Guardia de Hierro",
+        "summary": "Escudo personal de capacidad finita; puede seguir combatiendo.",
+        "values": {
+          "shield_hp": 1000,
+          "duration_s": 2,
+          "cooldown_s": 7,
+          "move_multiplier": 0.9
+        },
+        "details": [
+          "No es invulnerabilidad: gastar el escudo o esperar su fin permite daño normal."
+        ]
+      },
+      "super": {
+        "name": "Zona de Contención",
+        "summary": "Pulso inicial y zona lenta fija donde activa para frenar avances.",
+        "values": {
+          "damage_once": 800,
+          "radius_m": 3,
+          "warning_s": 0.45,
+          "duration_s": 4,
+          "slow_pct": 20,
+          "push_m_s": 6
+        },
+        "details": [
+          "Un pulso por enemigo; ralentización solo dentro y sin bloquear acciones. Cobertura corta los efectos."
+        ]
+      },
+      "counterplay": "Mantener distancia, atacar desde ángulos y salir del área. Tiene menos alcance y velocidad que Rey.",
+      "bot": "Proteger un pasillo; escudo al recibir presión, sin conocer disparos futuros.",
+      "modules": [
+        "melee",
+        "finite_shield",
+        "zone",
+        "slow",
+        "radial_push"
+      ],
+      "animation": "Tackle bajo del kick existente como golpe normal; guardia firme, carrera corta y celebración de salto.",
+      "model_path": "res://assets/models/pitbull/pitbull.glb",
+      "planned_model_path": "res://assets/models/pitbull/pitbull.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "existing_provisional_glb_plus_concept",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 2, columna 2",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "SWA-01",
+      "id": "elegante",
+      "name": "El Elegante",
+      "number": null,
+      "role": "Defensor técnico / contraataque",
+      "health": 4500,
+      "speed": 6.8,
+      "palette": {
+        "base": "#2c8b58",
+        "secondary": "#f2f0e9",
+        "light": "#aadfbd",
+        "signal": "#b8f1d1"
+      },
+      "silhouette": "Futbolista caricaturesco delgado y técnico: camiseta verde con ribetes blancos, short y medias; proporción refinada, sin abrigo, espada o túnica.",
+      "face": "Cara humana ficticia calmada, pelo ordenado y cejas expresivas. No hay retrato individual aprobado todavía.",
+      "concept_sheet": null,
+      "panel": "fila 2, columna 3",
+      "production_wave": 3,
+      "basic": {
+        "name": "Golpe Preciso",
+        "summary": "Creciente de energía recto de daño moderado.",
+        "values": {
+          "damage_per_attack": 750,
+          "range_m": 9,
+          "interval_s": 0.58,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.6,
+          "projectile_speed_m_s": 22,
+          "projectile_radius_m": 0.15
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Anticipación",
+        "summary": "Ventana breve que disipa el siguiente proyectil frontal; premia lectura, no reflejos perfectos automáticos.",
+        "values": {
+          "window_s": 0.8,
+          "front_angle_deg": 100,
+          "cooldown_s": 7,
+          "prepared_bonus_damage": 300,
+          "prepared_window_s": 2
+        },
+        "details": [
+          "Solo tras bloqueo válido prepara un básico potenciado. No devuelve proyectiles, no cura; melee puede castigarlo."
+        ]
+      },
+      "super": {
+        "name": "Cúpula del Viento",
+        "summary": "Burbuja de posición que absorbe proyectiles enemigos al cruzar su borde.",
+        "values": {
+          "radius_m": 2.5,
+          "duration_s": 3,
+          "shared_health": 1400,
+          "damage": 0
+        },
+        "details": [
+          "Los actores cruzan libremente; ataques lanzados dentro y melee no cruzan borde y no se bloquean. Presupuesto compartido, no escudo infinito."
+        ]
+      },
+      "counterplay": "Entrar en la cúpula o forzar el parry antes de atacar. No tiene escape acelerado.",
+      "bot": "Reaccionar a proyectiles visibles dentro de la ventana, sin adivinar entradas. Colocar cúpula para sostener posición.",
+      "modules": [
+        "straight_projectile",
+        "parry",
+        "prepared_attack",
+        "projectile_barrier"
+      ],
+      "animation": "Desvío pequeño de mano con anticipación propia; ataques ligeros y suaves, victoria con saludo lateral.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/elegante/elegante.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 2, columna 3",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "SWA-02",
+      "id": "porteno",
+      "name": "El Porteño",
+      "number": null,
+      "role": "Defensor / desplazamiento",
+      "health": 5800,
+      "speed": 6.1,
+      "palette": {
+        "base": "#21844e",
+        "secondary": "#f5f3e9",
+        "light": "#71ddda",
+        "signal": "#71ddda"
+      },
+      "silhouette": "Futbolista caricaturesco de la tarjeta histórica verde: camiseta verde con puños blancos propios, short, medias, botines; gorro náutico pequeño y cuerda de muñeca como accesorios. Sin abrigo/coraza.",
+      "face": "Cara humana ficticia ancha y barbuda, amable pero firme, según lenguaje del bosquejo marítimo.",
+      "concept_sheet": "01-referencias-recuperadas.png",
+      "panel": "superior derecho",
+      "production_wave": 3,
+      "basic": {
+        "name": "Impacto de Marea",
+        "summary": "Arco frontal amplio pero lento; no daña a través de cobertura.",
+        "values": {
+          "damage_per_attack": 950,
+          "range_m": 2.8,
+          "interval_s": 0.8,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Corriente Ascendente",
+        "summary": "Onda corta empuja enemigos visibles frente al actor.",
+        "values": {
+          "damage": 450,
+          "length_m": 6,
+          "width_m": 2,
+          "warning_s": 0.18,
+          "push_m_s": 7,
+          "cooldown_s": 8
+        },
+        "details": [
+          "Un impacto por enemigo; no hay física de agua ni movimiento vertical."
+        ]
+      },
+      "super": {
+        "name": "Marea Cambiante",
+        "summary": "Corridor de corriente fija que desplaza enemigos y cambia rutas útiles.",
+        "values": {
+          "length_m": 8,
+          "width_m": 2.8,
+          "duration_s": 4,
+          "warning_s": 0.6,
+          "damage_once": 650,
+          "force_m_s": 2
+        },
+        "details": [
+          "Dirección fijada y flechas visibles; no daño por rozar muros ni empujes que los atraviesen. El enemigo puede atacar y salir lateralmente."
+        ]
+      },
+      "counterplay": "Abandonar el corredor por un costado y usar distancia. La corriente no impide disparar ni cambia controles.",
+      "bot": "Colocar corrientes para separar o retirar; no bloquear todas las salidas con conocimiento oculto.",
+      "modules": [
+        "melee",
+        "directed_wave",
+        "force_zone",
+        "push"
+      ],
+      "animation": "Pasos pesados con hombros móviles; golpe de palma, gesto de barrido para marea, sin capas que tapen PV.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/porteno/porteno.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 2, columna 4",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COB-01",
+      "id": "artillero_loino",
+      "name": "El Artillero Loíno",
+      "number": null,
+      "role": "Artillero / presión preparada",
+      "health": 4200,
+      "speed": 5.9,
+      "palette": {
+        "base": "#df7c24",
+        "secondary": "#282c31",
+        "light": "#ffcb55",
+        "signal": "#ffd366"
+      },
+      "silhouette": "Futbolista caricaturesco potente de camiseta naranja/negro, short oscuro, medias naranjas y botines. El Minero histórico NO es este héroe: sin casco, lámpara o guantes mecánicos.",
+      "face": "Rostro humano original concentrado y amigable; pelo corto oscuro. El nuevo boceto es propuesta, no diseño previamente aprobado.",
+      "concept_sheet": "01-referencias-recuperadas.png",
+      "panel": "inferior derecho",
+      "production_wave": 2,
+      "basic": {
+        "name": "Disparo Naranja",
+        "summary": "Proyectil lento y fuerte; anticipación 0,20 s.",
+        "values": {
+          "damage_per_attack": 1050,
+          "range_m": 13.5,
+          "interval_s": 0.9,
+          "ammo_capacity": 2,
+          "recharge_per_charge_s": 2.0,
+          "projectile_speed_m_s": 16,
+          "projectile_radius_m": 0.18
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Anclaje de Precisión",
+        "summary": "Prepara un siguiente básico más rápido y largo, sacrificando movilidad durante la ventana.",
+        "values": {
+          "window_s": 2,
+          "projectile_speed_bonus_pct": 25,
+          "range_bonus_m": 2,
+          "move_multiplier": 0.5,
+          "cooldown_s": 8
+        },
+        "details": [
+          "No añade daño; se consume al aceptar un básico o expira. No permite atravesar cobertura."
+        ]
+      },
+      "super": {
+        "name": "Cañonazo Naranja",
+        "summary": "Área fija muy anunciada para castigar a quien no sale.",
+        "values": {
+          "damage_once": 1800,
+          "cast_range_m": 10,
+          "radius_m": 3,
+          "warning_s": 0.85,
+          "push_m_s": 6
+        },
+        "details": [
+          "Centro visible y válido; cobertura entre centro y víctima corta daño. El arco aéreo es solo VFX, no un sistema de altura jugable."
+        ]
+      },
+      "counterplay": "Acercarse durante preparación o cambiar de dirección para esquivar el proyectil lento. Dos cargas lo obligan a elegir.",
+      "bot": "Conservar distancia, no disparar áreas sobre posiciones futuras que no puede percibir.",
+      "modules": [
+        "straight_projectile",
+        "windup",
+        "prepared_attack",
+        "delayed_aoe"
+      ],
+      "animation": "Carga del brazo y retroceso visual, sin mover collider; no introducir root motion al apuntar.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/artillero_loino/artillero_loino.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 3, columna 1",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COB-02",
+      "id": "zorro_desierto",
+      "name": "El Zorro del Desierto",
+      "number": null,
+      "role": "Evasor / distracción",
+      "health": 3600,
+      "speed": 8.2,
+      "palette": {
+        "base": "#db8d35",
+        "secondary": "#303037",
+        "light": "#efca7e",
+        "signal": "#ffcf5b"
+      },
+      "silhouette": "Futbolista caricaturesco humano ligero: camiseta naranja/arena con zonas oscuras propias, short y medias, botines ágiles; pelo en puntas sugiere el zorro sin disfraz animal.",
+      "face": "Cara humana ficticia pícaro-amable; sin hocico, máscara de animal, cola, orejas de peluche o armadura.",
+      "concept_sheet": null,
+      "panel": "fila 3, columna 2",
+      "production_wave": 4,
+      "basic": {
+        "name": "Agujas de Arena",
+        "summary": "Dos agujas de 250, abanico ±6 grados; un ataque consume una carga.",
+        "values": {
+          "damage_per_attack": 500,
+          "range_m": 9,
+          "interval_s": 0.36,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.3,
+          "projectile_speed_m_s": 23,
+          "projectile_radius_m": 0.1
+        },
+        "details": [
+          "Máximo 25 de súper por ataque aceptado con daño, no 25 por cada aguja."
+        ]
+      },
+      "active": {
+        "name": "Evasión",
+        "summary": "Dash de huida corto con polvo de arena.",
+        "values": {
+          "distance_m": 3.2,
+          "duration_s": 0.2,
+          "cooldown_s": 5.5
+        },
+        "details": [
+          "Sin inmunidad ni cruce de muros."
+        ]
+      },
+      "super": {
+        "name": "Espejismo",
+        "summary": "Deja un señuelo y se desplaza para romper una línea de ataque.",
+        "values": {
+          "decoy_life_s": 2.5,
+          "decoy_health": 1,
+          "escape_m": 3.5,
+          "damage": 0
+        },
+        "details": [
+          "Un señuelo por dueño; targeteable por AUTO/bot según las mismas reglas, absorbe un impacto, no puntúa ni da carga de súper. Destello periódico permite reconocerlo. No ataca ni duplica habilidades."
+        ]
+      },
+      "counterplay": "Poca vida y daño por ataque. Leer el destello del señuelo y cubrir el final del dash.",
+      "bot": "No identificar señuelos mediante datos secretos; mismos filtros y señales que el humano.",
+      "modules": [
+        "multi_projectile",
+        "dash",
+        "decoy_target"
+      ],
+      "animation": "Carrera elástica corta, cambios de dirección nítidos y clon de pose simple, sin simular ropa compleja.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/zorro_desierto/zorro_desierto.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 3, columna 2",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COQ-01",
+      "id": "guardian",
+      "name": "El Guardián",
+      "number": null,
+      "role": "Protector / escudos",
+      "health": 6000,
+      "speed": 5.5,
+      "palette": {
+        "base": "#e1b431",
+        "secondary": "#292e35",
+        "light": "#f6edc9",
+        "signal": "#ffe297"
+      },
+      "silhouette": "Futbolista caricaturesco protector: camiseta amarilla/negra original, short, medias y guantes deportivos sencillos. Es un combatiente, no una mecánica de arquero/portería.",
+      "face": "Rostro humano adulto propio, cuerpo ancho y mirada confiable. Sin cúpula incorporada como armadura.",
+      "concept_sheet": null,
+      "panel": "fila 3, columna 3",
+      "production_wave": 3,
+      "basic": {
+        "name": "Pulso Defensivo",
+        "summary": "Pulso corto, ancho y lento; el protector también causa daño.",
+        "values": {
+          "damage_per_attack": 700,
+          "range_m": 7,
+          "interval_s": 0.7,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.5,
+          "projectile_speed_m_s": 15,
+          "projectile_radius_m": 0.22
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Paso de Rescate",
+        "summary": "Paso lateral corto con escudo personal finito.",
+        "values": {
+          "distance_m": 2.4,
+          "shield_hp": 700,
+          "shield_duration_s": 1.3,
+          "cooldown_s": 7.5
+        },
+        "details": [
+          "La dirección sigue movimiento o lateral del frente; sin invulnerabilidad ni atravesar muros."
+        ]
+      },
+      "super": {
+        "name": "Fortaleza",
+        "summary": "Otorga un escudo finito al propio actor y, en equipos, a aliados cercanos.",
+        "values": {
+          "shield_hp_per_actor": 1400,
+          "radius_m": 3,
+          "duration_s": 3.5,
+          "damage": 0
+        },
+        "details": [
+          "Se seleccionan beneficiarios al activar. En 1v1 protege al dueño. Escudos no se suman y no recuperan vida."
+        ]
+      },
+      "counterplay": "Poca velocidad y alcance; agotar o esperar escudos. No puede proteger permanentemente el mapa.",
+      "bot": "Usar escudo ante presión visible; cuando existan equipos, proteger aliados vivos dentro del radio sin privilegios.",
+      "modules": [
+        "straight_projectile",
+        "dash",
+        "finite_shield",
+        "team_effect_query"
+      ],
+      "animation": "Carrera de pasos firmes, apertura de brazos al escudar y ataque de palma; nada de animar una atajada o pase.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/guardian/guardian.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 3, columna 3",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "COQ-02",
+      "id": "pirata",
+      "name": "El Pirata",
+      "number": null,
+      "role": "Creativo / trayectorias y agarre",
+      "health": 4600,
+      "speed": 6.5,
+      "palette": {
+        "base": "#e9bf30",
+        "secondary": "#24272e",
+        "light": "#ffe887",
+        "signal": "#7be4eb"
+      },
+      "silhouette": "Futbolista caricaturesco de la tarjeta histórica: camiseta amarilla con zonas negras propias, short negro, medias amarillas y botines; pañuelo o sombrero blando pequeño, sin gabardina/espada/gauntlete.",
+      "face": "Cara humana original joven-adulta, pelo negro en puntas y sonrisa pícara. Sin calavera de club o rostro de persona real.",
+      "concept_sheet": "01-referencias-recuperadas.png",
+      "panel": "inferior izquierdo",
+      "production_wave": 4,
+      "basic": {
+        "name": "Pelotazo Corsario",
+        "summary": "Proyectil con curva lateral fija máxima de 0,8 m, no homing.",
+        "values": {
+          "damage_per_attack": 850,
+          "range_m": 9,
+          "interval_s": 0.7,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.7,
+          "projectile_speed_m_s": 18,
+          "projectile_radius_m": 0.16
+        },
+        "details": [
+          "Barrido por segmentos y alcance por longitud real de trayectoria; no atajar el arco al consultar colisiones."
+        ]
+      },
+      "active": {
+        "name": "Garfio de Impulso",
+        "summary": "Se engancha a cobertura visible para recolocarse sin atravesarla.",
+        "values": {
+          "anchor_range_m": 6,
+          "max_travel_m": 3.5,
+          "stop_before_wall_m": 1,
+          "cooldown_s": 7
+        },
+        "details": [
+          "Previsualizar anclaje válido. No consumir cooldown si no existe; no usa al rival como ancla de la activa."
+        ]
+      },
+      "super": {
+        "name": "Abordaje",
+        "summary": "Garfio anunciado daña y acerca al primer enemigo golpeado.",
+        "values": {
+          "damage": 1000,
+          "range_m": 7,
+          "speed_m_s": 20,
+          "radius_m": 0.2,
+          "warning_s": 0.35,
+          "max_pull_m": 2
+        },
+        "details": [
+          "Detener en cobertura o primer enemigo. Pull con barrido, sin stun y con separación mínima de cuerpos; puede atacar/usar habilidad mientras lo arrastran."
+        ]
+      },
+      "counterplay": "Romper línea del gancho, esquivarlo y castigar su cooldown. El garfio no atraviesa muros.",
+      "bot": "Usar anclas válidas de la geometría actual; apuntar a posiciones observables, sin predecir entradas.",
+      "modules": [
+        "curved_projectile",
+        "terrain_anchor",
+        "pull",
+        "windup"
+      ],
+      "animation": "Lanzamiento de brazo y tirón del torso; pies no se deslizan artificialmente por root motion.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/pirata/pirata.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "proposal_not_approved",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 3, columna 4",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "PAL-01",
+      "id": "ilusionista",
+      "name": "El Ilusionista",
+      "number": null,
+      "role": "Técnico / geometría de disparo",
+      "health": 3900,
+      "speed": 6.9,
+      "palette": {
+        "base": "#267b51",
+        "secondary": "#eeeae0",
+        "light": "#c94b54",
+        "signal": "#d4baff"
+      },
+      "silhouette": "Futbolista caricaturesco técnico: camiseta verde con pequeños acentos blancos/rojos propios, short y medias; manos y botines normales. Sin túnica, capa o guantes de cristal físicos.",
+      "face": "Rostro humano adulto original ingenioso; pelo oscuro con movimiento. Ilusiones/prismas son VFX de poder, no vestuario medieval.",
+      "concept_sheet": null,
+      "panel": "fila 4, columna 1",
+      "production_wave": 4,
+      "basic": {
+        "name": "Disparo de Efecto",
+        "summary": "Pulso recto que gira solo visualmente; no es el proyectil curvo del Pirata.",
+        "values": {
+          "damage_per_attack": 700,
+          "range_m": 10.5,
+          "interval_s": 0.55,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.5,
+          "projectile_speed_m_s": 20,
+          "projectile_radius_m": 0.16
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Finta de Cristal",
+        "summary": "Paso lateral con una posimagen breve puramente visual.",
+        "values": {
+          "distance_m": 2.5,
+          "duration_s": 0.22,
+          "afterimage_s": 0.5,
+          "cooldown_s": 6.5
+        },
+        "details": [
+          "Posimagen sin collider/objetivo; no invisibilidad ni inmunidad."
+        ]
+      },
+      "super": {
+        "name": "Prisma Resonante",
+        "summary": "Un prisma temporal permite un rebote legible de básicos propios y absorbe tiros rivales.",
+        "values": {
+          "cast_range_m": 5,
+          "duration_s": 4,
+          "enemy_damage_budget": 1200,
+          "max_bounces": 1,
+          "damage": 0
+        },
+        "details": [
+          "Orientación ±45 grados según dirección lateral de colocación, guía de rebote. Los actores lo atraviesan. Preservar daño, emisor y alcance restante; no contar dos cargas de súper por el mismo ataque. Sin rebotes en cadena."
+        ]
+      },
+      "counterplay": "Moverse fuera de la trayectoria anunciada, entrar en melee o romper el prisma. No convierte todo el mapa en un laberinto.",
+      "bot": "Usar la guía y reglas de reflexión; no leer hitboxes ocultas para realizar tiros perfectos.",
+      "modules": [
+        "straight_projectile",
+        "dash",
+        "projectile_reflector",
+        "attack_id"
+      ],
+      "animation": "Gesto corto de muñeca, desplazamiento teatral contenido y plantado preciso del prisma; evitar magia que tape la batalla.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/ilusionista/ilusionista.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 4, columna 1",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "PAL-02",
+      "id": "tricolor",
+      "name": "El Tricolor",
+      "number": null,
+      "role": "Apoyo / poder y movilidad",
+      "health": 4200,
+      "speed": 6.4,
+      "palette": {
+        "base": "#eeeae2",
+        "secondary": "#25835b",
+        "light": "#ce5151",
+        "signal": "#54c9bd"
+      },
+      "silhouette": "Futbolista caricaturesco de apoyo: camiseta clara con tres acentos verde/rojo/oscuro en patrón original, short y medias; bandas de muñeca, sin mochila mecánica o armadura.",
+      "face": "Cara humana ficticia amable y expresiva; gorra/banda solo si se acuerda. Referencia pequeña de Tricolor en el mockup histórico.",
+      "concept_sheet": null,
+      "panel": "fila 4, columna 2",
+      "production_wave": 4,
+      "basic": {
+        "name": "Ráfaga Tricolor",
+        "summary": "Tres microproyectiles de 240 en abanico estrecho; daño máximo 720 por ataque.",
+        "values": {
+          "damage_per_attack": 720,
+          "range_m": 8.5,
+          "interval_s": 0.65,
+          "ammo_capacity": 3,
+          "recharge_per_charge_s": 1.8,
+          "projectile_speed_m_s": 19,
+          "projectile_radius_m": 0.1
+        },
+        "details": [
+          "Una carga y máximo 25 de súper por ataque con daño real, no por fragmento."
+        ]
+      },
+      "active": {
+        "name": "Escudo Solidario",
+        "summary": "Escudo personal y, al probar equipos, de un aliado cercano.",
+        "values": {
+          "self_shield_hp": 800,
+          "future_ally_shield_hp": 800,
+          "future_ally_range_m": 4,
+          "duration_s": 2,
+          "cooldown_s": 7
+        },
+        "details": [
+          "No cura, escudos no se suman. En duelo sigue teniendo utilidad propia."
+        ]
+      },
+      "super": {
+        "name": "Convergencia",
+        "summary": "Zona fija que recompensa combatir juntos sin quitar ataques normales.",
+        "values": {
+          "radius_m": 3.5,
+          "duration_s": 4,
+          "basic_damage_bonus_pct": 15,
+          "move_bonus_pct": 15,
+          "damage": 0
+        },
+        "details": [
+          "Afecta dueño y aliados dentro; salir quita el beneficio. Con otros buffs se toma máximo por atributo, no se multiplican. No acelera recarga ni súper."
+        ]
+      },
+      "counterplay": "Separar al equipo del círculo, esperar su expiración y atacar desde fuera del alcance medio.",
+      "bot": "Mantener básicos y escoger posición útil; la ausencia de compañeros no elimina su ataque o beneficio propio.",
+      "modules": [
+        "multi_projectile",
+        "finite_shield",
+        "zone",
+        "damage_buff",
+        "move_buff",
+        "team_effect_query"
+      ],
+      "animation": "Movimiento abierto y estable, puño triple en kick, señal de mejora con mano; posimagen de aliados nunca reemplaza gameplay.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/tricolor/tricolor.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 4, columna 2",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "CON-01",
+      "id": "bati",
+      "name": "El Bati",
+      "number": null,
+      "role": "Asaltante / impacto preparado",
+      "health": 5000,
+      "speed": 6.2,
+      "palette": {
+        "base": "#70529d",
+        "secondary": "#eee8df",
+        "light": "#bda3e1",
+        "signal": "#ad8bff"
+      },
+      "silhouette": "Futbolista caricaturesco fuerte: camiseta violeta con ribete claro original, short, medias y botines de golpeo. Sin guantes enormes, chaqueta de batalla o emblemas de murciélago.",
+      "face": "Cara humana original adulta, pelo corto claro según la lámina del propietario y gesto confiado. No imitar al referente del roster privado.",
+      "concept_sheet": null,
+      "panel": "fila 4, columna 3",
+      "production_wave": 3,
+      "basic": {
+        "name": "Golpe Violeta",
+        "summary": "Golpe corto, contundente y más lento que Rey.",
+        "values": {
+          "damage_per_attack": 1050,
+          "range_m": 2.4,
+          "interval_s": 0.8,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Carga de Impacto",
+        "summary": "Prepara el próximo básico tras una anticipación que expone al actor.",
+        "values": {
+          "warning_s": 0.4,
+          "prepared_window_s": 2,
+          "bonus_damage": 500,
+          "push_m_s": 8,
+          "move_during_warning": 0.6,
+          "cooldown_s": 7
+        },
+        "details": [
+          "Se consume al aceptar el siguiente básico; KO cancela sin reembolso. No inmunidad."
+        ]
+      },
+      "super": {
+        "name": "Ruptura Frontal",
+        "summary": "Dash corto anunciado que termina al primer enemigo o muro.",
+        "values": {
+          "damage_once": 1800,
+          "distance_m": 4,
+          "warning_s": 0.45,
+          "push_m_s": 10
+        },
+        "details": [
+          "Sin penetración ni invulnerabilidad; barrido continuo, una víctima por carga."
+        ]
+      },
+      "counterplay": "Esquivar la línea preparada y aprovechar su lentitud entre golpes. No puede perseguir indefinidamente.",
+      "bot": "Reservar carga si no tiene línea; no iniciar contra un muro que debería percibir.",
+      "modules": [
+        "melee",
+        "prepared_attack",
+        "dash",
+        "windup",
+        "push"
+      ],
+      "animation": "Acumulación en hombro y mano, descarga corta y recuperación; ataque animado no mueve collider por sí mismo.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/bati/bati.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 4, columna 3",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    },
+    {
+      "canonical_id": "CON-02",
+      "id": "leon_collao",
+      "name": "El León de Collao",
+      "number": null,
+      "role": "Tanque / ruptura de formación",
+      "health": 6500,
+      "speed": 5.7,
+      "palette": {
+        "base": "#65458b",
+        "secondary": "#d4aa48",
+        "light": "#bca2dd",
+        "signal": "#ffd075"
+      },
+      "silhouette": "Futbolista caricaturesco humano de torso ancho: camiseta violeta con detalles dorados propios, short, medias y botines; pelo abundante sugiere melena. Sin cuerpo/cabeza/patas de león.",
+      "face": "Rostro humano ficticio enérgico, mandíbula amplia y sonrisa; el león es metáfora/VFX, no una mascota antropomorfa aprobada.",
+      "concept_sheet": null,
+      "panel": "fila 4, columna 4",
+      "production_wave": 4,
+      "basic": {
+        "name": "Zarpazo",
+        "summary": "Arco de garra de energía sin heridas o sangre.",
+        "values": {
+          "damage_per_attack": 1050,
+          "range_m": 2.5,
+          "interval_s": 0.8,
+          "ammo_capacity": null,
+          "recharge_per_charge_s": null,
+          "projectile_speed_m_s": null,
+          "projectile_radius_m": null
+        },
+        "details": []
+      },
+      "active": {
+        "name": "Salto de Asalto",
+        "summary": "Dash con salto solo visual y primer contacto dañino.",
+        "values": {
+          "distance_m": 3,
+          "duration_s": 0.3,
+          "contact_damage_once": 450,
+          "cooldown_s": 7.5
+        },
+        "details": [
+          "Collider se queda en XZ, frena con paredes y primer rival; no invulnerabilidad."
+        ]
+      },
+      "super": {
+        "name": "Rugido de Ruptura",
+        "summary": "Cono anunciado que empuja y reduce brevemente la presión rival.",
+        "values": {
+          "damage_once": 1400,
+          "range_m": 5,
+          "angle_deg": 100,
+          "warning_s": 0.4,
+          "push_m_s": 9,
+          "enemy_basic_damage_reduction_pct": 15,
+          "debuff_duration_s": 2
+        },
+        "details": [
+          "No miedo automático, stun ni inversión de controles. Cobertura corta efectos; ataca por detrás del cono."
+        ]
+      },
+      "counterplay": "Atacar por flancos o desde distancia, salir del aviso del rugido y castigar salto fallido.",
+      "bot": "Romper una formación visible sin conocer posiciones ocultas; mismas reglas de cono y pared.",
+      "modules": [
+        "melee",
+        "dash",
+        "cone_damage",
+        "push",
+        "basic_damage_debuff"
+      ],
+      "animation": "Melena secundaria simple, zarpazo amplio y rugido de pecho; puños humanos expresivos, sin simular pelo físico.",
+      "model_path": null,
+      "planned_model_path": "res://assets/models/leon_collao/leon_collao.glb",
+      "gameplay_status": "proposal_not_implemented",
+      "art_status": "concept_only",
+      "kit_reference": null,
+      "visual_style": "footballer_caricature_arena_combat",
+      "concept_folder": "design/plantel/bocetos_deportivos_v1",
+      "concept_status": "owner_reference_only_no_new_sketch",
+      "existing_reference": {
+        "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+        "panel": "fila 4, columna 4",
+        "status": "owner_selected_individual_reference",
+        "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
+      },
+      "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
+      "reference_status": "style_selected_individual_final_pending"
+    }
+  ]
+}

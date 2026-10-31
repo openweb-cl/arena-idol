@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "purpose": "Dirección visual para Blender/Godot; no contiene modelos 3D",
+  "assets": [
+    {
+      "file": "01-nucleo.png",
+      "heroes": [
+        "turbo",
+        "rey",
+        "principe",
+        "pitbull"
+      ],
+      "state": "rejected_not_a_visual_reference",
+      "generator": "OpenAI image_gen.imagegen",
+      "local_date": "2026-10-30 America/Santiago",
+      "source": "Generación nueva desde descripción, sin referencias de imagen de terceros",
+      "sha256": "2d4c903140a1e27d15eec6d83ac5e62eaf0d7ed46f45a918368a758b7b77d67c",
+      "original_workspace_file": "/workspace/generated_images/exec-aebfe0c2-f4f0-49dd-8934-6e037bab3adb.png",
+      "license_note": "No declarar CC0 ni arte comercial aprobado; revisar términos del proveedor y derechos antes de publicación."
+    },
+    {
+      "file": "02-proteccion.png",
+      "heroes": [
+        "cacique",
+        "caballero_cruzado",
+        "elegante",
+        "porteno"
+      ],
+      "state": "rejected_not_a_visual_reference",
+      "generator": "OpenAI image_gen.imagegen",
+      "local_date": "2026-10-30 America/Santiago",
+      "source": "Generación nueva desde descripción, sin referencias de imagen de terceros",
+      "sha256": "1b72b93e501a2259dee0ee36f56c0ec4a2b40d8b588beaf2ad32133de0eef487",
+      "original_workspace_file": "/workspace/generated_images/exec-a4c5617e-67cb-47c2-8538-7fec0c7846ed.png",
+      "license_note": "No declarar CC0 ni arte comercial aprobado; revisar términos del proveedor y derechos antes de publicación."
+    },
+    {
+      "file": "03-movilidad.png",
+      "heroes": [
+        "artillero_loino",
+        "zorro_desierto",
+        "guardian",
+        "pirata"
+      ],
+      "state": "rejected_not_a_visual_reference",
+      "generator": "OpenAI image_gen.imagegen",
+      "local_date": "2026-10-30 America/Santiago",
+      "source": "Generación nueva desde descripción, sin referencias de imagen de terceros",
+      "sha256": "e8d1e85026d4afd7a0b8a55170f59e0d179ba0ce3b9e277df3806f442be6b2ad",
+      "original_workspace_file": "/workspace/generated_images/exec-04e40cc6-f642-46e9-b7c3-20681487dbab.png",
+      "license_note": "No declarar CC0 ni arte comercial aprobado; revisar términos del proveedor y derechos antes de publicación."
+    },
+    {
+      "file": "04-tecnica.png",
+      "heroes": [
+        "ilusionista",
+        "tricolor",
+        "bati",
+        "leon_collao"
+      ],
+      "state": "rejected_not_a_visual_reference",
+      "generator": "OpenAI image_gen.imagegen",
+      "local_date": "2026-10-30 America/Santiago",
+      "source": "Generación nueva desde descripción, sin referencias de imagen de terceros",
+      "sha256": "cbd08dc587f368654ad11b256f0a4cdfcdecdb45209b27cdef27678839c20556",
+      "original_workspace_file": "/workspace/generated_images/exec-3631ba75-a4c2-4ca7-8dcd-5bf09dfa64e2.png",
+      "license_note": "No declarar CC0 ni arte comercial aprobado; revisar términos del proveedor y derechos antes de publicación."
+    }
+  ],
+  "state": "REJECTED_BY_OWNER",
+  "reason": "El propietario rechazó armaduras/fantasía; pide futbolistas caricaturescos fieles a los bosquejos originales."
+}

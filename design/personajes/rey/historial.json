@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "hero_id": "rey",
+  "final_approved": false,
+  "assets": [
+    {
+      "stage": "reference",
+      "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+      "sha256": "1d6a2bace0d878c66d5552c8fa6f6a76cccb91f9059b6d97af3d0a25fedeecde",
+      "status": "owner_selected_style_not_final",
+      "panel": "fila 1, columna 3"
+    },
+    {
+      "stage": "V0",
+      "path": "docs/captures/heroes-v1-1/mobile-90-referencia-placeholders-zoom-rey.png",
+      "sha256": "9bea3d7a55d9dac1ddcd7fb91b07160c1a807ed8320b31f070aa45fada314362",
+      "status": "historical_gameplay_placeholder",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "game/assets/models/rey/rey.glb",
+      "sha256": "6642ed7c939ab98c196312badc962ee6971fc2deaa9cb0e087a077507943ff88",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "art/rey/rey.blend",
+      "sha256": "b543dab528f07296e0b55407bf9a84bdc27bd19ae2047c9e7c105a8e96ebb9ec",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "docs/captures/heroes-v1-1/lamina_rey.jpg",
+      "sha256": "f832e73888eebd2f735d155195c16f1d9d44e66c417fe7698c978ab17e6807dc",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "exploration_not_V2",
+      "path": "design/plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png",
+      "sha256": "ca8d88c3d7535d3aa6c6500232f04463789401ed2c03b67d0d41d3ae57a7a09f",
+      "status": "pending_owner_review",
+      "panel": "superior derecho"
+    }
+  ],
+  "next_stage": "V2_design_pending_owner_review",
+  "discarded_exploration": "design/plantel/rechazado_fantasia_2026-10-30",
+  "note": "Hashes preservan el estado de este paquete. Añadir versiones nuevas al historial; no reescribir aprobaciones históricas.",
+  "snapshot_commit": "d88adc5",
+  "snapshot_date_utc": "2026-10-31"
+}
