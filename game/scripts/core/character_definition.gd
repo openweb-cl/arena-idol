@@ -23,11 +23,23 @@ extends Resource
 @export_range(500, 5000, 100) var super_damage: int = 2000
 @export_range(1, 8, 0.1) var super_radius: float = 4.0
 @export_range(5, 50, 1) var charge_per_hit: float = 25.0
+## Anticipación del básico: la dirección se fija al aceptar y el proyectil sale después.
+@export_range(0.0, 0.5, 0.01) var attack_windup: float = 0.0
 @export var ability: AbilityDefinition
 @export var ammo: AmmoDefinition
+@export_group("Súper")
+## Auto: proyectil potente (Ranged) u onda alrededor (Melee). Field: campo de zona colocado.
+@export_enum("Auto", "Field") var super_kind: String = "Auto"
+@export_range(1, 15, 0.5) var super_reach: float = 8.0
+@export_range(0.1, 2.0, 0.05) var field_warning: float = 0.6
+@export_range(0.5, 8.0, 0.1) var field_duration: float = 3.0
+@export_range(0.0, 0.9, 0.05) var field_slow: float = 0.25
+@export_range(0.0, 20.0, 0.5) var field_push: float = 10.0
 @export_group("Arte / integración Claude Code")
 @export var model_scene: PackedScene
 @export var model_scale: Vector3 = Vector3.ONE
 @export var model_rotation_degrees: Vector3 = Vector3.ZERO
 ## m/s que avanzan los pies en el clip `run` a escala 1; ajusta su velocidad para no patinar.
 @export_range(1, 10, 0.1) var run_clip_speed: float = 3.3
+## Efecto visual del básico (AbilityEffect.kind); no cambia daño ni trayectoria.
+@export var shot_effect: String = "shot"

@@ -1,13 +1,15 @@
 class_name ArenaBot
 extends RefCounted
 ## Persigue, usa alcance/cobertura y esquiva proyectiles de forma reactiva.
+## Evalúa el tipo de habilidad y de súper; sale de zonas anunciadas que percibe.
 var dodge_time := 0.0
 var dodge_direction := Vector2.ZERO
 var dodges := 0
 var layout: ArenaDefinition
 
-func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatProjectile], delta: float) -> void:
+func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatProjectile], delta: float, fields: Array = []) -> void:
 	actor.command.clear_actions()
+	actor.super_target = null
 	if actor.knocked_out or rival.knocked_out:
 		actor.command.move = Vector2.ZERO
 		return
@@ -24,13 +26,29 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 	else:
 		actor.command.shoot = flat.length() < actor.definition.attack_range
 		actor.command.super_shot = actor.super_charge >= 100 and flat.length() < actor.definition.super_radius + 1 if actor.definition.attack_type == "Melee" else actor.super_charge >= 100 and flat.length() < actor.definition.attack_range
+		if actor.definition.super_kind == "Field":
+			# Coloca el campo sobre el rival visible dentro del alcance de colocación.
+			actor.command.super_shot = actor.super_charge >= 100 and flat.length() <= actor.definition.super_reach
+			if actor.command.super_shot:
+				actor.super_target = Vector3(rival.position.x, 0, rival.position.z)
 		if actor.command.super_shot:
 			actor.command.shoot = false
 	# La línea de tiro puede estar libre y el cuerpo aún rozar una esquina.
 	# En aproximación usar el radio de navegación, no el rayo del proyectil.
 	if move.dot(flat) > 0 and not layout.clear_segment(Vector2(actor.position.x, actor.position.z), Vector2(rival.position.x, rival.position.z)):
 		move = route(actor.position, rival.position)
-	if dodge_time > 0:
+	# Zonas anunciadas o activas del rival: salir por el lado opuesto al centro.
+	var escaping := false
+	for field in fields:
+		if not is_instance_valid(field) or field.team == actor.team or field.finished():
+			continue
+		var away := Vector2(actor.position.x - field.position.x, actor.position.z - field.position.z)
+		if away.length() < field.radius + 0.6:
+			move = away.normalized() if away.length() > 0.05 else Vector2(-flat.y, flat.x).normalized()
+			escaping = true
+	if escaping:
+		dodge_time = 0.0
+	elif dodge_time > 0:
 		dodge_time -= delta
 		move = dodge_direction
 	else:
@@ -48,7 +66,11 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 				move = dodge_direction
 				break
 	actor.command.move = move
-	actor.command.ability = (actor.definition.attack_type == "Melee" and flat.length() < 5 and flat.length() > 2) or (dodge_time > 0 and actor.definition.attack_type == "Ranged")
+	if actor.definition.ability != null and actor.definition.ability.kind == "Power":
+		# Mejora de poder solo con munición y un blanco alcanzable a la vista.
+		actor.command.ability = actor.command.shoot and actor.ammo.charges > 0
+	else:
+		actor.command.ability = (actor.definition.attack_type == "Melee" and flat.length() < 5 and flat.length() > 2) or (dodge_time > 0 and actor.definition.attack_type == "Ranged")
 
 func line_clear(a: ArenaPlayer, b: ArenaPlayer) -> bool:
 	return TargetSelector.clear_path(a, b)

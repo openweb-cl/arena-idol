@@ -31,6 +31,7 @@ var shot_counts: Dictionary = {}
 var training_case := 0
 const TRAINING_CASES := ["CORTA / 3 m", "MEDIA / 7 m", "LARGA / 12 m", "COBERTURA", "FUERA DE ALCANCE / 14 m"]
 var projectiles: Array[CombatProjectile] = []
+var fields: Array[ZoneField] = []
 var elapsed := 0.0
 var mouse_aim := false
 var aim_position := Vector2.ZERO
@@ -55,7 +56,8 @@ func _ready() -> void:
 	camera = ArenaCamera.new()
 	add_child(camera)
 	human = spawn_player(CharacterCatalog.AVAILABLE[0] if training_mode else GameSession.selected, 0, layout.player_spawn)
-	var other := CharacterCatalog.AVAILABLE[1] if human.definition.id == "turbo" else CharacterCatalog.AVAILABLE[0]
+	# El campo de tiro mantiene su referencia histórica (Rey inmóvil); la partida usa el rival elegido.
+	var other := CharacterCatalog.AVAILABLE[1] if training_mode else CharacterCatalog.rival_for(human.definition, GameSession.selected_rival)
 	bot = spawn_player(other, 1, layout.bot_spawn)
 	rules.finished.connect(on_finished)
 	hud = ArenaHUD.new()
@@ -147,6 +149,7 @@ func _physics_process(delta: float) -> void:
 		var touch_fire := touch_controls != null and touch_controls.state.fire_held()
 		if (mouse_fire_held or key_fire_held or touch_fire) and (not auto_target_enabled or is_instance_valid(auto_target)):
 			human.command.shoot = true
+		human.super_target = field_target(human) if human.definition.super_kind == "Field" else null
 		if training_mode:
 			bot.command.clear_actions()
 			bot.command.move = Vector2.ZERO
@@ -154,7 +157,8 @@ func _physics_process(delta: float) -> void:
 			bot.push_velocity = Vector3.ZERO
 			bot.position = bot.spawn_point
 		else:
-			brain.update(bot, human, projectiles, delta)
+			brain.update(bot, human, projectiles, delta, fields)
+		update_fields(delta)
 		if not human.knocked_out and not bot.knocked_out:
 			for actor: ArenaPlayer in [human, bot]:
 				var rival := bot if actor == human else human
@@ -275,10 +279,14 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 		return
 	var is_super := kind == "super"
 	if actor.definition.attack_type == "Ranged":
+		if is_super and actor.definition.super_kind == "Field":
+			place_field(actor, actor.super_target)
+			return
 		var projectile := CombatProjectile.new()
 		projectile.source = actor
-		projectile.damage = actor.definition.super_damage if is_super else actor.definition.attack_damage
-		projectile.direction = actor.facing
+		# Daño y dirección capturados al aceptar el ataque (mejora de poder, anticipación).
+		projectile.damage = actor.definition.super_damage if is_super else roundi(actor.definition.attack_damage * actor.shot_multiplier)
+		projectile.direction = actor.shot_direction if actor.definition.attack_windup > 0 and not is_super else actor.facing
 		projectile.speed = actor.definition.projectile_speed * (1.45 if is_super else 1.0)
 		projectile.max_distance = actor.definition.attack_range * (1.3 if is_super else 1.0)
 		projectile.power = is_super
@@ -287,7 +295,7 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 		projectile.resolved.connect(on_projectile_resolved)
 		add_child(projectile)
 		projectiles.append(projectile)
-		spawn_effect(actor, "turbo_super" if is_super else "shot", Color("62e7ff"))
+		spawn_effect(actor, "turbo_super" if is_super else actor.definition.shot_effect, Color("62e7ff"))
 	else:
 		var rival := bot if actor == human else human
 		var offset := rival.position - actor.position
@@ -296,19 +304,87 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 			apply_damage(rival, actor, actor.definition.super_damage if is_super else actor.definition.attack_damage, offset.normalized() * actor.definition.attack_push * (2 if is_super else 1))
 		spawn_effect(actor, "rey_super" if is_super else "melee", Color("ba8bff") if is_super else actor.definition.color)
 
-func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: Vector3) -> void:
+func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: Vector3, charges: bool = true) -> void:
 	if phase != Phase.PLAYING or target.team == source.team:
 		return
 	if target.take_damage(damage, push):
 		impacts += 1
 		damage_events[source.team] += 1
-		source.super_charge = minf(100, source.super_charge + source.definition.charge_per_hit)
+		if charges:
+			source.super_charge = minf(100, source.super_charge + source.definition.charge_per_hit)
 		spawn_effect(target, "hit", Color("ffbb85"))
 	elif target.invulnerable > 0 and not target.knocked_out:
 		spawn_effect(target, "shield", Color.WHITE)
 
 func on_ability(actor: ArenaPlayer) -> void:
+	if actor.definition.ability.kind == "Power":
+		spawn_effect(actor, "principe_buff", actor.definition.ability.effect_color)
+		return
 	spawn_effect(actor, "turbo_sprint" if actor.definition.attack_type == "Ranged" else "rey_charge", actor.definition.ability.effect_color)
+
+## Centro de la súper de zona del humano: AUTO usa el rival visible a su alcance;
+## MANUAL, el punto del cursor si está dentro del alcance y con línea de visión.
+func field_target(actor: ArenaPlayer) -> Variant:
+	var reach := actor.definition.super_reach
+	if not auto_target_enabled and mouse_aim and aim_marker.visible:
+		var point := Vector3(aim_marker.position.x, 0, aim_marker.position.z)
+		return point if field_point_valid(actor, point) else null
+	var rival := bot if actor == human else human
+	if rival.knocked_out or actor.position.distance_to(rival.position) > reach or not brain.line_clear(actor, rival):
+		return null
+	return Vector3(rival.position.x, 0, rival.position.z)
+
+func field_point_valid(actor: ArenaPlayer, point: Vector3) -> bool:
+	var flat := Vector3(actor.position.x, 0, actor.position.z)
+	if flat.distance_to(point) > actor.definition.super_reach:
+		return false
+	var query := PhysicsRayQueryParameters3D.create(CombatAim.origin(actor), point + Vector3.UP * CombatAim.HEIGHT, 1)
+	return get_world_3d().direct_space_state.intersect_ray(query).is_empty()
+
+func place_field(actor: ArenaPlayer, center: Variant) -> void:
+	if center == null:
+		return
+	# Un campo activo por emisor: el nuevo sustituye al anterior.
+	for old in fields:
+		if is_instance_valid(old) and old.source == actor:
+			old.cancelled = true
+	var field := ZoneField.new()
+	field.setup(actor, center)
+	add_child(field)
+	fields.append(field)
+	field.effects.append(spawn_field_effect(field, "principe_field_warning", field.warning))
+
+func spawn_field_effect(field: ZoneField, kind: String, life: float) -> AbilityEffect:
+	var effect := AbilityEffect.new()
+	effect.kind = kind
+	effect.quality = not GraphicsSettings.low
+	effect.radius = field.radius
+	effect.duration = life
+	field.add_child(effect)
+	return effect
+
+## El pulso de una súper no recarga otra súper.
+func apply_field_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: Vector3) -> void:
+	apply_damage(target, source, damage, push, false)
+
+func update_fields(delta: float) -> void:
+	for actor in actors:
+		if is_instance_valid(actor):
+			actor.slow = 0.0
+	for index in range(fields.size() - 1, -1, -1):
+		var field := fields[index]
+		var was_triggered := field.triggered
+		field.tick(delta, actors, apply_field_damage)
+		if field.triggered and not was_triggered:
+			field.effects.append(spawn_field_effect(field, "principe_field", field.duration))
+		if field.finished():
+			fields.remove_at(index)
+			field.queue_free()
+			continue
+		for actor in actors:
+			# Los campos no suman: prevalece el más fuerte que realmente afecte al actor.
+			if is_instance_valid(actor):
+				actor.slow = maxf(actor.slow, field.slow_for(actor))
 
 func spawn_effect(actor: ArenaPlayer, kind: String, color: Color) -> void:
 	var effect := AbilityEffect.new()
@@ -354,6 +430,9 @@ func freeze_combat(freeze: bool) -> void:
 	for projectile in projectiles:
 		if is_instance_valid(projectile):
 			projectile.enabled = not freeze
+	for field in fields:
+		if is_instance_valid(field):
+			field.set_paused(freeze)
 
 func toggle_pause() -> void:
 	if phase == Phase.FINISHED:

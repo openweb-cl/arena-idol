@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=5 format=3]
+[ext_resource type="Script" path="res://scripts/core/character_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://data/abilities/principe.tres" id="2"]
+[ext_resource type="Resource" path="res://data/ammo/principe.tres" id="3"]
+[ext_resource type="PackedScene" path="res://assets/models/principe/principe.glb" id="4"]
+[resource]
+script = ExtResource("1")
+id = "principe"
+display_name = "El Príncipe"
+number = 20
+role = "ESTRATEGA"
+description = "Precisión, apoyo y control de zona.\nImpulso Táctico: +20 % de daño básico durante 3 s.\nSúper: Campo de Dominio empuja y ralentiza."
+color = Color(0.85, 0.14, 0.2, 1)
+speed = 6.6
+acceleration = 38.0
+braking = 48.0
+turn_speed = 14.0
+max_health = 4400
+attack_damage = 750
+attack_type = "Ranged"
+attack_interval = 0.6
+attack_range = 12.0
+projectile_speed = 22.0
+super_damage = 900
+super_radius = 3.0
+charge_per_hit = 25.0
+attack_windup = 0.12
+ability = ExtResource("2")
+ammo = ExtResource("3")
+super_kind = "Field"
+super_reach = 8.0
+field_warning = 0.6
+field_duration = 3.0
+field_slow = 0.25
+field_push = 10.0
+model_scene = ExtResource("4")
+run_clip_speed = 3.6
+shot_effect = "principe_shot"
