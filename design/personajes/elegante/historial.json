@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "hero_id": "elegante",
+  "final_approved": false,
+  "assets": [
+    {
+      "stage": "reference",
+      "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+      "sha256": "1d6a2bace0d878c66d5552c8fa6f6a76cccb91f9059b6d97af3d0a25fedeecde",
+      "status": "owner_selected_style_not_final",
+      "panel": "fila 2, columna 3"
+    }
+  ],
+  "next_stage": "V2_design_pending_owner_review",
+  "discarded_exploration": "design/plantel/rechazado_fantasia_2026-10-30",
+  "note": "Hashes preservan el estado de este paquete. Añadir versiones nuevas al historial; no reescribir aprobaciones históricas.",
+  "snapshot_commit": "d88adc5",
+  "snapshot_date_utc": "2026-10-31"
+}

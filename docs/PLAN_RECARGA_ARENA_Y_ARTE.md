@@ -268,7 +268,20 @@ Resources y adaptador visual requiere handoff explícito por archivo. Commits
 pequeños, pruebas relevantes y PR independientes; nunca desarrollar en main o
 fusionar PR sin aprobación. Sin servicios de pago ni recursos protegidos copiados.
 
-**Paquete actual:** revisar y probar `codex/touch-controls`/APK (tarea A).
-Después de A y de la aprobación explícita de la ficha, implementar
-`codex/principe-gameplay` (tarea B), probarlo y recién evaluar Pitbull #17.
-Este documento no valida rendimiento ni implementa esas funciones futuras.
+**Paquete actual:** revisar el handoff visual #9 y la ficha C1 en PR independientes.
+Tras la aprobación de la ficha, implementar `codex/principe-gameplay`, probarlo y
+recién evaluar Pitbull #17. Este documento por sí solo no implementa ni valida
+esas funciones futuras. Los controles táctiles y el APK (tarea A, #13) y el
+refresh de UI de Claude (#14) se integran con este paquete; la prueba en teléfono
+real sigue pendiente.
+
+
+## Actualización de continuidad — 31 octubre 2026 UTC
+
+Las referencias y estados posteriores se registran en
+[CONTEXTO_DE_CONTINUIDAD.md](CONTEXTO_DE_CONTINUIDAD.md). #9, #10, #11 y #12
+están fusionados al preparar este paquete. #13 táctil y #14 UI estaban abiertos.
+El propietario aplazó pruebas de teléfono para priorizar el aspecto en PC.
+El siguiente hito visual es Turbo V2, con vistas/expresiones coherentes, antes
+del modelo refinado y del resto del plantel. Ver [biblioteca](plantel/README.md).
+La aprobación de la ficha Príncipe continúa pendiente; no empezar gameplay.

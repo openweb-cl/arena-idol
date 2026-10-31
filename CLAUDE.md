@@ -48,3 +48,26 @@ Herramientas gratuitas, sin servicios de pago ni backend antes del hito aprobado
 No subir secretos, credenciales o keystores. No declarar pruebas, calidad comercial,
 60 FPS, Android o multijugador sin evidencia. Reportar versión y comandos reales,
 capturas de build, costes de render e incidencias; conservar límites explícitos.
+
+## Dirección visual y continuidad — 31 octubre 2026 UTC
+
+Leer `docs/CONTEXTO_DE_CONTINUIDAD.md`, `docs/plantel/README.md` y
+`docs/plantel/VISUAL.md` antes de proponer nuevos personajes o pantallas.
+El propietario eligió caricaturas deportivas como las primeras imágenes de
+`design/referencias/propietario_2026-10-31/`; la última orienta composición UI,
+no realismo de rostros. No cambiar la identidad en cada generación. Las nuevas
+exploraciones no son diseños aprobados. Primero Turbo V2 (vistas y expresiones),
+revisión del propietario, luego Blender/GLB refinado. Conservar historial V0/V1
+y separar referencia, boceto, modelo provisional y candidato final por héroe.
+
+Prioridad de la siguiente etapa: mejora visual en PC; pruebas de teléfono
+aplazadas por el propietario, conservando preparación Android. Mantener 16
+héroes y solo los dorsales 11/23/20/17 ya decididos. Las 14 fichas pendientes
+son propuestas, no permiso para programarlas ni balance validado. Príncipe
+requiere aprobar `docs/PRINCIPE_KIT.md`; Pitbull espera su prueba.
+
+Actualización posterior: el propietario aceptó Turbo V2 propuesta 01 como
+referencia visual («Ese turbo esta muy bueno»). Ver
+`design/personajes/turbo/aprobado/README.md`. Conservar su identidad al modelar;
+no pedir de nuevo aprobación de esta misma referencia. El modelo refinado,
+animaciones y resultado en Godot siguen pendientes de producción y revisión.

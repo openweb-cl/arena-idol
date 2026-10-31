@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "state": "OWNER_SELECTED_STYLE_REFERENCES_NOT_RUNTIME",
+  "assets": [
+    {
+      "file": "01-plantel-caricaturesco.jpg",
+      "sha256": "1d6a2bace0d878c66d5552c8fa6f6a76cccb91f9059b6d97af3d0a25fedeecde",
+      "source": "Adjunto proporcionado por el propietario; generado anteriormente según su descripción",
+      "usage": "Referencia interna; no recurso de runtime ni autorización sobre marcas/rostros visibles"
+    },
+    {
+      "file": "02-poderes-y-ambientes.jpg",
+      "sha256": "45138b4ca129c21575a29e62ce5685c795c1212344a34954602f5271763acc4f",
+      "source": "Adjunto proporcionado por el propietario; generado anteriormente según su descripción",
+      "usage": "Referencia interna; no recurso de runtime ni autorización sobre marcas/rostros visibles"
+    },
+    {
+      "file": "03-arena-inclinada.jpg",
+      "sha256": "903b707a1578582c93ecf20692b999f9a791920a63d267f3e83fd4690e9c23ba",
+      "source": "Adjunto proporcionado por el propietario; generado anteriormente según su descripción",
+      "usage": "Referencia interna; no recurso de runtime ni autorización sobre marcas/rostros visibles"
+    },
+    {
+      "file": "04-pantallas-historicas.jpg",
+      "sha256": "408f60228773a502a1e25eead155f9451b7292db9efc521fa525309bc93c4874",
+      "source": "Adjunto proporcionado por el propietario; generado anteriormente según su descripción",
+      "usage": "Referencia interna; no recurso de runtime ni autorización sobre marcas/rostros visibles"
+    },
+    {
+      "file": "05-composicion-seleccion.jpg",
+      "sha256": "997ed43af2f04e5324f334d9cbfcae7b4ae77be6e734f84dec51e5247afa4031",
+      "source": "Adjunto proporcionado por el propietario; generado anteriormente según su descripción",
+      "usage": "Referencia interna; no recurso de runtime ni autorización sobre marcas/rostros visibles"
+    }
+  ]
+}

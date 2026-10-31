@@ -5,6 +5,14 @@ universo del fútbol chileno. No es simulador de fútbol. La decisión vigente e
 en [DECISIONES_Y_ALCANCE](docs/DECISIONES_Y_ALCANCE.md) y prevalece sobre propuestas
 anteriores. Plantel conceptual de 16 conservado; solo dos héroes implementados.
 
+## Biblioteca visual y siguientes versiones
+
+[Plantel de 16 y carpetas de evolución](docs/plantel/README.md): referencias
+elegidas, bocetos, modelos provisionales, fichas propuestas y etapas de revisión.
+Turbo V2 propuesta 01 fue aceptada como referencia visual; el siguiente paso
+es llevarla a Blender/GLB conservando su identidad. El modelo final sigue pendiente. [Contexto para continuar en local](docs/CONTEXTO_DE_CONTINUIDAD.md).
+Prioridad actual: mejorar el aspecto en PC; pruebas de teléfono aplazadas.
+
 ## Demo ejecutable actual
 
 Batalla de entrenamiento local: **un jugador contra un bot**, sin red ni objetivos
@@ -26,12 +34,13 @@ No se importan imágenes de `design/`, escudos o rostros al juego.
 1. Instala **Godot 4.7.2 estable, edición estándar** (GDScript, no requiere .NET),
    desde [Godot](https://godotengine.org/download/). Esta corrección se validó con 4.7.2; la fundación anterior se probó con 4.6.3. No necesita Blender,
    plugins, Python, cuentas ni servicios de pago para jugar.
-2. Descarga la rama del PR o clona el repositorio. Para esta entrega táctil:
+2. Clona el repositorio y abre la versión integrada en `main`:
 
    ```sh
    git clone https://github.com/openweb-cl/arena-idol.git
    cd arena-idol
-   git switch codex/touch-controls
+   git switch main
+   git pull --ff-only origin main
    ```
 
 3. En el administrador de Godot pulsa **Importar**, selecciona `game/project.godot`
