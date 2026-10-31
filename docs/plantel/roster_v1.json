@@ -115,10 +115,12 @@
       "v3_model": {
         "glb": "game/assets/models/turbo/turbo.glb",
         "builder": "art/turbo/build_turbo.py",
-        "atlas": "art/turbo/paint_turbo_atlas.py",
+        "atlas": "art/lib/hero_v3.py",
         "sheet": "docs/captures/turbo-v3/lamina_turbo.jpg",
         "captures": "docs/captures/turbo-v3/",
-        "state": "provisional_pending_owner_review"
+        "state": "provisional_pending_owner_review",
+        "summary": "desde la referencia V2: rostro, pelo, pesos suaves y atlas.",
+        "state_text": "Turbo V3 producido; falta la revisión del propietario en el juego. Después: candidato final o V3.1 según observaciones."
       }
     },
     {
@@ -198,7 +200,7 @@
       "animation": "Manos medidas y carrera controlada; ataque de precisión reinterpretando kick; reverencia de celebrate existente.",
       "model_path": "res://assets/models/principe/principe.glb",
       "planned_model_path": "res://assets/models/principe/principe.glb",
-      "gameplay_status": "proposal_not_implemented",
+      "gameplay_status": "implemented",
       "art_status": "existing_provisional_glb_plus_concept",
       "kit_reference": "../../PRINCIPE_KIT.md",
       "visual_style": "footballer_caricature_arena_combat",
@@ -211,7 +213,17 @@
         "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
       },
       "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
-      "reference_status": "style_selected_individual_final_pending"
+      "reference_status": "style_selected_individual_final_pending",
+      "v3_model": {
+        "glb": "game/assets/models/principe/principe.glb",
+        "builder": "art/principe/build_principe.py",
+        "atlas": "art/lib/hero_v3.py",
+        "sheet": "docs/captures/principe-v3/lamina_principe.jpg",
+        "captures": "docs/captures/principe-v3/",
+        "state": "provisional_pending_owner_review",
+        "summary": "con el patrón visual de Turbo V3: pelo oscuro de lado, banda diagonal, short blanco y atlas.",
+        "state_text": "Príncipe V3 jugable (ficha aprobada el 31 octubre 2026); falta la revisión del propietario en partida."
+      }
     },
     {
       "canonical_id": "COL-01",

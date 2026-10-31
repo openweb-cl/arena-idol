@@ -260,20 +260,24 @@ rendimiento o calidad comercial. La imagen se conserva intacta y la decisión
 se registra en [historial.json](../historial.json). Reconciliar costuras y tatuajes
 entre vistas durante la preparación técnica, respetando la identidad aceptada.
 '''
-        v3 = next(h for h in data['heroes'] if h['id'] == 'turbo').get('v3_model')
-        if v3:
-            result[page] = result[page].replace(
-                '| V3 — modelo refinado | Siguiente: Blender, GLB, rig y clips usando la referencia V2 aceptada. |',
-                f"| V3 — modelo refinado | {link(page, v3['glb'], 'GLB V3 provisional')} desde la referencia V2: rostro, pelo, pesos suaves y atlas. "
-                f"{link(page, v3['sheet'], 'Lámina')} y {link(page, v3['captures'], 'capturas Godot')}. Pendiente de revisión del propietario. |").replace(
-                '**Próxima muestra:** Turbo V3: traducir la referencia V2 aceptada a Blender/GLB.',
-                '**Estado:** Turbo V3 producido; falta la revisión del propietario en el juego. Después: candidato final o V3.1 según observaciones.')
-            mp = turbo_folder / 'modelado/README.md'
-            old = f"Fuente actual: {link(mp, 'art/turbo/turbo.blend', 'Blender')}. Export actual: {link(mp, v3['glb'], 'GLB provisional')}."
-            new = (f"Fuente actual (V3): {link(mp, v3['builder'], 'generador')}, {link(mp, v3['atlas'], 'atlas')} y {link(mp, 'art/turbo/turbo.blend', 'Blender')}. "
-                   f"Export actual: {link(mp, v3['glb'], 'GLB V3 provisional')}. Detalle técnico en {link(mp, 'docs/arte/HEROES.md', 'HEROES.md')}.")
-            assert old in result[mp]
-            result[mp] = result[mp].replace(old, new)
+    # Héroes con modelo V3 (patrón Turbo V3): fila de evolución, estado y fuentes.
+    for hero in data['heroes']:
+        v3 = hero.get('v3_model')
+        if not v3:
+            continue
+        folder = ROOT / 'design/personajes' / hero['id']
+        page = folder / 'README.md'
+        row = (f"| V3 — modelo refinado | {link(page, v3['glb'], 'GLB V3 provisional')} {v3['summary']} "
+               f"{link(page, v3['sheet'], 'Lámina')} y {link(page, v3['captures'], 'capturas Godot')}. Pendiente de revisión del propietario. |")
+        result[page] = re.sub(r'^\| V3 — modelo refinado \|.*$', lambda _m: row, result[page], flags=re.M)
+        result[page] = re.sub(r'^\*\*Próxima muestra:\*\*.*$', lambda _m: f"**Estado:** {v3['state_text']}", result[page], flags=re.M)
+        mp = folder / 'modelado/README.md'
+        blend = f"art/{hero['id']}/{hero['id']}.blend"
+        old = f"Fuente actual: {link(mp, blend, 'Blender')}. Export actual: {link(mp, v3['glb'], 'GLB provisional')}."
+        new = (f"Fuente actual (V3): {link(mp, v3['builder'], 'generador')}, {link(mp, v3['atlas'], 'cuerpo y atlas comunes')} y {link(mp, blend, 'Blender')}. "
+               f"Export actual: {link(mp, v3['glb'], 'GLB V3 provisional')}. Detalle técnico en {link(mp, 'docs/arte/HEROES.md', 'HEROES.md')}.")
+        assert old in result[mp], hero['id']
+        result[mp] = result[mp].replace(old, new)
     index = ROOT / 'docs/plantel/README.md'
     result[index] = '''# Plantel — biblioteca de diseño y evolución
 
@@ -338,7 +342,7 @@ def validate(data):
     canonical_names = re.findall(r'^\| [A-Z]{3}-\d{2} \| [^|]+ \| ([^|]+) \|', (ROOT / 'docs/ROSTER_CANONICO_V0_4.md').read_text(), re.M)
     assert [h['name'] for h in heroes] == [n.strip() for n in canonical_names], 'Nombres distintos del canónico'
     assert {h['id']: h['number'] for h in heroes if h['number'] is not None} == APPROVED_NUMBERS, 'Dorsales no aprobados'
-    assert {h['id'] for h in heroes if h['gameplay_status'] == 'implemented'} == {'turbo', 'rey'}
+    assert {h['id'] for h in heroes if h['gameplay_status'] == 'implemented'} == {'turbo', 'rey', 'principe'}
     assert {h['id'] for h in heroes if h['model_path']} == set(APPROVED_NUMBERS)
     for h in heroes:
         assert h['basic']['values']['damage_per_attack'] > 0, f"Básico no ofensivo: {h['id']}"

@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 ARGS = [a for a in sys.argv[1:] if not a.endswith(".py")]
 HERO = ARGS[0] if ARGS else "turbo"
 OUT = Path(ARGS[1]) if len(ARGS) > 1 else Path(tempfile.gettempdir()) / f"{HERO}-renders"
-TITLES = {"turbo": "EL TURBO #11", "rey": "EL KING #23"}
+TITLES = {"turbo": "EL TURBO #11", "rey": "EL KING #23", "principe": "EL PRINCIPE #20", "pitbull": "EL PITBULL #17"}
 SAMPLES = 24
 SIZE = (420, 560)
 

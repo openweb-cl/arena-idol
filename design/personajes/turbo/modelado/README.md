@@ -1,6 +1,6 @@
 # Modelado — El Turbo
 
-Fuente actual (V3): [generador](../../../../art/turbo/build_turbo.py), [atlas](../../../../art/turbo/paint_turbo_atlas.py) y [Blender](../../../../art/turbo/turbo.blend). Export actual: [GLB V3 provisional](../../../../game/assets/models/turbo/turbo.glb). Detalle técnico en [HEROES.md](../../../../docs/arte/HEROES.md).
+Fuente actual (V3): [generador](../../../../art/turbo/build_turbo.py), [cuerpo y atlas comunes](../../../../art/lib/hero_v3.py) y [Blender](../../../../art/turbo/turbo.blend). Export actual: [GLB V3 provisional](../../../../game/assets/models/turbo/turbo.glb). Detalle técnico en [HEROES.md](../../../../docs/arte/HEROES.md).
 
 [Lámina de la muestra existente](../../../../docs/captures/heroes-v1-1/lamina_turbo.jpg) (render Blender, no captura de gameplay).
 

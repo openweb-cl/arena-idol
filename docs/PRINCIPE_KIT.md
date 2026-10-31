@@ -1,8 +1,10 @@
 # El Príncipe #20 — combate, apoyo y control de arena
 
-**Estado: PROPUESTA corregida, pendiente de revisión del propietario. No implementada.**
-Rama `codex/principe-kit`, solo documentación. `codex/principe-gameplay` empieza
-tras revisar esta ficha. Pitbull #17 queda después de probar al Príncipe.
+**Estado: APROBADA por el propietario e IMPLEMENTADA (valores de ensayo).**
+El 31 octubre 2026 el propietario pidió «Príncipe y Pitbull, visual y jugable»,
+lo que aprueba esta ficha, y asignó el gameplay a Claude Code en local. Rama
+`novedad/principe-jugable`. El balance sigue pendiente de playtest. Pitbull #17
+va después. Detalles de implementación y límites al final de este documento.
 
 ## Dirección vigente
 
@@ -156,5 +158,33 @@ futuras del humano ni recibir inmunidad a campos o privilegios de daño.
 
 - [x] GLB y dorsal #20 disponibles por PR #8.
 - [x] Ficha alineada con la aclaración de batallas, apoyo y control del propietario.
-- [ ] Revisión/aprobación de este kit y sus valores iniciales.
-- [ ] `codex/principe-gameplay`, pruebas y playtest; luego evaluar Pitbull #17.
+- [x] Aprobación del kit y sus valores iniciales (31 octubre 2026).
+- [x] Gameplay, bot, VFX, selección y pruebas (`tests/test_principe.gd`, 50 comprobaciones).
+- [ ] Playtest del propietario Príncipe↔Turbo/Rey en A/B y ajuste de valores.
+- [ ] Pitbull #17 (siguiente PR).
+
+## Implementación (rama `novedad/principe-jugable`)
+
+- `data/characters/principe.tres`, `data/abilities/principe.tres` (`kind = "Power"`)
+  y `data/ammo/principe.tres`. Todo editable en el inspector.
+- `CharacterDefinition`: `attack_windup` (anticipación) y grupo «Súper» con
+  `super_kind = "Field"`, `super_reach`, `field_warning`, `field_duration`,
+  `field_slow` y `field_push`; el radio usa `super_radius` y el pulso `super_damage`.
+  Turbo y Rey usan los valores por defecto y no cambian.
+- `ArenaPlayer`: estados por actor (`power_time`, `slow`, `channel_time`,
+  `windup_time`) y dirección y mejora capturadas al aceptar el ataque. Nunca escribe
+  en el Resource. Reaparecer limpia todos los estados; la pausa los congela.
+- `scripts/combat/zone_field.gd` (`ZoneField`): aviso, pulso único con empuje radial,
+  campo lento. La cobertura bloquea los tres efectos, igual que la protección. Un
+  campo por emisor; las lentitudes no se suman (prevalece la más fuerte).
+- Arena: centro AUTO sobre el rival visible a ≤ 8 m; en MANUAL, el punto del cursor
+  si es válido. El pulso de la súper no recarga la súper. Rival del bot elegible en
+  el menú (`RIVAL:`); el campo de tiro conserva a Rey como referencia.
+- Bot: activa la mejora con munición y blanco visible, coloca el campo sobre el
+  rival a su alcance y sale de zonas anunciadas del rival.
+- Etiqueta sobre la cabeza: «PODER +20 % · s» y «LENTO −25 %».
+
+Límites: el collider del proyectil sigue en 0,16 m (la ficha proponía 0,12) para no
+cambiar el proyectil compartido. La mejora a aliados a 2,5 m no se implementa
+porque no hay equipos. En táctil y modo manual sin cursor, la súper usa el rival
+visible. Balance sin validar.

@@ -7,7 +7,7 @@ var preview_light: DirectionalLight3D
 var match_settings: MatchConfig = preload("res://data/match.tres")
 var cards: Dictionary = {}  ## id de héroe → botón de su tarjeta en la selección
 var portrait_frame: StyleBoxFlat
-const IN_DEVELOPMENT := {2: "EL PRÍNCIPE  #20", 3: "EL PITBULL  #17"}  ## arte listo, sin gameplay
+const IN_DEVELOPMENT := {3: "EL PITBULL  #17"}  ## arte listo, sin gameplay
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -90,6 +90,14 @@ func show_home() -> void:
 		GameSession.selected_arena = GameSession.ARENAS[1] if GameSession.selected_arena.id == "prisma-a" else GameSession.ARENAS[0]
 		arena_choice.text = "ARENA " + ("A" if GameSession.selected_arena.id == "prisma-a" else "B")
 	)
+	var rival := ArenaStyle.button(rival_text())
+	rival.add_theme_font_size_override("font_size", 18)
+	rival.custom_minimum_size = Vector2(240, 42)
+	options.add_child(rival)
+	rival.pressed.connect(func() -> void:
+		cycle_rival()
+		rival.text = rival_text()
+	)
 	rules.pressed.connect(func() -> void:
 		GameSession.reload_enabled = not GameSession.reload_enabled
 		rules.text = "REGLAS: " + ("RECARGA" if GameSession.reload_enabled else "REFERENCIA SIN RECARGA")
@@ -109,7 +117,7 @@ func show_home() -> void:
 func show_selection() -> void:
 	selection = true
 	clear_page()
-	header("PLANTEL / 02 DE 16 DISPONIBLES")
+	header("PLANTEL / %02d DE %d DISPONIBLES" % [CharacterCatalog.AVAILABLE.size(), CharacterCatalog.CAPACITY])
 	page.add_child(ArenaStyle.label("ELIGE TU ESTILO DE COMBATE", 32, ArenaStyle.WHITE, true, 4))
 	var row := HBoxContainer.new()
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -189,6 +197,15 @@ func select_character(def: CharacterDefinition) -> void:
 	detail.text = "%s  /  #%d\n%s\n%s\nVida %d  ·  Velocidad %.1f m/s\nHabilidad: %.1f s de recarga" % [def.display_name, def.number, def.role, def.description, def.max_health, def.speed, def.ability.cooldown]
 	if def.ammo != null and def.ammo.enabled:
 		detail.text += "\n%d cargas · +1 cada %.1f s" % [def.ammo.capacity, def.ammo.seconds_per_charge]
+
+## Rival del bot: recorre los héroes jugables distintos del propio.
+func rival_text() -> String:
+	return "RIVAL: " + CharacterCatalog.rival_for(GameSession.selected, GameSession.selected_rival).display_name.to_upper()
+
+func cycle_rival() -> void:
+	var options := CharacterCatalog.AVAILABLE.filter(func(d: CharacterDefinition) -> bool: return d.id != GameSession.selected.id)
+	var current := CharacterCatalog.rival_for(GameSession.selected, GameSession.selected_rival)
+	GameSession.selected_rival = options[(options.find(current) + 1) % options.size()]
 
 func start_match() -> void:
 	get_tree().change_scene_to_file("res://scenes/arena/arena.tscn")

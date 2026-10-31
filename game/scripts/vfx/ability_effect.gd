@@ -250,6 +250,8 @@ func _spawn_static(variant: String) -> void:
 
 # --- Animación -------------------------------------------------------------
 func _process(delta: float) -> void:
+	# Un tirón (p. ej. compilación de shaders) no debe consumir el efecto entero de golpe.
+	delta = minf(delta, 1.0 / 20.0)
 	age += delta
 	var t := clampf(age / life, 0, 1)
 	var fade := VFXKit.fade(t)

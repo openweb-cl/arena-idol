@@ -58,25 +58,29 @@
       "path": "game/assets/models/turbo/turbo.glb",
       "sha256": "4fc88347ab2c1b6cbf60b8db3fc25d739f8ed7da1707d4055af023b9e0228b37",
       "status": "provisional_model_from_accepted_V2_pending_owner_review",
-      "note": "Rostro pintado, pelo en mechones, pesos suaves, un material con atlas 1024. 6.530 triángulos."
+      "note": "Rostro pintado, pelo en mechones, pesos suaves, un material con atlas 1024. 6.530 triángulos.",
+      "source_commit": "d248840"
     },
     {
       "stage": "V3",
       "path": "art/turbo/turbo.blend",
       "sha256": "2b02e5d1564dc7a02ea89164564f1c398bb0a86fcb61dfeaabd9e545eeb63090",
-      "status": "provisional_source"
+      "status": "provisional_source",
+      "source_commit": "d248840"
     },
     {
       "stage": "V3",
       "path": "art/turbo/turbo_atlas.png",
       "sha256": "e787b3f11391dc9623e72460e5865395c8434189d970a9073a4f3da0be616fc5",
-      "status": "provisional_source"
+      "status": "provisional_source",
+      "source_commit": "d248840"
     },
     {
       "stage": "V3",
       "path": "docs/captures/turbo-v3/lamina_turbo.jpg",
       "sha256": "bbaf27bd2e0147cb2620007adb50d2017c93232cc38c4890e29dfdafd7c565b7",
-      "status": "blender_render_not_gameplay"
+      "status": "blender_render_not_gameplay",
+      "source_commit": "d248840"
     }
   ],
   "next_stage": "owner_review_of_V3_in_game",

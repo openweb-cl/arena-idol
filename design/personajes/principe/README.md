@@ -1,6 +1,6 @@
 # El Príncipe — #20
 
-Ficha propuesta; gameplay sin implementar ni aprobar. La dirección es **futbolista caricaturesco en combate arcade**.
+Jugable: comportamiento vigente, no rebalanceado aquí. La dirección es **futbolista caricaturesco en combate arcade**.
 No hay diseño final aprobado. No cambiar cara, proporciones o equipación entre
 imágenes sin registrar una propuesta y la decisión del propietario.
 
@@ -24,7 +24,7 @@ La paleta es guía; no sustituye materiales actuales sin revisión.
 | V0 — pruebas geométricas | No entregada para este personaje; no inventar una versión anterior. |
 | V1 — GLB provisional | [GLB provisional V1](../../../game/assets/models/principe/principe.glb) |
 | V2 — diseño definido | Pendiente: frente, perfil, espalda y expresiones aprobados. |
-| V3 — modelo refinado | Pendiente de V2; Blender, GLB, rig y clips en Godot. |
+| V3 — modelo refinado | [GLB V3 provisional](../../../game/assets/models/principe/principe.glb) con el patrón visual de Turbo V3: pelo oscuro de lado, banda diagonal, short blanco y atlas. [Lámina](../../../docs/captures/principe-v3/lamina_principe.jpg) y [capturas Godot](../../../docs/captures/principe-v3). Pendiente de revisión del propietario. |
 | Candidato final | Pendiente de prueba visual, animación, legibilidad y rendimiento. |
 
 El nombre V1 agrupa el estado del pipeline; las versiones locales de cada GLB
@@ -41,5 +41,5 @@ igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
 - [Historial con hashes](historial.json).
 - [Ficha de combate](../../../docs/plantel/fichas/principe.md); sus valores nuevos son hipótesis.
 
-**Próxima muestra:** Usar Turbo V2 como patrón visual aceptado y adaptar este héroe sin uniformar todas las caras.
+**Estado:** Príncipe V3 jugable (ficha aprobada el 31 octubre 2026); falta la revisión del propietario en partida.
 [Exploración, sin aprobación individual](../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png).

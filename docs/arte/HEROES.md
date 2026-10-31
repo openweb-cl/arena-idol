@@ -139,7 +139,23 @@ demás héroes no cambian: `build_hero` sin `atlas` funciona igual que antes.
 | `M_Rey_Piel` | `#a8724f` | Piel |
 | `M_Rey_Brillo` | `#ffc94d` emisivo | Visor |
 
-## Príncipe — V0 (solo arte)
+## Príncipe #20 — V3 jugable (provisional)
+
+Mismo cuerpo V3 que Turbo (`art/lib/hero_v3.py`), con identidad propia: silueta más
+esbelta y erguida (pecho ×0,95, brazos ×0,9, cabeza ×1,1), pelo oscuro peinado hacia
+un lado, banda diagonal roja ancha con filos blancos (en sentido contrario a la franja
+de Turbo), short blanco con dorsal 20 azul, puños y muñequeras blancos, suela roja,
+cejas rectas y gesto atento. Guardia más erguida y zancada ×1,1 (`run_clip_speed = 3,6`).
+Medido: **5.494 triángulos, 1 material (atlas 1024), 17 huesos, 5 clips, 2,02 m**;
+contrato **35/0**. [Lámina](../captures/principe-v3/lamina_principe.jpg) (render de
+Blender) y [capturas de juego](../captures/principe-v3/) con la mejora, el aviso, el pulso
+y el campo lento. Sin capa, escudos, logos ni rostros reales.
+
+Cambios de VFX en este hito: `AbilityEffect` limita el paso por cuadro a 1/20 s. Antes,
+un tirón (compilación de shaders en el primer uso) consumía el efecto entero y el
+aviso del campo podía no verse nunca.
+
+## Príncipe — V0 (histórico, solo arte)
 
 - **Rol de referencia:** estratega (precisión). Silueta esbelta y elegante, ≈1,91 m. **Dorsal 20.**
 - **Equipación:** azul (`#1a37a8`) con detalles rojos. Banda real roja cruzada del
