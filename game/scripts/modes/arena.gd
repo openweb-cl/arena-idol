@@ -5,6 +5,7 @@ enum Phase { PLAYING, PAUSED, FINISHED }
 @export var training_mode := false
 @export var laboratory_unlimited_ammo := false
 @export var auto_target_enabled := true
+@export var force_touch_controls := false
 @export var arena_override: ArenaDefinition
 @export var config: MatchConfig = preload("res://data/match.tres")
 var phase := Phase.PLAYING
@@ -40,6 +41,7 @@ var damage_events: Array[int] = [0, 0]
 var close_seconds: Array[float] = [0, 0]
 var report_path := ""
 var last_message_at := 0.0
+var touch_controls: ArenaTouchControls
 
 func _ready() -> void:
 	rules = MatchRules.new(config)
@@ -84,6 +86,16 @@ func _ready() -> void:
 		hud.message.hide()
 		set_training_case(0)
 	get_viewport().gui_release_focus()
+	if force_touch_controls or ArenaTouchControls.requested():
+		var touch_layer := CanvasLayer.new()
+		touch_layer.layer = 5
+		add_child(touch_layer)
+		touch_controls = ArenaTouchControls.new()
+		touch_controls.state.auto_mode = auto_target_enabled
+		touch_controls.pause_requested.connect(toggle_pause)
+		touch_controls.aim_mode_requested.connect(set_auto_target)
+		touch_controls.safe_area_changed.connect(func(safe: Rect2) -> void: TouchHUDLayout.apply(hud, safe))
+		touch_layer.add_child(touch_controls)
 
 func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaPlayer:
 	var actor: ArenaPlayer = PLAYER_SCENE.instantiate()
@@ -108,12 +120,18 @@ func _physics_process(delta: float) -> void:
 		if not is_instance_valid(projectiles[index]) or projectiles[index].is_queued_for_deletion():
 			projectiles.remove_at(index)
 	if phase == Phase.PLAYING:
+		if touch_controls != null:
+			touch_controls.update_player(human)
 		elapsed += delta
 		if not training_mode:
 			rules.tick(delta)
 		if phase != Phase.PLAYING:
 			return
 		human.command.move = keyboard_direction()
+		if touch_controls != null:
+			human.command.move = (human.command.move + ArenaTouchControls.world_direction(touch_controls.state.movement, camera)).limit_length()
+			human.command.ability = touch_controls.state.consume_ability() or human.command.ability
+			human.command.super_shot = touch_controls.state.consume_super() or human.command.super_shot
 		if auto_target_enabled:
 			auto_target = TargetSelector.nearest(human, actors)
 			if is_instance_valid(auto_target):
@@ -122,9 +140,12 @@ func _physics_process(delta: float) -> void:
 			else:
 				human.command.aim = Vector2.ZERO
 				human.command.shoot = false
+		elif touch_controls != null and not touch_controls.state.aim.is_zero_approx():
+			human.command.aim = ArenaTouchControls.world_direction(touch_controls.state.aim.normalized(), camera)
 		elif mouse_aim:
 			update_aim()
-		if (mouse_fire_held or key_fire_held) and (not auto_target_enabled or is_instance_valid(auto_target)):
+		var touch_fire := touch_controls != null and touch_controls.state.fire_held()
+		if (mouse_fire_held or key_fire_held or touch_fire) and (not auto_target_enabled or is_instance_valid(auto_target)):
 			human.command.shoot = true
 		if training_mode:
 			bot.command.clear_actions()
@@ -159,7 +180,7 @@ func _physics_process(delta: float) -> void:
 		if is_instance_valid(auto_target) and not auto_target.knocked_out:
 			var protection := " · PROTEGIDO %.1f s" % auto_target.invulnerable if auto_target.invulnerable > 0 else ""
 			hud.assist_status.text = "AUTO → %s #%d%s · Mantén clic/Espacio para atacar · T: manual" % [auto_target.definition.display_name, auto_target.definition.number, protection]
-	aim_guide.visible = show_aim_guide and not human.knocked_out
+	aim_guide.visible = (show_aim_guide or (touch_controls != null and not auto_target_enabled)) and not human.knocked_out
 	if aim_guide.visible:
 		var direction := Vector3(human.command.aim.x, 0, human.command.aim.y) if human.command.aim.length() > 0.1 else human.facing
 		aim_guide.update_guide(human, direction.normalized())
@@ -195,6 +216,9 @@ func _input(event: InputEvent) -> void:
 		key_fire_held = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	# La emulación permite tocar botones GUI, pero no debe duplicar ataques/ratón.
+	if touch_controls != null and event is InputEventMouse and event.device == InputEvent.DEVICE_ID_EMULATION:
+		return
 	if event is InputEventMouseMotion:
 		mouse_aim = true
 		aim_position = event.position
@@ -219,12 +243,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					actor.ammo.unlimited = laboratory_unlimited_ammo or not GameSession.reload_enabled
 					actor.ammo.reset()
 		KEY_T:
-			auto_target_enabled = not auto_target_enabled
-			auto_target = null
-			human.command.aim = Vector2.ZERO
-			mouse_fire_held = false
-			key_fire_held = false
-			human.command.clear_actions()
+			set_auto_target(not auto_target_enabled)
 		KEY_1, KEY_2, KEY_3, KEY_4, KEY_5:
 			if training_mode and phase == Phase.PLAYING:
 				set_training_case(event.physical_keycode - KEY_1)
@@ -238,8 +257,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			if phase == Phase.PLAYING: human.command.super_shot = true
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and is_instance_valid(hud) and phase == Phase.PLAYING:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED] and is_instance_valid(hud) and phase == Phase.PLAYING:
 		toggle_pause()
+
+func set_auto_target(enabled: bool) -> void:
+	auto_target_enabled = enabled
+	auto_target = null
+	human.command.aim = Vector2.ZERO
+	mouse_fire_held = false
+	key_fire_held = false
+	human.command.clear_actions()
+	if touch_controls != null:
+		touch_controls.state.set_auto_mode(enabled)
 
 func on_action(actor: ArenaPlayer, kind: String) -> void:
 	if phase != Phase.PLAYING:
@@ -306,12 +335,16 @@ func on_eliminated(actor: ArenaPlayer) -> void:
 	if actor == human:
 		mouse_fire_held = false
 		key_fire_held = false
+		if touch_controls != null:
+			touch_controls.state.cancel_all()
 	hud.message.text = "¡Eliminación rival!" if actor == bot else "Te han eliminado · Reaparecerás pronto"
 	last_message_at = elapsed
 	if not training_mode:
 		rules.score(1 - actor.team)
 
 func freeze_combat(freeze: bool) -> void:
+	if touch_controls != null:
+		touch_controls.set_playing(not freeze)
 	mouse_fire_held = false
 	key_fire_held = false
 	human.active = not freeze

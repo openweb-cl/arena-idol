@@ -18,65 +18,92 @@ var ammo_title: Label
 var ammo_cells: HBoxContainer
 var ammo_progress: ProgressBar
 var show_metrics := false
+var top: PanelContainer
+var pause_button: Button
+var keyboard_hints: Label
+var footer: Label
+var ammo_panel: VBoxContainer
+var health_bar: ProgressBar
+var super_bar: ProgressBar
 
 func _ready() -> void:
 	var root := Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
-	var top := PanelContainer.new()
+	top = PanelContainer.new()
 	top.position = Vector2(28, 16)
 	top.size = Vector2(1224, 70)
-	top.add_theme_stylebox_override("panel", ArenaStyle.box(ArenaStyle.PANEL))
+	var top_box := ArenaStyle.box(Color(ArenaStyle.INK_DEEP, 0.92), 14, Color(ArenaStyle.GOLD, 0.0))
+	top_box.border_width_bottom = 4
+	top_box.border_color = ArenaStyle.GOLD
+	top.add_theme_stylebox_override("panel", top_box)
 	root.add_child(top)
 	var row := HBoxContainer.new()
 	top.add_child(row)
-	row.add_child(ArenaStyle.label("BATALLA DE ÍDOLOS", 20, ArenaStyle.GOLD))
-	scoreboard = ArenaStyle.label("", 28)
+	row.add_child(ArenaStyle.label("BATALLA DE ÍDOLOS", 20, ArenaStyle.GOLD, true))
+	scoreboard = ArenaStyle.label("", 30, ArenaStyle.WHITE, true, 4)
 	scoreboard.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	scoreboard.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(scoreboard)
-	var pause_button := ArenaStyle.button("PAUSA / Esc")
+	pause_button = ArenaStyle.button("PAUSA / Esc")
 	pause_button.custom_minimum_size = Vector2(160, 40)
 	pause_button.add_theme_font_size_override("font_size", 18)
 	row.add_child(pause_button)
 	pause_button.pressed.connect(func() -> void: pause_requested.emit())
-	status = ArenaStyle.label("", 20)
-	status.position = Vector2(40, 624)
+	status = ArenaStyle.label("", 20, ArenaStyle.WHITE, true, 5)
+	status.position = Vector2(40, 618)
 	root.add_child(status)
-	var hints := ArenaStyle.label("WASD  MOVER   /   RATÓN  APUNTAR\nCLIC / ESPACIO  ATACAR   /   E / SHIFT  HABILIDAD\nQ  SÚPER   /   F2  GUÍA   /   F3  MÉTRICAS", 16, ArenaStyle.MUTED)
+	# Barras de vida y súper como hijas de status: siguen su posición (también táctil).
+	var vitals := VBoxContainer.new()
+	vitals.position = Vector2(0, 62)
+	vitals.custom_minimum_size = Vector2(320, 0)
+	vitals.add_theme_constant_override("separation", 3)
+	vitals.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	status.add_child(vitals)
+	health_bar = ArenaStyle.bar(ArenaStyle.BLUE, Color(0.05, 0.08, 0.16, 0.9), 11)
+	health_bar.max_value = 1.0
+	health_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vitals.add_child(health_bar)
+	super_bar = ArenaStyle.bar(ArenaStyle.GOLD, Color(0.05, 0.08, 0.16, 0.9), 6)
+	super_bar.max_value = 100.0
+	super_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vitals.add_child(super_bar)
+	var hints := ArenaStyle.label("WASD  MOVER   /   RATÓN  APUNTAR\nCLIC / ESPACIO  ATACAR   /   E / SHIFT  HABILIDAD\nQ  SÚPER   /   F2  GUÍA   /   F3  MÉTRICAS", 16, ArenaStyle.MUTED, false, 4)
+	keyboard_hints = hints
 	hints.position = Vector2(720, 622)
 	root.add_child(hints)
-	var placeholder := ArenaStyle.label("DEMO LOCAL 1 vs BOT · ARTE PROVISIONAL · Sin objetivos deportivos", 15, ArenaStyle.MUTED)
-	placeholder.position = Vector2(40, 693)
+	var placeholder := ArenaStyle.label("DEMO LOCAL 1 vs BOT · ARTE PROVISIONAL · Sin objetivos deportivos", 13, ArenaStyle.MUTED, false, 3)
+	footer = placeholder
+	placeholder.position = Vector2(720, 697)
 	root.add_child(placeholder)
-	message = ArenaStyle.label("", 22, ArenaStyle.GOLD)
+	message = ArenaStyle.label("", 22, ArenaStyle.GOLD, true, 6)
 	message.position = Vector2(310, 94)
 	message.size.x = 660
 	message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(message)
-	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
+	metrics = ArenaStyle.label("", 17, ArenaStyle.GOLD, false, 4)
 	metrics.position = Vector2(40, 120)
 	root.add_child(metrics)
-	var ammo_panel := VBoxContainer.new()
+	ammo_panel = VBoxContainer.new()
 	ammo_panel.position = Vector2(40, 536)
 	ammo_panel.size.x = 300
 	ammo_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(ammo_panel)
-	ammo_title = ArenaStyle.label("", 16, ArenaStyle.GOLD)
+	ammo_title = ArenaStyle.label("", 16, ArenaStyle.GOLD, true, 4)
 	ammo_panel.add_child(ammo_title)
 	ammo_cells = HBoxContainer.new()
+	ammo_cells.add_theme_constant_override("separation", 6)
 	ammo_panel.add_child(ammo_cells)
-	ammo_progress = ProgressBar.new()
-	ammo_progress.custom_minimum_size = Vector2(270, 6)
-	ammo_progress.show_percentage = false
+	ammo_progress = ArenaStyle.bar(ArenaStyle.MINT, Color(0.05, 0.08, 0.16, 0.9), 5)
+	ammo_progress.custom_minimum_size = Vector2(270, 5)
 	ammo_progress.max_value = 1.0
 	ammo_panel.add_child(ammo_progress)
-	assist_status = ArenaStyle.label("", 16, ArenaStyle.GOLD)
+	assist_status = ArenaStyle.label("", 16, ArenaStyle.GOLD, false, 4)
 	assist_status.position = Vector2(40, 595)
 	assist_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(assist_status)
-	diagnostics = ArenaStyle.label("", 17, ArenaStyle.GOLD)
+	diagnostics = ArenaStyle.label("", 17, ArenaStyle.GOLD, false, 4)
 	diagnostics.position = Vector2(40, 90)
 	diagnostics.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	diagnostics.hide()
@@ -84,12 +111,18 @@ func _ready() -> void:
 	overlay = PanelContainer.new()
 	overlay.position = Vector2(360, 180)
 	overlay.custom_minimum_size = Vector2(560, 360)
-	overlay.add_theme_stylebox_override("panel", ArenaStyle.box(ArenaStyle.INK, 20, ArenaStyle.GOLD))
+	var overlay_box := ArenaStyle.box(Color(ArenaStyle.INK_DEEP, 0.96), 20, ArenaStyle.GOLD)
+	overlay_box.set_border_width_all(3)
+	overlay_box.content_margin_left = 34
+	overlay_box.content_margin_right = 34
+	overlay_box.content_margin_top = 26
+	overlay_box.content_margin_bottom = 26
+	overlay.add_theme_stylebox_override("panel", overlay_box)
 	root.add_child(overlay)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 12)
 	overlay.add_child(column)
-	overlay_title = ArenaStyle.label("", 36, ArenaStyle.GOLD)
+	overlay_title = ArenaStyle.label("", 40, ArenaStyle.GOLD, true, 4)
 	column.add_child(overlay_title)
 	overlay_detail = ArenaStyle.label("", 22)
 	column.add_child(overlay_detail)
@@ -112,12 +145,14 @@ func update_state(rules: MatchRules, player: ArenaPlayer) -> void:
 		ammo_cells.remove_child(cell)
 		cell.queue_free()
 	while ammo_cells.get_child_count() < count:
-		var cell := ColorRect.new()
-		cell.custom_minimum_size = Vector2(32, 8)
+		var cell := Panel.new()
+		cell.custom_minimum_size = Vector2(38, 10)
 		cell.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cell.add_theme_stylebox_override("panel", ArenaStyle.chip(ArenaStyle.PANEL))
 		ammo_cells.add_child(cell)
 	for i in count:
-		(ammo_cells.get_child(i) as ColorRect).color = ArenaStyle.GOLD if i < player.ammo.charges else ArenaStyle.PANEL
+		var cell_box := (ammo_cells.get_child(i) as Panel).get_theme_stylebox("panel") as StyleBoxFlat
+		cell_box.bg_color = ArenaStyle.GOLD if i < player.ammo.charges else ArenaStyle.PANEL
 	ammo_cells.visible = limited
 	ammo_progress.visible = limited
 	ammo_progress.value = player.ammo.progress()
@@ -130,6 +165,11 @@ func update_state(rules: MatchRules, player: ArenaPlayer) -> void:
 	status.text = "%s #%d   /   %d PV\n%s: %s   /   SÚPER: %d%%" % [player.definition.display_name, player.definition.number, player.health, player.definition.ability.display_name, ability_text, player.super_charge]
 	if player.knocked_out:
 		status.text = "ELIMINADO TEMPORALMENTE\nREAPARICIÓN EN %.1f s" % maxf(0, player.respawn_time)
+	var ratio := float(player.health) / maxf(1, player.definition.max_health)
+	health_bar.value = ratio
+	(health_bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = ArenaStyle.RED if ratio < 0.3 else ArenaStyle.BLUE
+	super_bar.value = player.super_charge
+	(super_bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = ArenaStyle.MINT if player.super_charge >= 100 else ArenaStyle.GOLD
 	metrics.visible = show_metrics
 	if show_metrics:
 		metrics.text = "%d FPS · %.2f ms proceso\n%d draw calls · %d primitivas\n%s / %s" % [Engine.get_frames_per_second(), Performance.get_monitor(Performance.TIME_PROCESS) * 1000, Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME), Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME), RenderingServer.get_current_rendering_method(), "BAJO" if GraphicsSettings.low else "ALTO"]
