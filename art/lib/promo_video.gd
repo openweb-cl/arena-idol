@@ -77,20 +77,21 @@ func run() -> void:
 	title.text = ""
 	dim.color.a = 0.0
 
-	# 3–9 s · Selección: los cuatro ídolos.
+	# 3–8 s · Selección: los cuatro ídolos.
 	menu.show_selection()
 	var lines := {"turbo": "VELOCIDAD", "rey": "FUERZA", "principe": "ESTRATEGIA", "pitbull": "DEFENSA"}
 	for def in heroes:
 		menu.select_character(def)
 		say("ELIGE TU ÍDOLO", "%s  #%d  ·  %s" % [def.display_name.to_upper(), def.number, lines[def.id]])
-		await frames(int(1.5 * FPS))
+		await frames(int(1.25 * FPS))
 	menu.queue_free()
 	await frames(1)
 
-	# 9–27 s · Combates reales con IA en ambos lados.
-	await fight(heroes[0], heroes[1], "COMBATES ARCADE EN 3D", "Turbo dispara · Rey embiste con escudo", 6.0, false)
-	await fight(heroes[2], heroes[3], "CADA ÍDOLO, SU PODER", "Príncipe: Campo de Dominio", 6.0, true)
-	await fight(heroes[3], heroes[0], "AGUANTA Y CONTRAATACA", "Pitbull: Guardia de Hierro · Zona de Contención", 6.0, true)
+	# 8–27 s · Un duelo por ídolo, protagonista en primer plano: habilidad y súper.
+	await fight(heroes[0], heroes[1], "EL TURBO  #11", "Turbo Sprint  +  súper Remate Relámpago", 4.75)
+	await fight(heroes[1], heroes[2], "EL REY  #23", "Embestida Real  +  súper Onda Real", 4.75)
+	await fight(heroes[2], heroes[3], "EL PRÍNCIPE  #20", "Impulso Táctico  +  súper Campo de Dominio", 4.75)
+	await fight(heroes[3], heroes[0], "EL PITBULL  #17", "Guardia de Hierro  +  súper Zona de Contención", 4.75)
 
 	# 27–30 s · Cierre.
 	GameSession.selected = heroes[2]
@@ -104,7 +105,9 @@ func run() -> void:
 		await process_frame
 	quit(0)
 
-func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, sub: String, seconds: float, force_super: bool) -> void:
+func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, sub: String, seconds: float) -> void:
+	## Duelo real con IA en ambos lados; el protagonista activa su habilidad al
+	## principio y su súper a mitad del tramo, de cerca y con la cámara encima.
 	GameSession.selected = own
 	GameSession.selected_rival = rival
 	var arena: IdolArena = load("res://scenes/arena/arena.tscn").instantiate()
@@ -112,30 +115,43 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 	current_scene = arena
 	arena.set_physics_process(false)
 	arena.aim_guide.hide()
+	arena.auto_target_enabled = false  # sin rótulos de diagnóstico de disparo sobre la imagen
 	arena.hud.message.text = ""
 	var a := arena.human
 	var b := arena.bot
-	a.position = Vector3(-4.5, 0, 4.6)
-	b.position = Vector3(3.5, 0, 4.4)
-	a.unlimited_ammo = true
-	b.unlimited_ammo = true
-	a.ammo.unlimited = true
-	b.ammo.unlimited = true
+	a.position = Vector3(-3.2, 0, 5.6)
+	b.position = Vector3(1.4 if own.attack_type == "Melee" else 3.0, 0, 5.6)
+	for actor: ArenaPlayer in [a, b]:
+		actor.unlimited_ammo = true
+		actor.ammo.unlimited = true
+		actor.invulnerable = 0
 	var brain_a := ArenaBot.new(arena.layout)
 	var brain_b := arena.brain
 	say(main, sub)
 	var total := int(seconds * FPS)
+	var super_done := false
 	for i in total:
-		# Súper hacia la mitad del tramo para mostrar los poderes de zona.
-		if force_super and i == int(total * 0.35):
+		if i == 8:
+			a.facing = (b.position - a.position).normalized()
+			a.ability()
+		if not super_done and i >= int(total * 0.4) and (own.super_kind == "Field" or TargetSelector.clear_path(a, b) or i >= int(total * 0.75)):
+			# Súper a la vista (con línea libre si es un disparo): de frente al rival.
+			super_done = true
+			var to_rival := b.position - a.position
+			to_rival.y = 0
+			a.facing = to_rival.normalized()
+			a.attack_cooldown = 0
+			a.channel_time = 0
 			a.super_charge = 100
-		if i == int(total * 0.55):
-			b.super_charge = 100
+			a.super_target = arena.field_target(a) if own.super_reach <= 0.01 else Vector3(b.position.x, 0, b.position.z)
+			a.act("super")
 		for step in 2:  # 60 Hz de física por cada fotograma de 30 fps
 			await physics_frame
 			var dt := 1.0 / 60.0
 			brain_a.update(a, b, arena.projectiles, dt, arena.fields)
+			a.command.super_shot = false  # la súper del protagonista se lanza en su momento
 			brain_b.update(b, a, arena.projectiles, dt, arena.fields)
+			b.command.super_shot = false  # el rival no tapa el poder del protagonista
 			arena.update_fields(dt)
 			for actor: ArenaPlayer in [a, b]:
 				actor.position.x = clampf(actor.position.x, -12.5, 12.5)
@@ -146,11 +162,11 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 						actor.dash_hit = true
 						arena.apply_damage(other, actor, actor.definition.ability.contact_damage, actor.dash_direction * 9)
 		arena.hud.update_state(arena.rules, a)
-		# Cámara de promo: más cerca y siguiendo el punto medio del duelo.
-		var mid := (a.position + b.position) * 0.5
-		var target := Vector3(clampf(mid.x, -6.5, 6.5), 27, clampf(mid.z, -2.5, 2.5) + 22)
+		# Cámara de promo: cerca, centrada sobre el protagonista y su rival.
+		var mid := a.position * 0.6 + b.position * 0.4
+		var target := Vector3(clampf(mid.x, -7.0, 7.0), 27, clampf(mid.z, -3.0, 3.4) + 22)
 		arena.camera.position = arena.camera.position.lerp(target, 0.12) if i > 0 else target
-		arena.camera.size = 13.5
+		arena.camera.size = 12.0
 	arena.queue_free()
 	await frames(1)
 	GameSession.selected_rival = null
