@@ -25,6 +25,16 @@ const MINT := Color("6fffd8")
 const AMBER := Color("f0b04a")
 const CORAL := Color("ff8a5c")
 const TEAM_BLUE := Color("3f8cff")
+# Refresh visual (referencia 03): césped vivo, piedra azul y vegetación.
+const GRASS_A := Color("235c2b")
+const GRASS_B := Color("1e5126")
+const GRASS_LINE := Color("b9d6b2")
+const GRASS_DARK := Color("184420")
+const STONE := Color("2b3a7a")
+const STONE_TOP := Color("4558a6")
+const STONE_SEAM := Color("1b2552")
+const MOSS := Color("2d6a2a")
+const BUSH := [Color("26652a"), Color("2f7731"), Color("1f5523")]
 const CROWD := [Color("1f3fbf"), Color("e0262f"), Color("f1f3f7"), Color("18181c"), Color("5ec8f2"), Color("ddaf52"), Color("2e9e6a")]
 const SKIN := [Color("f1c7a3"), Color("d9a07c"), Color("b9805c"), Color("8a5a3c"), Color("5e3b26")]
 
@@ -39,6 +49,7 @@ func _ready() -> void:
 	_spawn_pad(definition.bot_spawn, CORAL)
 	_stands()
 	_light_towers()
+	_bushes()
 	_commit("floor", false, false)
 	_commit("solid", false, true)
 	_commit("glow", true, false)
@@ -104,24 +115,27 @@ func _commit(batch: String, unshaded: bool, shadows: bool) -> void:
 # --- Piezas ------------------------------------------------------------------
 func _floor() -> void:
 	box("floor", Vector3(0, -0.5, 0), Vector3(31, 0.8, 21), APRON)
+	# Césped en franjas con teselas sutiles (1 lote de malla, sin texturas).
 	for i in 13:
-		box("floor", Vector3(-12 + i * 2, -0.04, 0), Vector3(2, 0.08, 14), JADE_B if i % 2 else JADE_A)
-	# Borde menta de la cancha y línea media discontinua.
-	for z in [-HD + 0.05, HD - 0.05]:
-		box("glow", Vector3(0, 0.006, z), Vector3(HW * 2, 0.012, 0.08), MINT)
-	for x in [-HW + 0.05, HW - 0.05]:
-		box("glow", Vector3(x, 0.006, 0), Vector3(0.08, 0.012, HD * 2), MINT)
+		for k in 7:
+			var shade := (GRASS_B if i % 2 else GRASS_A).lightened(0.035 if (i + k) % 2 else 0.0)
+			box("floor", Vector3(-12 + i * 2, -0.04, -6 + k * 2), Vector3(2, 0.08, 2), shade)
+	# Líneas blancas de la cancha y línea media discontinua.
+	for z in [-HD + 0.06, HD - 0.06]:
+		box("floor", Vector3(0, 0.006, z), Vector3(HW * 2, 0.012, 0.1), GRASS_LINE)
+	for x in [-HW + 0.06, HW - 0.06]:
+		box("floor", Vector3(x, 0.006, 0), Vector3(0.1, 0.012, HD * 2), GRASS_LINE)
 	for i in 7:
-		box("floor", Vector3(0, 0.004, -6 + i * 2), Vector3(0.1, 0.012, 0.9), JADE_LINE)
+		box("floor", Vector3(0, 0.005, -6 + i * 2), Vector3(0.1, 0.012, 0.9), GRASS_LINE)
 	# Emblema «Prisma» central original: hexágono con anillo.
-	hexagon("floor", Vector3(0, 0.003, 0), 2.0, 0.012, Color("327a67"))
-	hex_ring("floor", Vector3(0, 0.008, 0), 2.35, 0.1, JADE_LINE)
+	hexagon("floor", Vector3(0, 0.003, 0), 2.0, 0.012, GRASS_A.lightened(0.08))
+	hex_ring("floor", Vector3(0, 0.008, 0), 2.35, 0.1, GRASS_LINE)
 	# Chevrones de avance hacia el centro en cada mitad.
 	for side in [-1, 1]:
 		for k in 3:
 			var x: float = side * (7.6 - k * 0.7)
 			for s in [-1, 1]:
-				box("floor", Vector3(x, 0.004, s * 0.32), Vector3(0.12, 0.012, 0.8), JADE_DARK, side * s * deg_to_rad(40))
+				box("floor", Vector3(x, 0.004, s * 0.32), Vector3(0.12, 0.012, 0.8), GRASS_DARK, side * s * deg_to_rad(40))
 
 func _perimeter() -> void:
 	# Mismas medidas que los colliders de ArenaPitch; los remates crecen hacia afuera.
@@ -145,26 +159,52 @@ func _perimeter() -> void:
 			box("solid", Vector3(x, 0.75, z), Vector3(0.62, 1.5, 0.62), AMBER)
 
 func _cover(rect: Rect2) -> void:
-	## Bloque prisma: cuerpo exacto al Rect2 (altura 1,5 como el collider), base,
-	## franja media, cantoneras ámbar y remate con líneas de luz.
+	## Bloque de piedra azul: cuerpo exacto al Rect2 (altura 1,5 como el collider),
+	## juntas cada ~0,8 m, zócalo, remate claro biselado y musgo encima.
 	var c := rect.get_center()
 	var w := rect.size.x
 	var d := rect.size.y
-	var body := definition.wall_color
-	box("solid", Vector3(c.x, 0.75, c.y), Vector3(w, 1.5, d), body)
-	box("solid", Vector3(c.x, 0.07, c.y), Vector3(w, 0.14, d), INK_DARK)
-	box("solid", Vector3(c.x, 1.54, c.y), Vector3(w - 0.12, 0.08, d - 0.12), body.lightened(0.28))
+	box("solid", Vector3(c.x, 0.75, c.y), Vector3(w, 1.5, d), STONE)
+	box("solid", Vector3(c.x, 0.07, c.y), Vector3(w + 0.02, 0.14, d + 0.02), STONE_SEAM)
+	box("solid", Vector3(c.x, 1.53, c.y), Vector3(w - 0.08, 0.1, d - 0.08), STONE_TOP)
+	box("solid", Vector3(c.x - w * 0.18, 1.585, c.y + d * 0.15), Vector3(w * 0.42, 0.03, d * 0.32), MOSS)
+	box("solid", Vector3(c.x + w * 0.22, 1.585, c.y - d * 0.2), Vector3(w * 0.2, 0.03, d * 0.2), MOSS)
+	# Junta horizontal y juntas verticales alternas en las cuatro caras.
 	for axis in [0, 1]:
+		var length := d if axis == 0 else w
 		for s in [-1, 1]:
-			var face := Vector3(c.x + (s * (w / 2 + 0.005) if axis == 0 else 0.0), 0.75, c.y + (s * (d / 2 + 0.005) if axis == 1 else 0.0))
-			var band := Vector3(0.012, 0.22, d - 0.3) if axis == 0 else Vector3(w - 0.3, 0.22, 0.012)
-			box("solid", face, band, body.darkened(0.25))
-	for sx in [-1, 1]:
-		for sz in [-1, 1]:
-			box("solid", Vector3(c.x + sx * (w / 2 - 0.05), 0.72, c.y + sz * (d / 2 - 0.05)), Vector3(0.1, 1.3, 0.1), AMBER)
-	for s in [-1, 1]:
-		box("glow", Vector3(c.x, 1.515, c.y + s * (d / 2 - 0.04)), Vector3(w - 0.08, 0.03, 0.04), MINT)
-		box("glow", Vector3(c.x + s * (w / 2 - 0.04), 1.515, c.y), Vector3(0.04, 0.03, d - 0.08), MINT)
+			var at := Vector3(c.x + (s * (w / 2 + 0.006) if axis == 0 else 0.0), 0.0, c.y + (s * (d / 2 + 0.006) if axis == 1 else 0.0))
+			var flat := Vector3(0.012, 0.04, length - 0.04) if axis == 0 else Vector3(length - 0.04, 0.04, 0.012)
+			box("solid", at + Vector3(0, 0.78, 0), flat, STONE_SEAM)
+			var count := maxi(1, roundi(length / 0.8))
+			for k in count - 1:
+				var offset := -length / 2 + length * (k + 1) / count
+				for row in 2:
+					var shift := (length / count) * 0.5 * row
+					var along := offset + shift
+					if absf(along) >= length / 2 - 0.05:
+						continue
+					var y := 0.45 if row == 0 else 1.15
+					var pos := at + (Vector3(0, y, along) if axis == 0 else Vector3(along, y, 0))
+					box("solid", pos, Vector3(0.012, 0.62, 0.04) if axis == 0 else Vector3(0.04, 0.62, 0.012), STONE_SEAM)
+
+func _bushes() -> void:
+	## Arbustos detrás de los muros (fuera de la cancha): solo decoración.
+	for side in [-1, 1]:
+		for i in 9:
+			var x := -12.0 + i * 3.0 + _rng.randf_range(-0.4, 0.4)
+			var z: float = side * 7.75
+			for k in 3:
+				var r := _rng.randf_range(0.28, 0.42)
+				add_mesh("solid", _bush_mesh(), Transform3D(Basis().scaled(Vector3.ONE * r), Vector3(x + (k - 1) * 0.38, r * 0.9, z + _rng.randf_range(-0.1, 0.1))), BUSH[(i + k) % BUSH.size()])
+
+var _bush: SphereMesh
+func _bush_mesh() -> SphereMesh:
+	if _bush == null:
+		_bush = SphereMesh.new()
+		_bush.radial_segments = 8
+		_bush.rings = 5
+	return _bush
 
 func _spawn_pad(at: Vector3, team: Color) -> void:
 	hexagon("floor", Vector3(at.x, 0.008, at.z), 1.25, 0.014, team.darkened(0.55))

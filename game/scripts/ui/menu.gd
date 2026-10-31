@@ -8,6 +8,11 @@ var match_settings: MatchConfig = preload("res://data/match.tres")
 var cards: Dictionary = {}  ## id de héroe → botón de su tarjeta en la selección
 var portrait_frame: StyleBoxFlat
 const IN_DEVELOPMENT := {}  ## héroes con arte listo y sin gameplay
+const PORTRAIT := "res://assets/ui/retratos/%s.png"  ## busto renderizado (art/lib/render_portraits.py)
+var hero_name: Label
+var hero_role: Label
+var kit_label: Label
+var stat_bars: Dictionary = {}  ## atributo → barra de la ficha
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -115,69 +120,137 @@ func show_home() -> void:
 	page.add_child(ArenaStyle.label("MODELOS DE ENTRENAMIENTO PROVISIONALES · Sin cuentas, compras ni servicios externos", 16, ArenaStyle.MUTED))
 
 func show_selection() -> void:
+	## Composición de la referencia 05: retratos a la izquierda, héroe sobre pedestal
+	## en el centro, ficha a la derecha y acciones abajo. Pendientes bloqueados.
 	selection = true
 	clear_page()
 	header("PLANTEL / %02d DE %d DISPONIBLES" % [CharacterCatalog.AVAILABLE.size(), CharacterCatalog.CAPACITY])
-	page.add_child(ArenaStyle.label("ELIGE TU ESTILO DE COMBATE", 32, ArenaStyle.WHITE, true, 4))
 	var row := HBoxContainer.new()
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("separation", 24)
+	row.add_theme_constant_override("separation", 18)
 	page.add_child(row)
+	row.add_child(roster_panel())
+	var stage := VBoxContainer.new()
+	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(stage)
+	add_portrait(stage, Vector2(400, 380))
+	var info := VBoxContainer.new()
+	info.custom_minimum_size.x = 360
+	info.add_theme_constant_override("separation", 6)
+	row.add_child(info)
+	hero_name = ArenaStyle.label("", 44, ArenaStyle.WHITE, true, 5)
+	info.add_child(hero_name)
+	hero_role = ArenaStyle.label("", 20, ArenaStyle.GOLD, true)
+	info.add_child(hero_role)
+	detail = ArenaStyle.label("", 17, ArenaStyle.MUTED)
+	detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	info.add_child(detail)
+	stat_bars.clear()
+	for stat in ["VIDA", "VELOCIDAD", "ATAQUE", "ALCANCE"]:
+		var line := HBoxContainer.new()
+		info.add_child(line)
+		var title := ArenaStyle.label(stat, 15, ArenaStyle.MUTED, true)
+		title.custom_minimum_size.x = 112
+		line.add_child(title)
+		var bar := ArenaStyle.bar(ArenaStyle.GOLD, Color(0.05, 0.08, 0.16, 0.9), 12)
+		bar.max_value = 1.0
+		bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		line.add_child(bar)
+		stat_bars[stat] = bar
+	kit_label = ArenaStyle.label("", 16, ArenaStyle.WHITE)
+	kit_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	info.add_child(kit_label)
+	select_character(GameSession.selected)
+	var actions := HBoxContainer.new()
+	actions.add_theme_constant_override("separation", 12)
+	page.add_child(actions)
+	var back := ArenaStyle.button("← INICIO")
+	actions.add_child(back)
+	back.pressed.connect(show_home)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	actions.add_child(spacer)
+	var rival := ArenaStyle.button(rival_text())
+	rival.add_theme_font_size_override("font_size", 18)
+	actions.add_child(rival)
+	rival.pressed.connect(func() -> void:
+		cycle_rival()
+		rival.text = rival_text()
+	)
+	var play := ArenaStyle.button("JUGAR CON ESTE ÍDOLO  →", true)
+	play.custom_minimum_size.x = 330
+	actions.add_child(play)
+	play.pressed.connect(start_match)
+	play.grab_focus()
+	page.add_child(ArenaStyle.label("MODELOS 3D PROVISIONALES · Arte en revisión · Valores de combate en ensayo", 15, ArenaStyle.MUTED))
+
+func roster_panel() -> PanelContainer:
+	## Panel ÍDOLOS: retrato por héroe jugable y plazas bloqueadas para el resto.
+	var panel := PanelContainer.new()
+	var style := ArenaStyle.box(Color(ArenaStyle.INK_DEEP, 0.82), 18, Color(ArenaStyle.PANEL_HI, 0.9))
+	style.set_border_width_all(2)
+	style.content_margin_left = 14
+	style.content_margin_right = 14
+	style.content_margin_top = 10
+	style.content_margin_bottom = 12
+	panel.add_theme_stylebox_override("panel", style)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 8)
+	panel.add_child(column)
+	column.add_child(ArenaStyle.label("ÍDOLOS", 20, ArenaStyle.WHITE, true, 3))
 	var grid := GridContainer.new()
 	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 10)
-	grid.add_theme_constant_override("v_separation", 10)
-	row.add_child(grid)
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_theme_constant_override("v_separation", 8)
+	column.add_child(grid)
 	cards.clear()
 	for index in CharacterCatalog.CAPACITY:
-		var card := ArenaStyle.button("PRÓXIMAMENTE\n%02d" % (index + 1))
-		card.custom_minimum_size = Vector2(155, 90)
-		card.add_theme_font_size_override("font_size", 16)
+		var card := Button.new()
+		card.custom_minimum_size = Vector2(68, 68)
+		card.focus_mode = Control.FOCUS_ALL
 		grid.add_child(card)
 		if index < CharacterCatalog.AVAILABLE.size():
 			var def := CharacterCatalog.AVAILABLE[index]
-			card.text = "%s  #%d\n%s" % [def.display_name, def.number, def.role]
+			if ResourceLoader.exists(PORTRAIT % def.id):
+				card.icon = load(PORTRAIT % def.id)
+				card.expand_icon = true
+				card.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			else:
+				card.text = "#%d" % def.number
+			card.tooltip_text = "%s  #%d · %s" % [def.display_name, def.number, def.role]
 			_style_card(card, def.color, false)
 			card.pressed.connect(select_character.bind(def))
 			cards[def.id] = card
 		else:
 			card.disabled = true
-			if IN_DEVELOPMENT.has(index):
-				card.text = "%s\nEN DESARROLLO" % IN_DEVELOPMENT[index]
-	var info := VBoxContainer.new()
-	row.add_child(info)
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	add_portrait(info, Vector2(300, 200))
-	detail = ArenaStyle.label("", 18)
-	detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	detail.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.add_child(detail)
-	select_character(GameSession.selected)
-	var actions := HBoxContainer.new()
-	page.add_child(actions)
-	page.add_child(ArenaStyle.label("MODELOS 3D PROVISIONALES · Arte en revisión", 15, ArenaStyle.MUTED))
-	var back := ArenaStyle.button("← INICIO")
-	actions.add_child(back)
-	back.pressed.connect(show_home)
-	var play := ArenaStyle.button("JUGAR CON ESTE ÍDOLO", true)
-	actions.add_child(play)
-	play.pressed.connect(start_match)
-	play.grab_focus()
+			card.text = "%02d" % (index + 1)
+			card.tooltip_text = IN_DEVELOPMENT.get(index, "Próximamente")
+			card.add_theme_font_size_override("font_size", 15)
+			_style_card(card, ArenaStyle.PANEL_HI, false)
+	column.add_child(ArenaStyle.label("MÁS ÍDOLOS\nPRÓXIMAMENTE", 14, ArenaStyle.MUTED, true))
+	return panel
 
 func _style_card(card: Button, color: Color, selected: bool) -> void:
-	## Tarjeta con canto del color del héroe; la elegida se enciende en dorado.
-	for state in ["normal", "hover", "pressed", "focus"]:
-		var s := ArenaStyle.box(Color(ArenaStyle.PANEL_HI if selected or state == "hover" else ArenaStyle.PANEL, 0.95), 10, Color.TRANSPARENT, true)
-		s.set_border_width_all(0)
-		s.border_width_left = 8
-		s.border_width_bottom = 3 if selected else 0
+	## Retrato con marco del color del héroe; el elegido se enciende en dorado.
+	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
+		var s := ArenaStyle.box(Color(ArenaStyle.PANEL_HI if selected or state == "hover" else ArenaStyle.PANEL, 0.95), 12)
+		s.set_border_width_all(4 if selected else 2)
 		s.border_color = ArenaStyle.GOLD if selected else color
+		s.content_margin_left = 3
+		s.content_margin_right = 3
+		s.content_margin_top = 3
+		s.content_margin_bottom = 3
+		if state == "disabled":
+			s.bg_color = Color(ArenaStyle.INK_DEEP, 0.7)
+			s.border_color = Color(ArenaStyle.PANEL_HI, 0.6)
 		if state == "focus":
 			s.draw_center = false
 			s.set_border_width_all(3)
 			s.border_color = ArenaStyle.MINT
 		card.add_theme_stylebox_override(state, s)
 	card.add_theme_color_override("font_color", color.lightened(0.55))
+	card.add_theme_color_override("font_disabled_color", Color(ArenaStyle.MUTED, 0.45))
 	card.add_theme_color_override("font_hover_color", ArenaStyle.WHITE)
 
 func select_character(def: CharacterDefinition) -> void:
@@ -194,9 +267,23 @@ func select_character(def: CharacterDefinition) -> void:
 		preview = CharacterVisual.new()
 		preview.definition = def
 		parent.add_child(preview)
-	detail.text = "%s  /  #%d\n%s\n%s\nVida %d  ·  Velocidad %.1f m/s\nHabilidad: %.1f s de recarga" % [def.display_name, def.number, def.role, def.description, def.max_health, def.speed, def.ability.cooldown]
+	if hero_name == null or not is_instance_valid(hero_name):
+		return
+	hero_name.text = "%s  #%d" % [def.display_name.to_upper(), def.number]
+	hero_name.add_theme_color_override("font_color", def.color.lightened(0.45))
+	hero_role.text = def.role
+	detail.text = def.description
+	# Barras relativas al plantel actual; orientan, no son balance validado.
+	stat_bars["VIDA"].value = clampf(def.max_health / 7000.0, 0.1, 1.0)
+	stat_bars["VELOCIDAD"].value = clampf(def.speed / 8.0, 0.1, 1.0)
+	stat_bars["ATAQUE"].value = clampf(def.attack_damage / def.attack_interval / 2100.0, 0.1, 1.0)
+	stat_bars["ALCANCE"].value = clampf(def.attack_range / 13.0, 0.1, 1.0)
+	var super_text := "Disparo potente" if def.attack_type == "Ranged" else "Onda alrededor"
+	if def.super_kind == "Field":
+		super_text = "Zona de %.0f m · empuja y ralentiza %d %%" % [def.super_radius, roundi(def.field_slow * 100)]
+	kit_label.text = "HABILIDAD  ·  %s  (%.1f s)\nSÚPER  ·  %s" % [def.ability.display_name, def.ability.cooldown, super_text]
 	if def.ammo != null and def.ammo.enabled:
-		detail.text += "\n%d cargas · +1 cada %.1f s" % [def.ammo.capacity, def.ammo.seconds_per_charge]
+		kit_label.text += "\nMUNICIÓN  ·  %d cargas, +1 cada %.1f s" % [def.ammo.capacity, def.ammo.seconds_per_charge]
 
 ## Rival del bot: recorre los héroes jugables distintos del propio.
 func rival_text() -> String:
@@ -238,17 +325,23 @@ func add_portrait(parent: Node, dimensions: Vector2) -> void:
 	viewport.add_child(world)
 	preview_light = ArenaGeometry.world(world)
 	GraphicsSettings.apply(viewport, preview_light)
-	ArenaGeometry.box(world, Vector3(0, -0.15, 0), Vector3(2.7, 0.2, 2.7), Color("202d4f"))
+	# Pedestal: losa oscura, anillo del color del héroe y halo exterior.
+	var base := CylinderMesh.new()
+	base.top_radius = 1.45
+	base.bottom_radius = 1.6
+	base.height = 0.24
+	ArenaGeometry.mesh(world, base, Vector3(0, -0.13, 0), Color("172243"))
 	ArenaGeometry.ring(world, 1.1, GameSession.selected.color)
+	ArenaGeometry.ring(world, 1.5, GameSession.selected.color.darkened(0.35))
 	preview = CharacterVisual.new()
 	preview.definition = GameSession.selected
 	world.add_child(preview)
 	var camera := Camera3D.new()
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = 3.0
-	camera.position = Vector3(2.6, 2.4, -4.5)
+	camera.size = 2.75
+	camera.position = Vector3(2.6, 2.2, -4.5)
 	world.add_child(camera)
-	camera.look_at(Vector3(0, 1, 0))
+	camera.look_at(Vector3(0, 1.0, 0))
 	camera.current = true
 
 func _process(delta: float) -> void:
