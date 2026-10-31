@@ -71,3 +71,14 @@ Ninguna figura de entrenamiento se presenta como resultado artístico final.
 Antes de calidad comercial: revisión de silueta por artista, rig y clips finales,
 pruebas de legibilidad en pantallas de 6 pulgadas, licencias, capturas de build y
 perfilado en tres teléfonos. Meta 60 FPS / 16,7 ms, no garantía medida.
+
+
+## Actualización de referencia y evolución — 31 octubre 2026 UTC
+
+El propietario eligió las primeras imágenes de caricaturas deportivas y la
+composición de la última pantalla adjunta. Ver [guía visual del plantel](plantel/VISUAL.md)
+y [referencias conservadas](../design/referencias/propietario_2026-10-31/README.md).
+Las exploraciones recientes cambiaron cara/proporción: no son reemplazos aprobados.
+Primero fijar Turbo V2 con vistas y expresiones; después refinar Blender/GLB.
+Los actuales visores/pesos rígidos y accesorios siguen siendo provisionales.
+Conservar etapas, aprobar muestras y comprobarlas en juego antes de llamarlas finales.

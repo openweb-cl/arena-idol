@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "hero_id": "turbo",
+  "final_approved": false,
+  "assets": [
+    {
+      "stage": "reference",
+      "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+      "sha256": "1d6a2bace0d878c66d5552c8fa6f6a76cccb91f9059b6d97af3d0a25fedeecde",
+      "status": "owner_selected_style_not_final",
+      "panel": "fila 1, columna 1"
+    },
+    {
+      "stage": "V0",
+      "path": "docs/captures/heroes-v1-1/mobile-90-referencia-placeholders-zoom-turbo.png",
+      "sha256": "c7bfc08985d7e8d5fc5e9a0ef89e5b916c3423c460290fd10a4c13c9eab2bb3a",
+      "status": "historical_gameplay_placeholder",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "game/assets/models/turbo/turbo.glb",
+      "sha256": "3e51a869ea848fb7281ee8d038bba778f3697c8d6b0e1d429f458b4cafc15333",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "art/turbo/turbo.blend",
+      "sha256": "fd58799e3ef9683efea4665704357064dad9998b311800a8e94290bbce3af67a",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "docs/captures/heroes-v1-1/lamina_turbo.jpg",
+      "sha256": "abfb6cfa1a41c6f3ba2d8e7a40e83f36e53bd5da03abfd4365467833c853cdcc",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "exploration_not_V2",
+      "path": "design/plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png",
+      "sha256": "ca8d88c3d7535d3aa6c6500232f04463789401ed2c03b67d0d41d3ae57a7a09f",
+      "status": "pending_owner_review",
+      "panel": "superior izquierdo"
+    },
+    {
+      "stage": "V2_proposal_01",
+      "path": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png",
+      "sha256": "565009e339bb51b528fc4ef07ffb84575d6031cb0eee60a8000be32d4e9bf6b3",
+      "status": "pending_owner_review_not_model_ready",
+      "generator": "OpenAI image_gen.imagegen",
+      "note": "Lámina de frente/perfil/espalda/combate y expresiones. Verificar coincidencia de tatuajes, costuras y proporciones antes de modelar. Los códigos de paleta generados no sustituyen los datos aprobados."
+    }
+  ],
+  "next_stage": "V3_model_from_accepted_V2_reference",
+  "discarded_exploration": "design/plantel/rechazado_fantasia_2026-10-30",
+  "note": "Hashes preservan el estado de este paquete. Añadir versiones nuevas al historial; no reescribir aprobaciones históricas.",
+  "earlier_git_version": {
+    "commit": "20a4d41",
+    "note": "Primera muestra Turbo V1 previa a V1.1; consultar git para fuente histórica."
+  },
+  "snapshot_commit": "d88adc5",
+  "snapshot_date_utc": "2026-10-31",
+  "decisions": [
+    {
+      "state": "owner_accepted_visual_reference",
+      "owner_quote": "Ese turbo esta muy bueno",
+      "date_utc": "2026-10-31",
+      "scope": "Referencia visual Turbo V2: conservar identidad al modelar. No aprobación de un GLB inexistente ni calidad comercial.",
+      "asset": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png"
+    }
+  ],
+  "v2_visual_reference_accepted": true
+}

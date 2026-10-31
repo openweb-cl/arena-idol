@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "state": "STYLE_ACCEPTED_INDIVIDUAL_DESIGNS_PENDING",
+  "assets": [
+    {
+      "file": "01-referencias-recuperadas.png",
+      "heroes": [
+        "caballero_cruzado",
+        "porteno",
+        "pirata",
+        "artillero_loino"
+      ],
+      "sha256": "d1fcd19ef21b5c4ba82d0dcd7938d8cf3f664fd87a36b5d6909a04c5303171d4",
+      "state": "PROPOSAL_NOT_FINAL_APPROVED",
+      "generator": "OpenAI image_gen.imagegen"
+    },
+    {
+      "file": "02-nucleo-deportivo.png",
+      "heroes": [
+        "turbo",
+        "rey",
+        "principe",
+        "pitbull"
+      ],
+      "sha256": "ca8d88c3d7535d3aa6c6500232f04463789401ed2c03b67d0d41d3ae57a7a09f",
+      "state": "PROPOSAL_NOT_FINAL_APPROVED",
+      "generator": "OpenAI image_gen.imagegen"
+    }
+  ]
+}

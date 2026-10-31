@@ -264,3 +264,14 @@ fusionar PR sin aprobación. Sin servicios de pago ni recursos protegidos copiad
 Tras la aprobación de la ficha, implementar `codex/principe-gameplay`, probarlo y
 recién evaluar Pitbull #17. Este documento por sí solo no implementa ni valida
 esas funciones futuras.
+
+
+## Actualización de continuidad — 31 octubre 2026 UTC
+
+Las referencias y estados posteriores se registran en
+[CONTEXTO_DE_CONTINUIDAD.md](CONTEXTO_DE_CONTINUIDAD.md). #9, #10, #11 y #12
+están fusionados al preparar este paquete. #13 táctil y #14 UI estaban abiertos.
+El propietario aplazó pruebas de teléfono para priorizar el aspecto en PC.
+El siguiente hito visual es Turbo V2, con vistas/expresiones coherentes, antes
+del modelo refinado y del resto del plantel. Ver [biblioteca](plantel/README.md).
+La aprobación de la ficha Príncipe continúa pendiente; no empezar gameplay.

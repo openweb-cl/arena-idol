@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "hero_id": "principe",
+  "final_approved": false,
+  "assets": [
+    {
+      "stage": "reference",
+      "path": "design/referencias/propietario_2026-10-31/01-plantel-caricaturesco.jpg",
+      "sha256": "1d6a2bace0d878c66d5552c8fa6f6a76cccb91f9059b6d97af3d0a25fedeecde",
+      "status": "owner_selected_style_not_final",
+      "panel": "fila 1, columna 2"
+    },
+    {
+      "stage": "V1",
+      "path": "game/assets/models/principe/principe.glb",
+      "sha256": "a855d5238953f53f60984ca31616884e7681ccad193c13126ccf256ce080b389",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "art/principe/principe.blend",
+      "sha256": "faa65d3055860c251626819cfe28e78a0206edd4faed45fb4528b6bd84460a6c",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "V1",
+      "path": "docs/captures/heroes-v1-1/lamina_principe.jpg",
+      "sha256": "64e4d9b2d1cbd357150d85b5cc0baa44e3d935b0ed60b8a1aeeec0689ac9517f",
+      "status": "existing_provisional_not_final",
+      "source_commit": "d88adc5"
+    },
+    {
+      "stage": "exploration_not_V2",
+      "path": "design/plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png",
+      "sha256": "ca8d88c3d7535d3aa6c6500232f04463789401ed2c03b67d0d41d3ae57a7a09f",
+      "status": "pending_owner_review",
+      "panel": "inferior izquierdo"
+    }
+  ],
+  "next_stage": "V2_design_pending_owner_review",
+  "discarded_exploration": "design/plantel/rechazado_fantasia_2026-10-30",
+  "note": "Hashes preservan el estado de este paquete. Añadir versiones nuevas al historial; no reescribir aprobaciones históricas.",
+  "snapshot_commit": "d88adc5",
+  "snapshot_date_utc": "2026-10-31"
+}
