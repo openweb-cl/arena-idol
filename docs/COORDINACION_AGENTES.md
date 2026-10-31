@@ -11,7 +11,7 @@ No se presupone que Claude haya trabajado o revisado esta entrega.
 ## Asignación local del propietario (31 octubre 2026)
 
 En el entorno local del propietario, Claude Code también toma el gameplay de los
-héroes nuevos (Príncipe y luego Pitbull): Resources, `player.gd`, `arena.gd`,
+héroes nuevos (Príncipe y Pitbull): Resources, `player.gd`, `arena.gd`,
 `bot_controller.gd`, `zone_field.gd`, menú y pruebas, siempre por PR. Codex no
 está activo aquí; si vuelve, revisar estos PR antes de editar esos archivos.
 

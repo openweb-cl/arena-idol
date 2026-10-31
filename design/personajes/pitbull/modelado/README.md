@@ -1,6 +1,6 @@
 # Modelado — El Pitbull
 
-Fuente actual: [Blender](../../../../art/pitbull/pitbull.blend). Export actual: [GLB provisional](../../../../game/assets/models/pitbull/pitbull.glb).
+Fuente actual (V3): [generador](../../../../art/pitbull/build_pitbull.py), [cuerpo y atlas comunes](../../../../art/lib/hero_v3.py) y [Blender](../../../../art/pitbull/pitbull.blend). Export actual: [GLB V3 provisional](../../../../game/assets/models/pitbull/pitbull.glb). Detalle técnico en [HEROES.md](../../../../docs/arte/HEROES.md).
 
 [Lámina de la muestra existente](../../../../docs/captures/heroes-v1-1/lamina_pitbull.jpg) (render Blender, no captura de gameplay).
 

@@ -342,7 +342,7 @@ def validate(data):
     canonical_names = re.findall(r'^\| [A-Z]{3}-\d{2} \| [^|]+ \| ([^|]+) \|', (ROOT / 'docs/ROSTER_CANONICO_V0_4.md').read_text(), re.M)
     assert [h['name'] for h in heroes] == [n.strip() for n in canonical_names], 'Nombres distintos del canónico'
     assert {h['id']: h['number'] for h in heroes if h['number'] is not None} == APPROVED_NUMBERS, 'Dorsales no aprobados'
-    assert {h['id'] for h in heroes if h['gameplay_status'] == 'implemented'} == {'turbo', 'rey', 'principe'}
+    assert {h['id'] for h in heroes if h['gameplay_status'] == 'implemented'} == {'turbo', 'rey', 'principe', 'pitbull'}
     assert {h['id'] for h in heroes if h['model_path']} == set(APPROVED_NUMBERS)
     for h in heroes:
         assert h['basic']['values']['damage_per_attack'] > 0, f"Básico no ofensivo: {h['id']}"
