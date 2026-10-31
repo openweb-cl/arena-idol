@@ -19,6 +19,7 @@ var triggered := false
 var cancelled := false
 var pulse_hits := 0
 var effects: Array[Node] = []
+var effect_kind := "principe_field"
 
 func setup(owner_actor: ArenaPlayer, center: Vector3) -> void:
 	source = owner_actor
@@ -31,6 +32,7 @@ func setup(owner_actor: ArenaPlayer, center: Vector3) -> void:
 	push = def.field_push
 	damage = def.super_damage
 	fallback_direction = owner_actor.facing
+	effect_kind = def.field_effect
 	position = Vector3(center.x, 0, center.z)
 
 func finished() -> bool:

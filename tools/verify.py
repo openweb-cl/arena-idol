@@ -63,6 +63,9 @@ def main():
         principe = run("Príncipe: anticipación, mejora y campo", "--fixed-fps", "60", "--script", "res://tests/test_principe.gd")
         if "PRÍNCIPE:" not in principe or "0 fallos" not in principe:
             sys.exit("La suite del Príncipe no confirmó finalización")
+        pitbull = run("Pitbull: golpe, escudo y zona", "--fixed-fps", "60", "--script", "res://tests/test_pitbull.gd")
+        if "PITBULL:" not in pitbull or "0 fallos" not in pitbull:
+            sys.exit("La suite del Pitbull no confirmó finalización")
         run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")

@@ -26,7 +26,12 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 	else:
 		actor.command.shoot = flat.length() < actor.definition.attack_range
 		actor.command.super_shot = actor.super_charge >= 100 and flat.length() < actor.definition.super_radius + 1 if actor.definition.attack_type == "Melee" else actor.super_charge >= 100 and flat.length() < actor.definition.attack_range
-		if actor.definition.super_kind == "Field":
+		if actor.definition.super_kind == "Field" and actor.definition.super_reach <= 0.01:
+			# Campo centrado en sí mismo: activarlo con el rival dentro del radio.
+			actor.command.super_shot = actor.super_charge >= 100 and flat.length() <= actor.definition.super_radius
+			if actor.command.super_shot:
+				actor.super_target = Vector3(actor.position.x, 0, actor.position.z)
+		elif actor.definition.super_kind == "Field":
 			# Coloca el campo sobre el rival visible dentro del alcance de colocación.
 			actor.command.super_shot = actor.super_charge >= 100 and flat.length() <= actor.definition.super_reach
 			if actor.command.super_shot:
@@ -38,6 +43,7 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 	if move.dot(flat) > 0 and not layout.clear_segment(Vector2(actor.position.x, actor.position.z), Vector2(rival.position.x, rival.position.z)):
 		move = route(actor.position, rival.position)
 	# Zonas anunciadas o activas del rival: salir por el lado opuesto al centro.
+	var threatened := false
 	var escaping := false
 	for field in fields:
 		if not is_instance_valid(field) or field.team == actor.team or field.finished():
@@ -63,10 +69,14 @@ func update(actor: ArenaPlayer, rival: ArenaPlayer, projectiles: Array[CombatPro
 					dodge_direction = -dodge_direction
 				dodge_time = 0.35
 				dodges += 1
+				threatened = true
 				move = dodge_direction
 				break
 	actor.command.move = move
-	if actor.definition.ability != null and actor.definition.ability.kind == "Power":
+	if actor.definition.ability != null and actor.definition.ability.kind == "Shield":
+		# Escudo al recibir presión: proyectil en camino o rival encima; no prevé disparos futuros.
+		actor.command.ability = threatened or flat.length() < 3.0
+	elif actor.definition.ability != null and actor.definition.ability.kind == "Power":
 		# Mejora de poder solo con munición y un blanco alcanzable a la vista.
 		actor.command.ability = actor.command.shoot and actor.ammo.charges > 0
 	else:

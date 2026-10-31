@@ -38,8 +38,8 @@ func isolate(arena: IdolArena) -> void:
 	arena.bot.invulnerable = 0
 
 func run() -> void:
-	check(CharacterCatalog.CAPACITY == 16 and CharacterCatalog.AVAILABLE.size() == 3, "catálogo de 16 plazas, tres héroes implementados")
-	check(CharacterCatalog.AVAILABLE[0].number == 11 and CharacterCatalog.AVAILABLE[1].number == 23 and CharacterCatalog.AVAILABLE[2].number == 20, "dorsales canónicos 11, 23 y 20")
+	check(CharacterCatalog.CAPACITY == 16 and CharacterCatalog.AVAILABLE.size() == 4, "catálogo de 16 plazas, cuatro héroes implementados")
+	check(CharacterCatalog.AVAILABLE[0].number == 11 and CharacterCatalog.AVAILABLE[1].number == 23 and CharacterCatalog.AVAILABLE[2].number == 20 and CharacterCatalog.AVAILABLE[3].number == 17, "dorsales canónicos 11, 23, 20 y 17")
 	var config := MatchConfig.new()
 	config.target_eliminations = 2
 	config.duration_seconds = 10
@@ -73,7 +73,7 @@ func run() -> void:
 	for button in menu.find_children("*", "Button", true, false):
 		if button.disabled:
 			disabled += 1
-	check(disabled == 13, "las 13 plazas futuras están deshabilitadas")
+	check(disabled == 12, "las 12 plazas futuras están deshabilitadas")
 	menu.show_home()
 	await frames(2)
 	check(not menu.selection and menu.preview.definition.id == "rey", "regreso a inicio conserva personaje")

@@ -5,6 +5,7 @@ const AVAILABLE: Array[CharacterDefinition] = [
 	preload("res://data/characters/turbo.tres"),
 	preload("res://data/characters/rey.tres"),
 	preload("res://data/characters/principe.tres"),
+	preload("res://data/characters/pitbull.tres"),
 ]
 
 ## Rival del bot: el preferido si es distinto del propio; si no, el primero distinto.
