@@ -25,8 +25,16 @@ movimiento/física, combate, IA, futura red y optimización. No editar archivos
 simultáneamente. Antes de tocar scripts técnicos o UI compartida, acordar un
 handoff en el issue/PR. Propiedad detallada en COORDINACION_AGENTES.
 
-Nunca trabajar en main. Actualizar main remoto y crear rama `claude/<hito>`.
-Hitos pequeños, commits, pruebas y PR a main; no fusionar sin aprobación explícita.
+Nunca trabajar en main. Actualizar main remoto y crear una rama nueva por avance
+con categoría y descripción: `novedad/<descripcion>`, `cambio/<descripcion>` o
+`correccion/<descripcion>` (regla del propietario, 30 octubre 2026; sustituye a
+`claude/<hito>`). Hitos pequeños, commits, pruebas y PR a main; no fusionar sin
+aprobación explícita.
+
+Las reglas permanentes están también como skills en `.claude/skills/`
+(flujo-ramas, combate-arcade, originalidad-legal, contrato-arte-3d,
+identidad-visual, evidencia-y-reporte, coordinacion-agentes). Cargar la que
+corresponda antes de cada tarea; si una regla cambia, actualizar skill y documento.
 No rebase, reset o force-push sobre ramas ajenas. Cada tarea cloud ya está aislada;
 no crear worktrees salvo petición del propietario.
 

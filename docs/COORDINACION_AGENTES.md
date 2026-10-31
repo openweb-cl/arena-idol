@@ -2,8 +2,10 @@
 
 ## Protocolo
 
-Ramas independientes desde main actualizado: Codex `codex/game-foundation`, Claude
-`claude/art-pipeline` (crear tras integrar/rebasar sobre la fundación aprobada).
+Ramas independientes desde main actualizado, una por avance, con categoría y
+descripción (regla del propietario, 30 octubre 2026): `novedad/<descripcion>`,
+`cambio/<descripcion>` o `correccion/<descripcion>`. Sustituye a los prefijos
+`codex/` y `claude/`; las ramas antiguas conservan su nombre.
 Commits por hitos, PR hacia main y revisión del propietario. Ningún merge automático.
 No editar los mismos archivos simultáneamente; no reset/force-push sobre rama ajena.
 No se presupone que Claude haya trabajado o revisado esta entrega.
