@@ -1,6 +1,6 @@
 # El Príncipe — #20
 
-**Ficha propuesta; gameplay sin implementar ni aprobar.** Esta ficha es preproducción; no habilita personajes en el juego.
+**Jugable: comportamiento vigente, no rebalanceado aquí.** Esta ficha es preproducción; no habilita personajes en el juego.
 La implementación vigente está en los Resources de `game/`, no en este JSON.
 
 Rol: **Estratega / precisión y apoyo**. PV: **4400**; velocidad: **6.6 m/s**.

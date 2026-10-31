@@ -1,5 +1,11 @@
 # Evidencia de validación — combate 3D
 
+Príncipe jugable (31 octubre 2026, PC del propietario, Windows 11, Godot 4.7.2):
+**293 comprobaciones aprobadas**, 0 fallos (50 reglas + 41 proyectiles + 31 AUTO +
+30 munición + 40 mapas + 51 táctil + 50 Príncipe), con `tools/verify.py` sin `--pack`.
+Contrato de arte: Príncipe 35/0, Turbo 35/0, Rey 40/0. Capturas reales en
+[docs/captures/principe-v3/](captures/principe-v3/). Sin playtest de balance ni teléfono.
+
 Tarea A / táctil: **243 comprobaciones aprobadas** en Godot 4.7.2 (192 anteriores
 y 51 táctiles), PCK y arranque de escenas con controles. APK debug firmado,
 alineado y analizado, aún sin teléfono real. [Reporte APK](APK_TACTIL.md),
