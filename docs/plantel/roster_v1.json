@@ -308,7 +308,17 @@
         "note": "Referencia aportada por el propietario: proporción, gesto, paleta e identidad temática. Sus dorsales, clubes, retratos, armaduras y goles no son decisiones nuevas."
       },
       "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
-      "reference_status": "style_selected_individual_final_pending"
+      "reference_status": "style_selected_individual_final_pending",
+      "v3_model": {
+        "glb": "game/assets/models/rey/rey.glb",
+        "builder": "art/rey/build_rey.py",
+        "atlas": "art/lib/hero_v3.py",
+        "sheet": "docs/captures/rey-v3/lamina_rey.jpg",
+        "captures": "docs/captures/refresh-visual/",
+        "state": "provisional_pending_owner_review",
+        "summary": "con el patrón visual de Turbo V3, conservando su sello: corona con gema violeta, banda negra de filos dorados y 23 dorado.",
+        "state_text": "Rey V3 visual (refresh del 31 octubre 2026); gameplay sin cambios; falta la revisión del propietario."
+      }
     },
     {
       "canonical_id": "COL-02",
