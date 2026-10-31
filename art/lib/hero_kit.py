@@ -495,12 +495,13 @@ def stance(breath=0.0, arm_out=14, leg_out=4, lean=-4):
     ))
 
 
-def run_pose(f, lean=-16, arm_swing=1.0, arm_out=14, bob=0.05):
-    """Ciclo de 16 cuadros; pierna L adelantada en f=0."""
+def run_pose(f, lean=-16, arm_swing=1.0, arm_out=14, bob=0.05, stride=1.0):
+    """Ciclo de 16 cuadros; pierna L adelantada en f=0. `stride` amplía el giro de muslos."""
     legs = {0: (45, -15, 10), 4: (5, -25, 0), 8: (-35, -30, -30), 12: (20, -105, -10), 16: (45, -15, 10)}
     arms = {0: -40, 4: 0, 8: 50, 12: 0, 16: -40}
     l_thigh, l_shin, l_foot = legs[f]
     r_thigh, r_shin, r_foot = legs[(f + 8) % 16]
+    l_thigh, r_thigh = l_thigh * stride, r_thigh * stride
     up = bob if f % 8 == 4 else 0.0
     twist = 6 if f in (0, 16) else (-6 if f == 8 else 0)
     return P(

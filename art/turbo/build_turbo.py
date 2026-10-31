@@ -239,7 +239,8 @@ def clips():
     neutral = combat_stance(0)
     return {
         "idle": [(0, combat_stance(0)), (24, combat_stance(1)), (48, combat_stance(0))],
-        "run": [(f, run_pose(f, lean=-14, arm_out=16)) for f in (0, 4, 8, 12, 16)],
+        # Zancada larga de velocista con fase aérea; run_clip_speed = 3.9 m/s en turbo.tres.
+        "run": [(f, run_pose(f, lean=-18, arm_swing=1.25, arm_out=16, bob=0.08, stride=1.25)) for f in (0, 4, 8, 12, 16)],
         "kick": attack_keys(neutral),
         "hit": hit_keys(neutral),
         "celebrate": celebrate_keys(),
