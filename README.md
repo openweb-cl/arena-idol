@@ -9,8 +9,8 @@ anteriores. Plantel conceptual de 16 conservado; solo dos héroes implementados.
 
 [Plantel de 16 y carpetas de evolución](docs/plantel/README.md): referencias
 elegidas, bocetos, modelos provisionales, fichas propuestas y etapas de revisión.
-La siguiente muestra es Turbo V2; las imágenes nuevas no son diseños finales
-aprobados. [Contexto para continuar en local](docs/CONTEXTO_DE_CONTINUIDAD.md).
+Turbo V2 propuesta 01 fue aceptada como referencia visual; el siguiente paso
+es llevarla a Blender/GLB conservando su identidad. El modelo final sigue pendiente. [Contexto para continuar en local](docs/CONTEXTO_DE_CONTINUIDAD.md).
 Prioridad actual: mejorar el aspecto en PC; pruebas de teléfono aplazadas.
 
 ## Demo ejecutable actual

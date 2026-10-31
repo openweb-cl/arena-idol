@@ -9,8 +9,8 @@ No contratar servicios. No incorporar nuevas dependencias de pago.
 | Hito | Entrega | Estado / siguiente puerta |
 |---|---|---|
 | Biblioteca | 16 referencias individuales, carpetas, evolución y fichas | Preparada en este PR; propuestas por revisar |
-| Turbo V2 | Una lámina consistente con vistas y expresiones | Pendiente de creación y aprobación; no sustituirla por el mockup UI |
-| Turbo V3 | Modelo refinado y cinco clips en selección/arena | Tras V2; medir y comparar |
+| Turbo V2 | Una lámina consistente con vistas y expresiones | Propuesta 01 aceptada como referencia visual; no sustituir por el mockup UI |
+| Turbo V3 | Modelo refinado y cinco clips en selección/arena | Siguiente: conservar V2 aceptada; medir y comparar |
 | Rey V2/V3 | Adaptación al mismo lenguaje, silueta ancha propia | Tras patrón Turbo; revisión propia |
 | Príncipe/Pitbull visual | Refinar los GLB existentes usando patrón aprobado | No implica activar gameplay |
 | Refresh UI | Composición de la última referencia con personajes aprobados | Hito aparte; acordar handoff con rama UI existente |

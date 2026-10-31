@@ -23,13 +23,13 @@ La paleta es guía; no sustituye materiales actuales sin revisión.
 |---|---|
 | V0 — pruebas geométricas | Existe evidencia histórica; ver historial.json. |
 | V1 — GLB provisional | [GLB provisional V1](../../../game/assets/models/turbo/turbo.glb) |
-| V2 — diseño definido | Pendiente: frente, perfil, espalda y expresiones aprobados. |
-| V3 — modelo refinado | Pendiente de V2; Blender, GLB, rig y clips en Godot. |
+| V2 — diseño definido | Lámina propuesta 01 aceptada como referencia visual por el propietario. |
+| V3 — modelo refinado | Siguiente: Blender, GLB, rig y clips usando la referencia V2 aceptada. |
 | Candidato final | Pendiente de prueba visual, animación, legibilidad y rendimiento. |
 
 El nombre V1 agrupa el estado del pipeline; las versiones locales de cada GLB
 siguen en su documento de arte (p. ej., Turbo V1.1). No implica que todos estén
-igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
+igual de avanzados. Las otras exploraciones no sustituyen la lámina Turbo V2 aceptada.
 
 ## Carpetas y siguiente paso
 
@@ -41,9 +41,9 @@ igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
 - [Historial con hashes](historial.json).
 - [Ficha de combate](../../../docs/plantel/fichas/turbo.md); sus valores nuevos son hipótesis.
 
-**Próxima muestra:** Turbo V2 como patrón del plantel.
+**Próxima muestra:** Turbo V3: traducir la referencia V2 aceptada a Blender/GLB.
 [Exploración, sin aprobación individual](../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png).
 
-## Primera propuesta V2 disponible
+## Referencia visual V2 aceptada
 
-[Ver lámina Turbo V2 — propuesta 01](bocetos/turbo-v2-propuesta-01.png). Pendiente de revisión del propietario; no es un GLB ni diseño aprobado.
+[Ver lámina Turbo V2 — propuesta 01](bocetos/turbo-v2-propuesta-01.png). Aceptada por el propietario como referencia visual; no es todavía un GLB refinado.

@@ -54,7 +54,7 @@
       "note": "Lámina de frente/perfil/espalda/combate y expresiones. Verificar coincidencia de tatuajes, costuras y proporciones antes de modelar. Los códigos de paleta generados no sustituyen los datos aprobados."
     }
   ],
-  "next_stage": "V2_proposal_01_pending_owner_review",
+  "next_stage": "V3_model_from_accepted_V2_reference",
   "discarded_exploration": "design/plantel/rechazado_fantasia_2026-10-30",
   "note": "Hashes preservan el estado de este paquete. Añadir versiones nuevas al historial; no reescribir aprobaciones históricas.",
   "earlier_git_version": {
@@ -62,5 +62,15 @@
     "note": "Primera muestra Turbo V1 previa a V1.1; consultar git para fuente histórica."
   },
   "snapshot_commit": "d88adc5",
-  "snapshot_date_utc": "2026-10-31"
+  "snapshot_date_utc": "2026-10-31",
+  "decisions": [
+    {
+      "state": "owner_accepted_visual_reference",
+      "owner_quote": "Ese turbo esta muy bueno",
+      "date_utc": "2026-10-31",
+      "scope": "Referencia visual Turbo V2: conservar identidad al modelar. No aprobación de un GLB inexistente ni calidad comercial.",
+      "asset": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png"
+    }
+  ],
+  "v2_visual_reference_accepted": true
 }

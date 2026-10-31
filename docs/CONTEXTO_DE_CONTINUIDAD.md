@@ -18,6 +18,8 @@ es una instantánea, no un contador vivo. No fusionarlos ni forzar ramas ajenas.
   pantallas como la última, con retratos, personaje destacado y JUGAR visible.
 - El propietario señaló que nuevas láminas cambiaban los personajes. Son
   exploraciones pendientes, no versiones finales ni reemplazos autorizados.
+- Turbo V2 propuesta 01 fue aceptada como referencia visual: «Ese turbo esta muy
+  bueno». Conservar cara/pelo/proporciones/equipación al llevarla a Blender.
 - Evolución por estados V0/V1/V2/V3/candidato final, con revisión dentro de cada
   uno. Primero un **Turbo V2 coherente** como patrón; no intentar 16 finales a la vez.
 - Aquí se pueden preparar láminas y especificaciones; el trabajo local con Claude
@@ -34,9 +36,9 @@ es una instantánea, no un contador vivo. No fusionarlos ni forzar ramas ajenas.
    y [referencias aportadas](../design/referencias/propietario_2026-10-31/README.md).
 2. Revisar la carpeta [Turbo](../design/personajes/turbo/README.md): referencia,
    modelo actual y exploraciones están separados. Ya hay una primera propuesta V2
-   con frente/perfil/espalda/expresiones; revisarla con el propietario antes de
-   modelar y registrar lo conservado y lo cambiado.
-3. Con aprobación de esa muestra, refinar modelo/rig/clips; revisar en Godot con
+   con frente/perfil/espalda/expresiones, aceptada como referencia visual.
+   Conservar la identidad y reconciliar diferencias técnicas entre vistas.
+3. La referencia visual ya fue aceptada: refinar modelo/rig/clips; revisar en Godot con
    evidencia de selección y arena antes de extender el patrón al resto.
 4. Mantener UI/gameplay en ramas separadas y acordar propiedad de archivos.
    No editar scripts reservados por Claude simultáneamente.

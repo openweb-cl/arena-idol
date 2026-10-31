@@ -23,3 +23,10 @@ No se ejecutaron pruebas Godot ni rendimiento porque esta entrega no modifica
 el juego. No son capturas de build ni pruebas Android. No se afirma calidad
 comercial, balance validado o una versión visual final. La próxima entrega es
 **Turbo V2 con vistas y expresiones**, antes de su modelo refinado.
+
+## Actualización: referencia Turbo V2 aceptada
+
+El propietario indicó «Ese turbo esta muy bueno». La decisión quedó registrada
+en catálogo, historial y carpeta aprobado como aceptación de referencia visual,
+conservando `final_approved = false` para el producto 3D pendiente. Se ejecutaron
+regeneración, `--check` y `git diff --check`, correctos. Sin cambios a juego/arte.

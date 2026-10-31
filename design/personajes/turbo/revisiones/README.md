@@ -17,3 +17,10 @@ cambiar y decisión. No borrar un rechazo ni convertir el silencio en aprobació
 - [ ] Ataques legibles, avisos previos y cabeza/PV despejados.
 - [ ] Métricas en hardware real antes de prometer 60 FPS.
 - [ ] Aprobación explícita para avanzar al siguiente estado.
+
+## Decisión del propietario — 31 octubre 2026 UTC
+
+«Ese turbo esta muy bueno». La lámina V2 propuesta 01 queda como referencia
+visual aceptada para Blender. Conservar identidad; reconciliar diferencias
+técnicas entre vistas sin rediseñar cara, pelo o equipación. El modelo refinado
+y su resultado dentro de Godot todavía requieren revisión.

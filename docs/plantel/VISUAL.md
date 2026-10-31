@@ -27,11 +27,13 @@ No todos parten con V0/V1: doce solo tienen referencia. No fabricar un historial
 para llenar etapas. Las versiones internas existentes (Turbo V1.1, Rey V0) se
 conservan en el historial; esta tabla agrupa estados, no renombra sus archivos.
 
-## Próximo hito concreto: revisar Turbo V2
+## Próximo hito concreto: llevar Turbo V2 a Blender
 
 Ya existe una [primera propuesta de lámina V2](../../design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png),
-pendiente de revisión. No está aprobada para modelado. Revisar cara, proporciones
-y consistencia de tatuajes/costuras antes de darla por cerrada.
+**aceptada por el propietario**: «Ese turbo esta muy bueno». Es la referencia
+para modelado: conservar cara, pelo, proporciones y equipación. Reconciliar
+tatuajes/costuras entre vistas sin rediseñar su identidad. No es todavía un GLB
+refinado ni arte final aprobado en juego.
 
 1. Poner lado a lado la tarjeta original, el modelo actual y la propuesta V2.
 2. Conservar azul/rojo, pelo blanco, dorsal 11 y tatuajes geométricos propios,
@@ -39,9 +41,9 @@ y consistencia de tatuajes/costuras antes de darla por cerrada.
 3. Definir cara humana expresiva propia, botas, manos y volumen de pelo. Una
    cabeza frontal aprobada debe repetirse en perfil, espalda y poses; no volver
    a inventarla al pedir la pantalla de selección.
-4. Presentar como propuesta una altura de **4–4,5 cabezas**: punto de ensayo para
-   equilibrar las referencias, no proporción aprobada. Comparar con la caricatura
-   original y con el tamaño real en arena. No aumentar complejidad por detalle fino.
+4. La proporción dibujada en la lámina aceptada es la guía para Blender;
+   medirla antes de modelar. La estimación anterior de 4–4,5 cabezas no obliga
+   a alterar el dibujo. Comprobar tamaño real en arena sin añadir microdetalle.
 5. Marcar qué se conserva/cambia y anotar la decisión antes del nuevo Blender.
 6. Con Turbo aprobado, adaptar Rey y luego Príncipe/Pitbull; conservar variedad
    de ancho, postura, edad ficticia y expresión. No producir 16 caras idénticas.

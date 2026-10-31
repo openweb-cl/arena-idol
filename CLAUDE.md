@@ -65,3 +65,9 @@ aplazadas por el propietario, conservando preparación Android. Mantener 16
 héroes y solo los dorsales 11/23/20/17 ya decididos. Las 14 fichas pendientes
 son propuestas, no permiso para programarlas ni balance validado. Príncipe
 requiere aprobar `docs/PRINCIPE_KIT.md`; Pitbull espera su prueba.
+
+Actualización posterior: el propietario aceptó Turbo V2 propuesta 01 como
+referencia visual («Ese turbo esta muy bueno»). Ver
+`design/personajes/turbo/aprobado/README.md`. Conservar su identidad al modelar;
+no pedir de nuevo aprobación de esta misma referencia. El modelo refinado,
+animaciones y resultado en Godot siguen pendientes de producción y revisión.

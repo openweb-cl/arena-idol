@@ -236,6 +236,30 @@ equipos, navegación o estados antes de implementar al héroe.
 {link(card, 'docs/plantel/REGLAS_COMBATE.md', 'Reglas comunes')} · {link(card, 'docs/plantel/PRODUCCION.md', 'Secuencia y módulos')}.
 '''
         result[card] = body
+    accepted_turbo = next(h for h in data['heroes'] if h['id'] == 'turbo').get('v2_review', {}).get('state') == 'owner_accepted_visual_reference'
+    if accepted_turbo:
+        turbo_folder = ROOT / 'design/personajes/turbo'
+        for path in list(result):
+            if path.suffix == '.md':
+                result[path] = result[path].replace('Esperar patrón Turbo V2 aprobado y adaptar este héroe sin uniformar todas las caras.', 'Usar Turbo V2 como patrón visual aceptado y adaptar este héroe sin uniformar todas las caras.').replace('Primero aprobar Turbo V2 como patrón.', 'Turbo V2 ya es el patrón visual aceptado; revisar la adaptación individual.')
+        page = turbo_folder / 'README.md'
+        result[page] = result[page].replace('Pendiente: frente, perfil, espalda y expresiones aprobados.', 'Lámina propuesta 01 aceptada como referencia visual por el propietario.').replace('Pendiente de V2; Blender, GLB, rig y clips en Godot.', 'Siguiente: Blender, GLB, rig y clips usando la referencia V2 aceptada.').replace('Las exploraciones recientes **no** cuentan como V2 aprobado.', 'Las otras exploraciones no sustituyen la lámina Turbo V2 aceptada.').replace('Turbo V2 como patrón del plantel.', 'Turbo V3: traducir la referencia V2 aceptada a Blender/GLB.').replace('Primera propuesta V2 disponible', 'Referencia visual V2 aceptada').replace('Pendiente de revisión del propietario; no es un GLB ni diseño aprobado.', 'Aceptada por el propietario como referencia visual; no es todavía un GLB refinado.')
+        for path in [turbo_folder / 'bocetos/README.md', turbo_folder / 'modelado/README.md']:
+            result[path] = result[path].replace('**Pendiente de revisión del propietario.** Lámina generada, no modelo 3D,\ncaptura de Godot ni diseño aprobado para producción.', '**Referencia visual aceptada por el propietario:** «Ese turbo esta muy bueno».\nLámina generada, todavía no modelo 3D ni captura de Godot.').replace('Antes de Blender, revisar cara/proporción con el propietario y reconciliar', 'Conservar cara, peinado, proporciones y equipación de esta lámina al modelar. Reconciliar').replace('Antes de refinar, aprobar V2 y seguir el', 'La referencia V2 ya fue aceptada. Al refinar seguir el')
+        result[turbo_folder / 'revisiones/README.md'] += '\n## Decisión del propietario — 31 octubre 2026 UTC\n\n«Ese turbo esta muy bueno». La lámina V2 propuesta 01 queda como referencia\nvisual aceptada para Blender. Conservar identidad; reconciliar diferencias\ntécnicas entre vistas sin rediseñar cara, pelo o equipación. El modelo refinado\ny su resultado dentro de Godot todavía requieren revisión.\n'
+        result[turbo_folder / 'aprobado/README.md'] = '''# Referencia visual aceptada — Turbo V2
+
+El propietario indicó: **«Ese turbo esta muy bueno»** (31 octubre 2026 UTC).
+
+[Turbo V2 — propuesta 01](../bocetos/turbo-v2-propuesta-01.png) queda como
+referencia visual aceptada. Conservar cara, pelo blanco, proporciones, azul/rojo,
+dorsal 11 y equipación al convertirlo a Blender/GLB. No rediseñar en cada pantalla.
+
+Es una aprobación de referencia visual, no de un modelo final, animaciones,
+rendimiento o calidad comercial. La imagen se conserva intacta y la decisión
+se registra en [historial.json](../historial.json). Reconciliar costuras y tatuajes
+entre vistas durante la preparación técnica, respetando la identidad aceptada.
+'''
     index = ROOT / 'docs/plantel/README.md'
     result[index] = '''# Plantel — biblioteca de diseño y evolución
 
@@ -287,6 +311,8 @@ V2 = diseño definido pendiente de aprobación. V3 = GLB refinado y probado.
 Candidato final = pulido que todavía necesita evaluación dentro del juego.
 No todos los héroes tienen todas las etapas; los que no existen se indican.
 '''
+    if accepted_turbo:
+        result[index] = result[index].replace('son propuestas pendientes. Primero aprobar **Turbo V2** y usarlo como patrón.', 'siguen pendientes salvo **Turbo V2 propuesta 01**, aceptada como referencia visual.\nUsarla como patrón; el GLB refinado aún está pendiente.')
     return result
 
 

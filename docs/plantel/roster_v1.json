@@ -104,7 +104,14 @@
       },
       "rejected_visual_reference": "design/plantel/rechazado_fantasia_2026-10-30",
       "reference_status": "style_selected_individual_final_pending",
-      "v2_proposal": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png"
+      "v2_proposal": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png",
+      "v2_review": {
+        "state": "owner_accepted_visual_reference",
+        "owner_quote": "Ese turbo esta muy bueno",
+        "date_utc": "2026-10-31",
+        "scope": "Referencia visual Turbo V2: conservar identidad al modelar. No aprobación de un GLB inexistente ni calidad comercial.",
+        "asset": "design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png"
+      }
     },
     {
       "canonical_id": "UCH-02",

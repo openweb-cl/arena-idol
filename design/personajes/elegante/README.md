@@ -41,5 +41,5 @@ igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
 - [Historial con hashes](historial.json).
 - [Ficha de combate](../../../docs/plantel/fichas/elegante.md); sus valores nuevos son hipótesis.
 
-**Próxima muestra:** Esperar patrón Turbo V2 aprobado y adaptar este héroe sin uniformar todas las caras.
+**Próxima muestra:** Usar Turbo V2 como patrón visual aceptado y adaptar este héroe sin uniformar todas las caras.
 No hay una exploración nueva individual: usar la referencia del propietario..

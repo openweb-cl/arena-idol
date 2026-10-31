@@ -4,7 +4,7 @@ Fuente actual: [Blender](../../../../art/turbo/turbo.blend). Export actual: [GLB
 
 [Lámina de la muestra existente](../../../../docs/captures/heroes-v1-1/lamina_turbo.jpg) (render Blender, no captura de gameplay).
 
-Antes de refinar, aprobar V2 y seguir el [contrato de arte](../../../../docs/CONTRATO_ARTE_3D.md): pies en origen, ≈2 m,
+La referencia V2 ya fue aceptada. Al refinar seguir el [contrato de arte](../../../../docs/CONTRATO_ARTE_3D.md): pies en origen, ≈2 m,
 frente -Z, sin root motion, clips idle/run/kick/hit/celebrate. `kick` significa
 ataque, nunca pase. Collider y origen de proyectil son de gameplay.
 

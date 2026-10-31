@@ -13,7 +13,8 @@ personajes ni sustituye el diseño aprobado por una imagen recién generada.
 
 La línea elegida es caricaturesca como las primeras láminas aportadas; la última
 orienta composición de pantallas, no realismo de rostros. Nuevas exploraciones
-son propuestas pendientes. Primero aprobar **Turbo V2** y usarlo como patrón.
+siguen pendientes salvo **Turbo V2 propuesta 01**, aceptada como referencia visual.
+Usarla como patrón; el GLB refinado aún está pendiente.
 Los kits de los 14 pendientes son hipótesis, con ataque básico ofensivo en todos.
 El Príncipe mantiene prioridad y necesita aprobación de su ficha antes del código;
 Pitbull espera su prueba. Los otros 12 dorsales permanecen sin definir.
