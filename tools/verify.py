@@ -66,6 +66,9 @@ def main():
         pitbull = run("Pitbull: golpe, escudo y zona", "--fixed-fps", "60", "--script", "res://tests/test_pitbull.gd")
         if "PITBULL:" not in pitbull or "0 fallos" not in pitbull:
             sys.exit("La suite del Pitbull no confirmó finalización")
+        feel = run("sensación de juego", "--fixed-fps", "60", "--script", "res://tests/test_feel.gd")
+        if "SENSACIÓN:" not in feel or "0 fallos" not in feel:
+            sys.exit("La suite de sensación de juego no confirmó finalización")
         run("campo de tiro", "res://scenes/training/projectile_range.tscn", "--quit-after", "30")
         run("menú", "--quit-after", "10")
         run("arena", "res://scenes/arena/arena.tscn", "--quit-after", "30")

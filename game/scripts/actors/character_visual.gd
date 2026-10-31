@@ -85,6 +85,9 @@ func _process(delta: float) -> void:
 		# La zancada sigue a la velocidad real para que los pies no patinen sobre el suelo.
 		var running := animation_player.current_animation == "run"
 		animation_player.speed_scale = clampf(speed_ratio * definition.speed / definition.run_clip_speed, 0.8, 2.2) if running else 1.0
+		# Aplastamiento breve al recibir un golpe (solo aspecto).
+		var squash := action_time / 0.4 if action == "hit" and action_time > 0 else 0.0
+		model.scale = definition.model_scale * Vector3(1.0 + 0.12 * squash, 1.0 - 0.14 * squash, 1.0 + 0.12 * squash)
 		return
 	if model == null or limbs.size() != 4:
 		return

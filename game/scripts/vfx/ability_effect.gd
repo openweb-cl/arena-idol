@@ -31,7 +31,7 @@ const LIVES := {
 	"shot": 0.2, "turbo_sprint": 0.45, "turbo_super": 0.5, "melee": 0.3, "rey_charge": 0.4,
 	"rey_super": 0.65, "hit": 0.3, "shield": 0.35, "impact_cover": 0.25, "elimination": 0.7,
 	"principe_shot": 0.2, "principe_buff": 0.8, "principe_field_warning": 0.6, "principe_field": 3.0,
-	"pitbull_guard": 2.0,
+	"pitbull_guard": 2.0, "dust": 0.4,
 }
 
 func _ready() -> void:
@@ -59,6 +59,7 @@ func _ready() -> void:
 		"principe_field_warning": _build_field_warning()
 		"principe_field": _build_field()
 		"pitbull_guard": _build_guard()
+		"dust": _build_dust()
 		_:
 			parts.append(VFXKit.ring(self, Vector3(0, 0.05, 0), 0.6, 0.07, color))
 
@@ -246,6 +247,13 @@ func _build_field() -> void:
 	parts.append(slow)
 	VFXKit.sparks(self, Vector3(0, 0.15, 0), amount(16), edge, 5.0, 0.4, Vector3.UP, 85, -8)
 
+func _build_dust() -> void:
+	# Polvo de pisada al arrancar o invertir la marcha: tres bolitas que se abren.
+	for i in 3:
+		var ang := TAU * i / 3.0 + 0.6
+		var puff := VFXKit.sphere(self, Vector3(cos(ang) * 0.18, 0.08, sin(ang) * 0.18 + 0.15), 0.1, color, 6)
+		parts.append(puff)
+
 func _build_guard() -> void:
 	# Guardia de Hierro: burbuja celeste que acompaña al Pitbull mientras dura el escudo.
 	parts.append(VFXKit.sphere(self, Vector3(0, 0.95, 0), 0.95, VFXKit.SHIELD, 12))
@@ -321,6 +329,11 @@ func _process(delta: float) -> void:
 			parts[1].scale = Vector3.ONE * fade
 			parts[2].position.y = 2.3 + t * 0.3
 			parts[2].scale = Vector3.ONE * VFXKit.fade(maxf(0, t - 0.6) * 2.5)
+		"dust":
+			for i in parts.size():
+				var ang := TAU * i / 3.0 + 0.6
+				parts[i].position = Vector3(cos(ang), 0.0, sin(ang)) * (0.18 + t * 0.35) + Vector3(0, 0.08 + t * 0.12, 0.15)
+				parts[i].scale = Vector3.ONE * (1.0 + t) * maxf(0.001, fade)
 		"pitbull_guard":
 			var beat := 1.0 + 0.04 * sin(age * 12.0)
 			var end := VFXKit.fade(maxf(0, t - 0.85) / 0.15)
