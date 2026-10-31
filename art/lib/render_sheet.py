@@ -122,7 +122,7 @@ def compose(views, poses):
         print("Pillow no disponible: renders sueltos sin lámina")
         return
     w, h = SIZE
-    sheet = Image.new("RGB", (w * 5, h * 2 + 150), (12, 18, 38))
+    sheet = Image.new("RGB", (w * 5, h * 2 + 210), (12, 18, 38))
     draw = ImageDraw.Draw(sheet)
     for row, (names, prefix) in enumerate(((views, "render_"), (poses, "render_pose_"))):
         for col, name in enumerate(names):
@@ -132,7 +132,13 @@ def compose(views, poses):
             draw.text((col * w + 8, 75 + row * h), name.replace("_", " ").upper(), fill=(230, 240, 255))
     draw.text((12, 12), f"{TITLES.get(HERO, HERO.upper())} - MUESTRA PROVISIONAL (render Blender Cycles CPU, no captura de juego)", fill=(124, 255, 228))
     draw.text((12, 36), "Fila 1: giro y vista de camara de juego. Fila 2: idle / run / kick / hit / celebrate.", fill=(200, 210, 230))
-    swatches = [(linear_to_hex(m.diffuse_color), m.name.split("_")[-1]) for m in bpy.data.materials if m.name.startswith("M_")]
+    atlas = ROOT / "art" / HERO / f"{HERO}_atlas.png"
+    if atlas.exists():  # V3: un único material con atlas; se muestra en miniatura
+        thumb = Image.open(atlas).convert("RGB").resize((120, 120))
+        sheet.paste(thumb, (12, 75 + h * 2))
+        draw.text((144, 90 + h * 2), f"Atlas 1024 (un material)\n{atlas.name}", fill=(230, 240, 255))
+    swatches = [] if atlas.exists() else [
+        (linear_to_hex(m.diffuse_color), m.name.split("_")[-1]) for m in bpy.data.materials if m.name.startswith("M_")]
     for i, (hex_color, label) in enumerate(swatches):
         x = 12 + i * 170
         y = 80 + h * 2
