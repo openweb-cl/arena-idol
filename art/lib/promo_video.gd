@@ -13,6 +13,8 @@ var tag: Label
 var dim: ColorRect
 var band: ColorRect
 var stripe: ColorRect
+var callout: Label
+var callout_age := 99.0
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -80,12 +82,30 @@ func make_overlay() -> void:
 	subcaption.size = Vector2(1280, 40)
 	subcaption.position = Vector2(0, 652)
 	overlay.add_child(subcaption)
+	callout = styled(76, Color("ffd23f"), impact, 18, Color("1b0f3a"), Vector2(7, 8))
+	callout.size = Vector2(1280, 110)
+	callout.position = Vector2(0, 96)
+	callout.pivot_offset = Vector2(640, 55)
+	overlay.add_child(callout)
 	tag = styled(15, Color(1, 1, 1, 0.8), black, 5, Color(0.05, 0.07, 0.14, 0.9), Vector2(2, 2))
 	tag.text = "EN DESARROLLO · ARTE PROVISIONAL"
 	tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	tag.size = Vector2(360, 24)
 	tag.position = Vector2(900, 8)
 	overlay.add_child(tag)
+
+## Rótulo grande al activar un poder: aparece con un golpe de escala y se desvanece.
+func announce(text: String, color: Color) -> void:
+	callout.text = text
+	callout.label_settings.font_color = color
+	callout_age = 0.0
+
+func tick_callout() -> void:
+	callout_age += 1.0 / FPS
+	var t := callout_age / 1.3
+	callout.visible = t < 1.0
+	callout.scale = Vector2.ONE * (1.0 + 0.5 * maxf(0.0, 1.0 - callout_age * 8.0))
+	callout.modulate.a = 1.0 if t < 0.7 else maxf(0.0, 1.0 - (t - 0.7) / 0.3)
 
 func say(main: String, sub: String = "", color: Color = ArenaStyle.WHITE) -> void:
 	caption.text = main
@@ -124,10 +144,11 @@ func run() -> void:
 	await frames(1)
 
 	# 8–27 s · Un duelo por ídolo, protagonista en primer plano: habilidad y súper.
-	await fight(heroes[0], heroes[1], "EL TURBO  #11", "Turbo Sprint  +  súper Remate Relámpago", 4.75)
-	await fight(heroes[1], heroes[2], "EL REY  #23", "Embestida Real  +  súper Onda Real", 4.75)
-	await fight(heroes[2], heroes[3], "EL PRÍNCIPE  #20", "Impulso Táctico  +  súper Campo de Dominio", 4.75)
-	await fight(heroes[3], heroes[0], "EL PITBULL  #17", "Guardia de Hierro  +  súper Zona de Contención", 4.75)
+	await fight(heroes[0], heroes[1], "EL TURBO  #11", "TURBO SPRINT", "REMATE RELÁMPAGO", 4.75)
+	await fight(heroes[1], heroes[2], "EL REY  #23", "EMBESTIDA REAL", "ONDA REAL", 4.75)
+	await fight(heroes[2], heroes[3], "EL PRÍNCIPE  #20", "IMPULSO TÁCTICO", "CAMPO DE DOMINIO", 4.75)
+	# El Pitbull contra el Rey, que va al cuerpo a cuerpo: así entra en su zona.
+	await fight(heroes[3], heroes[1], "EL PITBULL  #17", "GUARDIA DE HIERRO", "ZONA DE CONTENCIÓN", 4.75)
 
 	# 27–30 s · Cierre.
 	GameSession.selected = heroes[2]
@@ -141,7 +162,7 @@ func run() -> void:
 		await process_frame
 	quit(0)
 
-func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, sub: String, seconds: float) -> void:
+func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, ability_name: String, super_name: String, seconds: float) -> void:
 	## Duelo real con IA en ambos lados; el protagonista activa su habilidad al
 	## principio y su súper a mitad del tramo, de cerca y con la cámara encima.
 	GameSession.selected = own
@@ -155,22 +176,32 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 	arena.hud.message.text = ""
 	var a := arena.human
 	var b := arena.bot
-	a.position = Vector3(-3.2, 0, 5.6)
-	b.position = Vector3(1.4 if own.attack_type == "Melee" else 3.0, 0, 5.6)
+	# Pasillo central izquierdo: despejado y lejos de la franja de rótulos.
+	a.position = Vector3(-9.0, 0, 0.4)
+	b.position = Vector3(-6.4 if own.attack_type == "Melee" else -3.6, 0, 0.2)
 	for actor: ArenaPlayer in [a, b]:
 		actor.unlimited_ammo = true
 		actor.ammo.unlimited = true
 		actor.invulnerable = 0
 	var brain_a := ArenaBot.new(arena.layout)
 	var brain_b := arena.brain
+	var sub := ("%s  +  súper %s" % [ability_name.capitalize(), super_name.capitalize()]).replace(" De ", " de ")
 	say(main, sub, own.color.lightened(0.6))
 	var total := int(seconds * FPS)
 	var super_done := false
+	var super_frame := 0
 	for i in total:
 		if i == 8:
 			a.facing = (b.position - a.position).normalized()
-			a.ability()
-		if not super_done and i >= int(total * 0.4) and (own.super_kind == "Field" or TargetSelector.clear_path(a, b) or i >= int(total * 0.75)):
+			if a.ability():
+				announce("¡%s!" % ability_name, own.color.lightened(0.6))
+		var self_zone := own.super_kind == "Field" and own.super_reach <= 0.01
+		var ready := TargetSelector.clear_path(a, b) if own.super_kind != "Field" else (not self_zone or a.position.distance_to(b.position) <= own.super_radius - 0.6)
+		if not super_done and self_zone and i == int(total * 0.7) and a.position.distance_to(b.position) > own.super_radius - 0.6:
+			# Último recurso: acercar al rival para que la zona propia lo alcance.
+			b.position = a.position + (b.position - a.position).normalized() * 1.8
+			ready = true
+		if not super_done and i >= int(total * 0.35) and (ready or i >= int(total * 0.75)):
 			# Súper a la vista (con línea libre si es un disparo): de frente al rival.
 			var to_rival := b.position - a.position
 			to_rival.y = 0
@@ -182,12 +213,18 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 			a.super_charge = 100
 			a.super_target = arena.field_target(a) if own.super_reach <= 0.01 else Vector3(b.position.x, 0, b.position.z)
 			super_done = a.act("super")  # si se rechaza, se reintenta en el siguiente fotograma
+			if super_done:
+				super_frame = i
+				announce("¡%s!" % super_name, Color("ffd23f"))
 		for step in 2:  # 60 Hz de física por cada fotograma de 30 fps
 			await physics_frame
 			var dt := 1.0 / 60.0
 			brain_a.update(a, b, arena.projectiles, dt, arena.fields)
 			a.command.super_shot = false  # la súper del protagonista se lanza en su momento
-			brain_b.update(b, a, arena.projectiles, dt, arena.fields)
+			if a.channel_time > 0 or (super_done and i < super_frame + 15):
+				a.command.move = Vector2.ZERO  # plantado mientras prepara y lanza su poder
+			# En el video el rival no esquiva las zonas: así se ve el efecto del poder.
+			brain_b.update(b, a, arena.projectiles, dt, [] as Array[ZoneField])
 			b.command.super_shot = false  # el rival no tapa el poder del protagonista
 			arena.update_fields(dt)
 			# El protagonista gana su toma: no baja de ~55 % de vida.
@@ -207,6 +244,7 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 			arena.apply_damage(b, a, b.health, (b.position - a.position).normalized() * 6)
 		if i >= int(total * 0.82):
 			a.visual.celebration = true
+		tick_callout()
 		arena.hud.update_state(arena.rules, a)
 		# Cámara de promo: cerca, centrada sobre el protagonista y su rival.
 		var mid := a.position * 0.6 + b.position * 0.4
