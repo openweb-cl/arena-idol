@@ -12,6 +12,7 @@ var title: Label
 var tag: Label
 var dim: ColorRect
 var band: ColorRect
+var stripe: ColorRect
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -20,12 +21,38 @@ func frames(count: int) -> void:
 	for i in count:
 		await process_frame
 
+## Tipografía de presentación: fuentes del sistema solo para renderizar el video
+## (no se incluyen en el juego), inclinadas, con contorno grueso y sombra.
+func display_font(names: PackedStringArray, weight: int = 900) -> FontVariation:
+	var system := SystemFont.new()
+	system.font_names = names
+	system.font_weight = weight
+	var font := FontVariation.new()
+	font.base_font = system
+	font.variation_transform = Transform2D(Vector2(1, 0), Vector2(-0.2, 1), Vector2.ZERO)  # cursiva deportiva
+	return font
+
+func styled(size: int, color: Color, font: Font, outline: int, outline_color: Color, shadow := Vector2(5, 6)) -> Label:
+	var label := Label.new()
+	var settings := LabelSettings.new()
+	settings.font = font
+	settings.font_size = size
+	settings.font_color = color
+	settings.outline_size = outline
+	settings.outline_color = outline_color
+	settings.shadow_size = 0
+	settings.shadow_color = Color(0, 0, 0, 0.55)
+	settings.shadow_offset = shadow
+	label.label_settings = settings
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	return label
+
 func make_overlay() -> void:
 	overlay = CanvasLayer.new()
 	overlay.layer = 50
 	root.add_child(overlay)
-	tag = ArenaStyle.label("EN DESARROLLO · ARTE PROVISIONAL", 16, Color(1, 1, 1, 0.85), true, 4)
-	tag.position = Vector2(24, 682)
+	var impact := display_font(PackedStringArray(["Impact", "Arial Black", "Segoe UI Black"]))
+	var black := display_font(PackedStringArray(["Segoe UI Black", "Arial Black"]))
 	dim = ColorRect.new()
 	dim.color = Color(0.03, 0.05, 0.11, 0.0)
 	dim.size = Vector2(1280, 720)
@@ -35,25 +62,34 @@ func make_overlay() -> void:
 	band.position = Vector2(0, 572)
 	band.size = Vector2(1280, 148)
 	overlay.add_child(band)
-	overlay.move_child(tag, -1)
-	title = ArenaStyle.label("", 92, ArenaStyle.GOLD, true, 10)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.size = Vector2(1280, 140)
-	title.position = Vector2(0, 250)
+	stripe = ColorRect.new()  # franja dorada inclinada sobre la banda
+	stripe.color = ArenaStyle.GOLD
+	stripe.position = Vector2(-40, 568)
+	stripe.size = Vector2(1360, 6)
+	stripe.rotation = -0.004
+	overlay.add_child(stripe)
+	title = styled(132, Color("ffd23f"), impact, 22, Color("1b0f3a"), Vector2(9, 10))
+	title.size = Vector2(1280, 180)
+	title.position = Vector2(0, 220)
 	overlay.add_child(title)
-	caption = ArenaStyle.label("", 40, ArenaStyle.WHITE, true, 8)
-	caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	caption.size = Vector2(1280, 60)
-	caption.position = Vector2(0, 590)
+	caption = styled(58, ArenaStyle.WHITE, impact, 14, Color("0c1430"))
+	caption.size = Vector2(1280, 80)
+	caption.position = Vector2(0, 580)
 	overlay.add_child(caption)
-	subcaption = ArenaStyle.label("", 24, ArenaStyle.GOLD, true, 6)
-	subcaption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subcaption = styled(26, ArenaStyle.GOLD, black, 8, Color("0c1430"), Vector2(3, 4))
 	subcaption.size = Vector2(1280, 40)
-	subcaption.position = Vector2(0, 640)
+	subcaption.position = Vector2(0, 652)
 	overlay.add_child(subcaption)
+	tag = styled(15, Color(1, 1, 1, 0.8), black, 5, Color(0.05, 0.07, 0.14, 0.9), Vector2(2, 2))
+	tag.text = "EN DESARROLLO · ARTE PROVISIONAL"
+	tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	tag.size = Vector2(360, 24)
+	tag.position = Vector2(900, 8)
+	overlay.add_child(tag)
 
-func say(main: String, sub: String = "") -> void:
+func say(main: String, sub: String = "", color: Color = ArenaStyle.WHITE) -> void:
 	caption.text = main
+	caption.label_settings.font_color = color
 	subcaption.text = sub
 
 func run() -> void:
@@ -127,7 +163,7 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 		actor.invulnerable = 0
 	var brain_a := ArenaBot.new(arena.layout)
 	var brain_b := arena.brain
-	say(main, sub)
+	say(main, sub, own.color.lightened(0.6))
 	var total := int(seconds * FPS)
 	var super_done := false
 	for i in total:
@@ -136,15 +172,16 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 			a.ability()
 		if not super_done and i >= int(total * 0.4) and (own.super_kind == "Field" or TargetSelector.clear_path(a, b) or i >= int(total * 0.75)):
 			# Súper a la vista (con línea libre si es un disparo): de frente al rival.
-			super_done = true
 			var to_rival := b.position - a.position
 			to_rival.y = 0
 			a.facing = to_rival.normalized()
 			a.attack_cooldown = 0
 			a.channel_time = 0
+			a.windup_time = 0
+			a.pending_kind = ""
 			a.super_charge = 100
 			a.super_target = arena.field_target(a) if own.super_reach <= 0.01 else Vector3(b.position.x, 0, b.position.z)
-			a.act("super")
+			super_done = a.act("super")  # si se rechaza, se reintenta en el siguiente fotograma
 		for step in 2:  # 60 Hz de física por cada fotograma de 30 fps
 			await physics_frame
 			var dt := 1.0 / 60.0
@@ -153,6 +190,9 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 			brain_b.update(b, a, arena.projectiles, dt, arena.fields)
 			b.command.super_shot = false  # el rival no tapa el poder del protagonista
 			arena.update_fields(dt)
+			# El protagonista gana su toma: no baja de ~55 % de vida.
+			if not a.knocked_out:
+				a.health = maxi(a.health, int(a.definition.max_health * 0.55))
 			for actor: ArenaPlayer in [a, b]:
 				actor.position.x = clampf(actor.position.x, -12.5, 12.5)
 				actor.position.z = clampf(actor.position.z, -6.5, 6.5)
@@ -161,6 +201,12 @@ func fight(own: CharacterDefinition, rival: CharacterDefinition, main: String, s
 					if actor.position.distance_to(other.position) < 1.6:
 						actor.dash_hit = true
 						arena.apply_damage(other, actor, actor.definition.ability.contact_damage, actor.dash_direction * 9)
+		# Remate: si el rival sigue en pie al final, el protagonista lo elimina y celebra.
+		if i == int(total * 0.8) and not b.knocked_out:
+			b.invulnerable = 0
+			arena.apply_damage(b, a, b.health, (b.position - a.position).normalized() * 6)
+		if i >= int(total * 0.82):
+			a.visual.celebration = true
 		arena.hud.update_state(arena.rules, a)
 		# Cámara de promo: cerca, centrada sobre el protagonista y su rival.
 		var mid := a.position * 0.6 + b.position * 0.4
