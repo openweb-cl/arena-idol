@@ -140,7 +140,7 @@ def leg_rings(spec, s):
 
 
 def short_leg_rings(spec, s):
-    g = max(prop(spec)["leg"], prop(spec)["waist"])
+    g = prop(spec)["waist"]  # el short sigue a la cintura para quedar bajo la camiseta
     th = f"thigh.{'R' if s > 0 else 'L'}"
     return [
         ((s * 0.105, 0, 0.815), 0.12 * g, 0.12 * g, "uv", {"hips": 1.0}),  # nace bajo el borde de la camiseta
@@ -151,8 +151,10 @@ def short_leg_rings(spec, s):
 
 def short_waist_rings(spec):
     g = prop(spec)["waist"]
-    return [((0, 0, z), rx * g, ry * g, "short", {"hips": 1.0}) for z, rx, ry in
-            ((0.93, 0.232, 0.146), (0.84, 0.245, 0.155), (0.76, 0.235, 0.15))]
+    # Mismos pesos que la camiseta a esa altura: al inclinarse no la atraviesa.
+    return [((0, 0, z), rx * g, ry * g, "short", w) for z, rx, ry, w in
+            ((0.93, 0.22, 0.138, {"spine": 0.5, "hips": 0.5}), (0.84, 0.24, 0.152, {"hips": 0.8, "spine": 0.2}),
+             (0.76, 0.235, 0.15, {"hips": 1.0}))]
 
 
 def head_shape(jaw=0.22):
