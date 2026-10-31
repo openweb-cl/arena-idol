@@ -139,6 +139,24 @@ demás héroes no cambian: `build_hero` sin `atlas` funciona igual que antes.
 | `M_Rey_Piel` | `#a8724f` | Piel |
 | `M_Rey_Brillo` | `#ffc94d` emisivo | Visor |
 
+## Refresh visual — 31 octubre 2026
+
+- **Rey #23 V3** con el cuerpo común y su identidad de V0: tanque ancho (pecho ×1,25,
+  brazos ×1,3, hombros ×1,2), camiseta blanca con banda negra de filos dorados, 23
+  dorado (legible sobre blanco y negro), short negro, hombreras negras y corona dorada
+  de cinco puntas con gema violeta. Sin barba, cresta ni tatuajes (decisión previa).
+  **5.442 triángulos, 1 material, 2,0 m; contrato 35/0.** Gameplay sin cambios.
+  [Lámina](../captures/rey-v3/lamina_rey.jpg).
+- **Retratos** de selección `game/assets/ui/retratos/<id>.png` con `art/lib/render_portraits.py`.
+- **Selección** con la composición de la referencia 05: panel ÍDOLOS con retratos y plazas
+  bloqueadas, héroe sobre pedestal, ficha con nombre, rol, barras (vida, velocidad,
+  ataque, alcance; orientativas, no balance) y habilidad/súper, rival y JUGAR destacado.
+- **Arena** hacia la referencia 03: césped en franjas con teselas, líneas blancas,
+  coberturas de piedra azul con juntas y musgo, y arbustos tras los muros. Mismo tamaño
+  que los colliders; `check_arena_dressing.gd` 8/0. La luz del juego aclara mucho los
+  colores: la paleta se eligió mirando capturas reales, no el valor nominal.
+- Capturas reales en [docs/captures/refresh-visual/](../captures/refresh-visual/).
+
 ## Pitbull #17 — V3 jugable (provisional)
 
 Defensor compacto con el cuerpo V3 común: pecho ×1,15, brazos ×1,25, piernas ×1,15,

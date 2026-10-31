@@ -1,6 +1,6 @@
 # Modelado — El Rey
 
-Fuente actual: [Blender](../../../../art/rey/rey.blend). Export actual: [GLB provisional](../../../../game/assets/models/rey/rey.glb).
+Fuente actual (V3): [generador](../../../../art/rey/build_rey.py), [cuerpo y atlas comunes](../../../../art/lib/hero_v3.py) y [Blender](../../../../art/rey/rey.blend). Export actual: [GLB V3 provisional](../../../../game/assets/models/rey/rey.glb). Detalle técnico en [HEROES.md](../../../../docs/arte/HEROES.md).
 
 [Lámina de la muestra existente](../../../../docs/captures/heroes-v1-1/lamina_rey.jpg) (render Blender, no captura de gameplay).
 

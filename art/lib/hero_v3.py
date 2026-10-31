@@ -23,11 +23,11 @@ REGIONS = {  # x0, y0, x1, y1 en píxeles del atlas
     "short_L": (704, 544, 1024, 640),
 }
 SWATCH_ORDER = ["base", "base_oscuro", "acento", "blanco", "piel", "piel_sombra", "pelo", "pelo_sombra",
-                "tinta", "gris", "short", "media", "banda", "puno", "suela", "detalle", "barba"]
+                "tinta", "gris", "short", "media", "banda", "puno", "suela", "detalle", "barba", "gema"]
 SWATCHES = {name: (32 + 64 * (i % 16), 864 + 64 * (i // 16)) for i, name in enumerate(SWATCH_ORDER)}
 BASE_COLORS = {
     "blanco": "#f7f7f7", "gris": "#c9ccd6", "tinta": "#2a2a2a", "iris": "#7a4a24", "iris_claro": "#a8703a",
-    "boca": "#6b2f24", "barba": "#2b211c", "detalle": "#ffe873",
+    "boca": "#6b2f24", "barba": "#2b211c", "detalle": "#ffe873", "gema": "#5b2a86",
 }
 PROPORTIONS = {"chest": 1.0, "waist": 1.0, "arm": 1.0, "leg": 1.0, "shoulder": 1.0, "head_scale": 1.12}
 HEAD_C = (0.0, 0.015, 1.63)

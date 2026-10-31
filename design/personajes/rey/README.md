@@ -24,7 +24,7 @@ La paleta es guía; no sustituye materiales actuales sin revisión.
 | V0 — pruebas geométricas | Existe evidencia histórica; ver historial.json. |
 | V1 — GLB provisional | [GLB provisional V1](../../../game/assets/models/rey/rey.glb) |
 | V2 — diseño definido | Pendiente: frente, perfil, espalda y expresiones aprobados. |
-| V3 — modelo refinado | Pendiente de V2; Blender, GLB, rig y clips en Godot. |
+| V3 — modelo refinado | [GLB V3 provisional](../../../game/assets/models/rey/rey.glb) con el patrón visual de Turbo V3, conservando su sello: corona con gema violeta, banda negra de filos dorados y 23 dorado. [Lámina](../../../docs/captures/rey-v3/lamina_rey.jpg) y [capturas Godot](../../../docs/captures/refresh-visual). Pendiente de revisión del propietario. |
 | Candidato final | Pendiente de prueba visual, animación, legibilidad y rendimiento. |
 
 El nombre V1 agrupa el estado del pipeline; las versiones locales de cada GLB
@@ -41,5 +41,5 @@ igual de avanzados. Las exploraciones recientes **no** cuentan como V2 aprobado.
 - [Historial con hashes](historial.json).
 - [Ficha de combate](../../../docs/plantel/fichas/rey.md); sus valores nuevos son hipótesis.
 
-**Próxima muestra:** Usar Turbo V2 como patrón visual aceptado y adaptar este héroe sin uniformar todas las caras.
+**Estado:** Rey V3 visual (refresh del 31 octubre 2026); gameplay sin cambios; falta la revisión del propietario.
 [Exploración, sin aprobación individual](../../plantel/bocetos_deportivos_v1/02-nucleo-deportivo.png).
