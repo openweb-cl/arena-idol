@@ -4,6 +4,7 @@ signal action_requested(actor: ArenaPlayer, kind: String)
 signal ability_started(actor: ArenaPlayer)
 signal eliminated(actor: ArenaPlayer)
 signal attack_accepted(actor: ArenaPlayer, kind: String)
+signal kicked_up_dust(actor: ArenaPlayer)  ## arranque o frenazo brusco (solo VFX)
 @export var definition: CharacterDefinition = preload("res://data/characters/turbo.tres")
 @export_range(2.5, 5.0, 0.05) var status_label_height: float = 3.1
 var team := 0
@@ -38,6 +39,8 @@ var pending_kind := ""
 var shot_direction := Vector3.RIGHT
 var shot_multiplier := 1.0
 var super_target: Variant = null  ## centro elegido para una súper de zona (Vector3) o null
+var aim_hold := 0.0  ## tras atacar, el cuerpo mira al blanco este tiempo; si no, mira hacia donde corre
+var dust_cooldown := 0.0
 var shield_time := 0.0
 var shield_hp := 0
 
@@ -79,6 +82,8 @@ func _physics_process(delta: float) -> void:
 		power_multiplier = 1.0
 	channel_time = maxf(0, channel_time - delta)
 	shield_time = maxf(0, shield_time - delta)
+	aim_hold = maxf(0, aim_hold - delta)
+	dust_cooldown = maxf(0, dust_cooldown - delta)
 	if shield_time <= 0:
 		shield_hp = 0
 	if knocked_out:
@@ -117,12 +122,21 @@ func _physics_process(delta: float) -> void:
 		dash_time = maxf(0, dash_time - delta)
 		target = dash_direction * speed * definition.ability.speed_multiplier
 	var acceleration := definition.braking if direction.length() < 0.1 else definition.acceleration
+	# Polvo al arrancar desde quieto o al invertir la marcha (solo aspecto).
+	if dust_cooldown <= 0 and direction.length() > 0.6 and (move_velocity.length() < 1.0 or move_velocity.normalized().dot(direction.normalized()) < -0.3):
+		dust_cooldown = 0.45
+		kicked_up_dust.emit(self)
 	move_velocity = move_velocity.move_toward(target, acceleration * delta)
 	velocity = move_velocity + push_velocity
 	push_velocity = push_velocity.move_toward(Vector3.ZERO, 35 * delta)
 	move_and_slide()
 	position.y = 0
-	visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-facing.x, -facing.z), minf(1, definition.turn_speed * delta))
+	# El cuerpo mira hacia donde corre y se gira al blanco al atacar: así no corre de
+	# espaldas ni de lado con el apuntado AUTO. La dirección de ataque sigue siendo `facing`.
+	var look := facing
+	if direction.length() > 0.12 and aim_hold <= 0 and dash_time <= 0:
+		look = direction.normalized()
+	visual.rotation.y = lerp_angle(visual.rotation.y, atan2(-look.x, -look.z), minf(1, definition.turn_speed * delta))
 	visual.speed_ratio = minf(1, velocity.length() / definition.speed)
 	health_label.text = "#%d · %d PV" % [definition.number, health]
 	if ammo.limited():
@@ -151,6 +165,7 @@ func act(kind: String = "shot") -> bool:
 			channel_time = definition.field_warning
 	# Dirección y mejora se capturan al aceptar; el proyectil puede salir después.
 	shot_direction = facing
+	aim_hold = 0.45
 	shot_multiplier = damage_multiplier() if kind == "shot" else 1.0
 	visual.trigger("kick")
 	attack_accepted.emit(self, kind)
@@ -234,6 +249,7 @@ func reset_at_spawn() -> void:
 	super_target = null
 	shield_time = 0
 	shield_hp = 0
+	aim_hold = 0
 	cooldown = 0
 	attack_cooldown = 0
 	facing = Vector3.RIGHT if team == 0 else Vector3.LEFT

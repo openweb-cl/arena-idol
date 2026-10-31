@@ -1,5 +1,9 @@
 # Evidencia de validación — combate 3D
 
+Sensación de juego (31 octubre 2026, PC del propietario, Godot 4.7.2): **339
+comprobaciones aprobadas**, 0 fallos (las 325 anteriores + 14 de `test_feel.gd`).
+Capturas en [docs/captures/sensacion/](captures/sensacion/).
+
 Pitbull jugable (31 octubre 2026, PC del propietario, Windows 11, Godot 4.7.2):
 **325 comprobaciones aprobadas**, 0 fallos (las 293 anteriores + 32 del Pitbull).
 Contrato de arte: Pitbull 35/0, Príncipe 35/0, Turbo 35/0, Rey 40/0. Capturas en

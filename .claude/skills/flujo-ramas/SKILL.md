@@ -13,7 +13,9 @@ Regla del propietario (30 octubre 2026). Prevalece sobre `claude/<hito>` y
 1. `git fetch` y actualizar `main` (`git pull --ff-only origin main`).
 2. Crear una rama nueva por cada avance, antes de editar nada.
 3. Commits pequeños por hito; push de la rama; PR hacia `main`.
-4. No fusionar sin aprobación explícita del propietario. Sin rebase, reset ni
+4. Fusionar solo con aprobación explícita: **preguntar siempre antes de cada merge**.
+   Si el propietario lo autoriza («fusiónalos tú»), Claude puede hacerlo con
+   «Create a merge commit» y en orden; nunca por iniciativa propia. Sin rebase, reset ni
    force-push sobre ramas ajenas.
 
 ## Nombre de rama: `<categoría>/<descripción>`

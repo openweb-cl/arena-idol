@@ -113,6 +113,7 @@ func spawn_player(def: CharacterDefinition, team: int, point: Vector3) -> ArenaP
 	actor.ability_started.connect(on_ability)
 	actor.eliminated.connect(on_eliminated)
 	actor.attack_accepted.connect(on_attack_accepted)
+	actor.kicked_up_dust.connect(on_dust)
 	actors.append(actor)
 	return actor
 
@@ -307,7 +308,10 @@ func on_action(actor: ArenaPlayer, kind: String) -> void:
 func apply_damage(target: ArenaPlayer, source: ArenaPlayer, damage: int, push: Vector3, charges: bool = true) -> void:
 	if phase != Phase.PLAYING or target.team == source.team:
 		return
+	var health_before := target.health
+	var shield_before := target.shield_hp
 	if target.take_damage(damage, push):
+		show_damage(target, health_before - target.health, shield_before - target.shield_hp, not charges or damage == source.definition.super_damage)
 		impacts += 1
 		damage_events[source.team] += 1
 		if charges:
@@ -403,6 +407,23 @@ func spawn_effect(actor: ArenaPlayer, kind: String, color: Color, life: float = 
 	effect.radius = actor.definition.super_radius
 	add_child(effect)
 
+## Número flotante con el daño real (vida y escudo por separado) y sacudida en súper.
+func show_damage(target: ArenaPlayer, lost: int, absorbed: int, is_super: bool) -> void:
+	var above := target.position + Vector3(0, 2.4, 0)
+	if absorbed > 0:
+		var shield := DamageNumber.new().setup(absorbed, "shield")
+		shield.position = above + Vector3(0, 0.35, 0)
+		add_child(shield)
+	if lost > 0:
+		var number := DamageNumber.new().setup(lost, "super" if is_super else "basic")
+		number.position = above
+		add_child(number)
+	if is_super:
+		camera.shake(0.35)
+
+func on_dust(actor: ArenaPlayer) -> void:
+	spawn_effect(actor, "dust", Color("d9c7a3"))
+
 func spawn_effect_at(at: Vector3, kind: String) -> void:
 	var effect := AbilityEffect.new()
 	effect.kind = kind
@@ -413,6 +434,7 @@ func spawn_effect_at(at: Vector3, kind: String) -> void:
 func on_eliminated(actor: ArenaPlayer) -> void:
 	if phase != Phase.PLAYING:
 		return
+	camera.shake(0.55)
 	spawn_effect(actor, "elimination", actor.definition.color)
 	if actor == human:
 		mouse_fire_held = false

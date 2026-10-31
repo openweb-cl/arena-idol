@@ -167,3 +167,22 @@ Resultado del 2026-10-30, en el entorno cloud y sin teléfono:
 4. Decidir el renderizador por defecto o el respaldo a Compatibility (pantalla
    negra en el PC del propietario con Vulkan). Con eso, exportar el APK debug y
    probarlo en el teléfono del propietario.
+
+## Sensación de juego — 31 octubre 2026
+
+Respuesta a «se ve como corriendo, pero se siente como que se deslizan». Todo es
+presentación; reglas, colliders y dirección de ataque no cambian.
+
+- **Orientación:** el cuerpo mira hacia donde corre y gira al blanco durante 0,45 s
+  tras cada ataque (`ArenaPlayer.aim_hold`). Antes, con AUTO, corría de espaldas o de
+  lado mirando al rival. La dirección de ataque sigue siendo `facing`.
+- **Números de daño** (`scripts/vfx/damage_number.gd`): daño real perdido (blanco),
+  súper (dorado, más grande) y daño absorbido por escudo (celeste), por separado.
+- **Aplastamiento** de 0,4 s del modelo golpeado (`CharacterVisual`).
+- **Sacudida de cámara** en súper y eliminaciones (`ArenaCamera.shake`): desplaza la
+  imagen con `h_offset`/`v_offset`, sin mover cámara, apuntado ni física.
+  `shake_scale` permite reducirla o apagarla.
+- **Polvo** (`AbilityEffect` `dust`) al arrancar desde quieto o invertir la marcha.
+
+Verificación: `tests/test_feel.gd` (14/0), incluido en `tools/verify.py`.
+
