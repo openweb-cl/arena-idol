@@ -1,4 +1,4 @@
-# Héroes 3D — Turbo #11 (V1.1), King/Rey #23 (V0), Príncipe (V0) y Pitbull (V0)
+# Héroes 3D — Turbo #11 (V3), King/Rey #23 (V0), Príncipe (V0) y Pitbull (V0)
 
 Estado: **MUESTRAS PROVISIONALES pendientes de revisión del propietario.** No son
 arte final ni calidad comercial. Validan el pipeline Blender → GLB → Godot y la
@@ -7,8 +7,11 @@ dirección pedida por el propietario el 2026-10-30.
 ## Historial
 
 - **Turbo V1** (PR #7, fusionado): primera muestra cian/índigo con visor.
-- **Turbo V1.1** (este hito): equipación azul con detalles rojos, pelo blanco y
+- **Turbo V1.1** (PR #12): equipación azul con detalles rojos, pelo blanco y
   tatuajes visibles, a pedido del propietario.
+- **Turbo V3** (rama `cambio/turbo-v3-modelo-refinado`): modelo refinado a partir de
+  la referencia V2 aceptada («Ese turbo esta muy bueno»). Rostro caricaturesco,
+  cuerpo continuo con pesos suaves y un único material con atlas. Ver abajo.
 - **Rey/King V0** (este hito): primera forma en blanco y negro con sello propio.
 - **Príncipe V0 y Pitbull V0** (este hito): **solo arte**, a pedido del propietario.
   No tienen `.tres`, gameplay ni ficha de combate aprobada, y no aparecen en
@@ -51,7 +54,47 @@ la UI y es de Codex).
    ambos; aquí solo hay siluetas y trajes originales, sin rostros, escudos ni kits.
 5. Dorsales decididos por el propietario: **Príncipe 20** y **Pitbull 17**.
 
-## Turbo #11 — V1.1
+## Turbo #11 — V3 (modelo refinado, provisional)
+
+Traduce [la lámina V2 aceptada](../../design/personajes/turbo/bocetos/turbo-v2-propuesta-01.png)
+a un GLB jugable. **Pendiente de revisión del propietario; no es arte final.**
+
+- **Cuerpo continuo:** torso, brazos, piernas, cuello y short son tubos elípticos
+  con pesos suaves repartidos entre huesos en codos, rodillas, cintura, hombros y
+  cuello (antes eran piezas rígidas con un solo hueso). Manos, botines, cabeza y pelo
+  siguen siendo rígidos sobre su hueso.
+- **Rostro propio pintado:** ojos grandes marrones con brillo, línea superior gruesa,
+  cejas decididas, nariz pequeña y sonrisa confiada ladeada. Sin visor. No reproduce
+  a ninguna persona real.
+- **Pelo blanco** en mechones curvos barridos hacia arriba y atrás, con flequillo en
+  punta que deja ver las cejas; dos tonos (`pelo` / `pelo_sombra`).
+- **Proporción caricaturesca:** cabeza escalada ×1,12 desde el cuello, brazos más
+  musculosos, manos grandes abiertas y botines grandes.
+- **Equipación de la lámina:** cuello rojo con escote en V, franja diagonal roja
+  propia, puños rojos, bajo azul oscuro, dorsal 11 en pecho y espalda, short con
+  franja lateral roja y 11 en la pierna izquierda, medias azules con banda roja,
+  botín blanco con talón y franja rojos y suela azul.
+- **Tatuajes tribales propios** en ambos brazos: dientes de sierra bajo la manga y
+  banda ancha de antebrazo con zigzag y rombos (pintados en el atlas).
+- **Guardia de combate** como pose de reposo (piernas abiertas, rodillas flexionadas)
+  y ataque con el cuerpo entero en `kick` (golpe en el cuadro 4, como antes).
+- **Un material, un atlas 1024:** `M_Turbo_Atlas` con `turbo_atlas.png` empaquetado
+  en el GLB. Regiones: camiseta (desenvuelta), cara (proyección frontal), brazo,
+  piernas del short y muestras de color. Todo dibujado con formas propias en Pillow,
+  sin fuentes ni imágenes externas. Godot extrae la textura a
+  `game/assets/models/turbo/turbo_turbo_atlas.png`.
+
+Paleta (de la lámina V2): azul `#1f3fbf`, azul oscuro `#132a8f`, rojo `#e0282f`,
+blanco `#f7f7f7`, piel `#d4925e` (algo más oscura que la lámina para que no se vea
+pálida con la luz del juego), tinta de tatuaje `#2a2a2a`, pelo `#e6e6f0`/`#b9bccf`.
+
+Fuentes: [`art/turbo/build_turbo.py`](../../art/turbo/build_turbo.py),
+[`art/turbo/paint_turbo_atlas.py`](../../art/turbo/paint_turbo_atlas.py) y las
+funciones V3 de [`art/lib/hero_kit.py`](../../art/lib/hero_kit.py) (`AtlasBuilder`,
+`tube`, `horn`, `textured_ellipsoid`, `partial_sphere`, `make_atlas_material`). Los
+demás héroes no cambian: `build_hero` sin `atlas` funciona igual que antes.
+
+## Turbo #11 — V1.1 (histórico)
 
 - **Silueta:** estrecha de velocista, ≈3,6 cabezas, cresta de pelo **blanco** en
   punta barrida hacia atrás, visor eléctrico y botas grandes.
@@ -137,15 +180,23 @@ la UI y es de Codex).
 
 ## Métricas medidas
 
-| Métrica | Turbo V1.1 | Rey V0 | Príncipe V0 | Pitbull V0 | Presupuesto |
+| Métrica | Turbo V3 | Rey V0 | Príncipe V0 | Pitbull V0 | Presupuesto |
 |---|---|---|---|---|---|
-| Triángulos | 5.378 | 4.634 | 4.166 | 3.852 | ≤ 8.000 |
-| Materiales | 6 | 6 | 6 | 7 | ≤ 8 |
+| Triángulos | 6.530 | 4.634 | 4.166 | 3.852 | ≤ 8.000 |
+| Materiales | 1 (atlas 1024) | 6 | 6 | 7 | ≤ 8 |
 | Huesos / clips | 17 / 5 | 17 / 5 | 17 / 5 | 17 / 5 | — |
-| Altura | 2,09 m | 2,00 m | 1,91 m | 1,88 m | ≈ 2 m (±0,15) |
-| GLB | 335.944 B | 235.132 B | 219.080 B | 207.884 B | — |
-| `.blend` | 199.905 B | 187.996 B | 182.349 B | 179.427 B | — |
-| Lámina (Cycles CPU, 4 hilos) | 32,8 s | 32,2 s | 34,7 s | 36,7 s | — |
+| Altura | 2,11 m | 2,00 m | 1,91 m | 1,88 m | ≈ 2 m (±0,15) |
+| GLB | 375.620 B | 235.132 B | 219.080 B | 207.884 B | — |
+| `.blend` | 273.740 B | 187.996 B | 182.349 B | 179.427 B | — |
+| Lámina (Cycles CPU, 4 hilos) | 63,2 s* | 32,2 s | 34,7 s | 36,7 s | — |
+
+\* Turbo V3 medido en el PC del propietario (Windows 11, bpy 5.2.3); los demás,
+en el entorno Linux del hito anterior. Turbo V1.1 medía 5.378 triángulos y 6
+materiales: V3 añade ≈1.150 triángulos y pasa de 6 superficies a 1, es decir,
+menos draw calls por héroe (cada superficie es una llamada, más su sombra).
+En Windows con Compatibility, `capture_heroes.gd` cuenta `DRAW_CALLS
+arena_A_glb=58 arena_B_glb=53`. Es un conteo de CPU en una ejecución, **no**
+acredita FPS ni rendimiento Android.
 
 El Pitbull medía 1,84 m en la primera versión y no pasaba la regla de altura del
 contrato; se ajustó el modelo (cabeza y pelo) en lugar de relajar la verificación.
@@ -174,6 +225,24 @@ Capturas reales de Godot 4.7.2 (Xvfb 1280×720, sin retoque). Forward Mobile
 Renders de Blender (no son capturas de juego): [lámina Turbo](../captures/heroes-v1-1/lamina_turbo.jpg) · [lámina Rey](../captures/heroes-v1-1/lamina_rey.jpg) · [lámina Príncipe](../captures/heroes-v1-1/lamina_principe.jpg) · [lámina Pitbull](../captures/heroes-v1-1/lamina_pitbull.jpg).
 
 ## Comandos reproducibles
+
+Turbo V3 en Windows (Git Bash), Python 3.13.16 y Godot 4.7.2:
+
+```bash
+python -m venv .venv-bpy && .venv-bpy/Scripts/python -m pip install bpy==5.2.3 pillow
+.venv-bpy/Scripts/python art/turbo/build_turbo.py
+.venv-bpy/Scripts/python art/lib/render_sheet.py turbo docs/captures/turbo-v3
+godot --headless --path game --editor --import
+godot --headless --path game --script ../art/lib/check_hero_contract.gd -- --hero=turbo
+godot --path game --audio-driver Dummy --resolution 1280x720 --script ../art/lib/capture_heroes.gd -- --output=docs/captures/turbo-v3
+```
+
+Resultado: **Turbo 35/0** (cinco comprobaciones menos que V1.1 porque solo hay un
+material que verificar como opaco) y **Rey 40/0** sin cambios. Capturas reales en
+[docs/captures/turbo-v3/](../captures/turbo-v3/) y lámina en
+[lamina_turbo.jpg](../captures/turbo-v3/lamina_turbo.jpg) (render de Blender).
+
+Hito anterior:
 
 Blender 5.2.3 LTS como módulo `bpy` de PyPI (GPL, gratuito) y Godot 4.7.2 estable.
 
@@ -219,5 +288,8 @@ OneDrive; se recomienda clonarlo fuera de carpetas sincronizadas.
    y pruebas en GPU real o Android.
 3. Príncipe y Pitbull: falta la ficha de combate, el `.tres`, el gameplay y la
    activación en la selección (Codex). Al crear sus `.tres`, usar `number` 20 y 17.
-4. Los pesos rígidos se mantienen; si la revisión pide deformación orgánica, hay que
-   pasar a pesos suaves.
+4. Turbo V3 ya usa pesos suaves en el cuerpo; Rey, Príncipe y Pitbull siguen con
+   pesos rígidos hasta su propio refinamiento V2/V3.
+5. Turbo V3: falta la revisión del propietario. Expresiones alternativas
+   (determinación, victoria) por cambio de UV y un clip de ataque más propio de un
+   disparo eléctrico quedan para la siguiente iteración.
