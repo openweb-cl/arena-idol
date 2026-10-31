@@ -30,6 +30,20 @@ guiones, y dice qué se hace: `novedad/principe-jugable`,
 Si dudas entre `cambio` y `novedad`: si el jugador ve algo que antes no estaba, es
 `novedad`.
 
+## Tamaño del PR: contundente, no excesivo
+
+El propietario no quiere PR demasiado cortos (30 octubre 2026). Cada PR entrega un
+**avance completo que se pueda ver o jugar**, no un paso intermedio:
+
+- Bien: un héroe refinado de punta a punta (modelo, rig, clips, integración en
+  Godot, capturas y docs); un héroe jugable con su kit, VFX, pruebas y selección;
+  un refresh de una pantalla completa.
+- Demasiado corto: solo docs, solo un ajuste de color, solo el `.blend` sin
+  integrar. Eso se suma al PR del avance que corresponda.
+- Excesivo: varios héroes y pantallas sin relación, o cambios que el propietario
+  no puede revisar de una vez. Si mezcla temas, se divide.
+- Dentro del PR, commits pequeños y ordenados por paso.
+
 ## Commits y PR
 
 - Mensajes en español: `tipo: qué cambia` (p. ej. `arte: Turbo V3 con rostro`).
